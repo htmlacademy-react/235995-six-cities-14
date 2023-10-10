@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов»
 
 * Студент: [Alexander Strakhovenko](https://up.htmlacademy.ru/react/14/user/235995).
-* Наставник: `Неизвестно`.
+* Наставник: [Arthur Litovko](https://htmlacademy.ru/profile/id6927).
 
 ---
 
