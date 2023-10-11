@@ -4,7 +4,7 @@ interface CardProps {
   offer?: Offer;
 }
 
-const getOfferType = (offerType: string = ''): string | undefined => offerType[0].toUpperCase() + offerType.slice(1);
+const getOfferType = (offerType: string = ''): string | undefined => offerType[0]?.toUpperCase() + offerType?.slice(1);
 
 function Card({offer}: CardProps): JSX.Element {
   return (
