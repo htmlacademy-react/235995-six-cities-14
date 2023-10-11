@@ -97,7 +97,7 @@ function MainPage ({cardsAmount, offer}: MainProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {Array.from({ length: cardsAmount }, (_, i: number): JSX.Element => <Card key={offer.id + i} />)}
+                {Array.from({ length: cardsAmount }, (_, i: number): JSX.Element => <Card key={1 + i} offer={offer} />)}
               </div>
             </section>
             <div className="cities__right-section">
