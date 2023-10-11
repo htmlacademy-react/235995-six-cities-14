@@ -6,7 +6,7 @@ type Location = {
   zoom: number;
 }
 
-interface Offer {
+export interface Offer {
   id: string;
   title: string;
   type: string;
@@ -71,7 +71,7 @@ const OFFER: Offer = {
 function App(): JSX.Element {
   const CARDS_AMOUNT: number = 5;
   return (
-    <MainPage cards={CARDS_AMOUNT} offer={OFFER} />
+    <MainPage cardsAmount={CARDS_AMOUNT} offer={OFFER} />
   );
 }
 

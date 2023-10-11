@@ -1,44 +1,16 @@
-type Location = {
-  latitude: number;
-  longitude: number;
-  zoom: number;
-}
-interface Offer {
-  id: string;
-  title: string;
-  type: string;
-  price: number;
-  city: {
-    name: string;
-    location: Location;
-  };
-  location: Location;
-  isFavorite: boolean;
-  isPremium: boolean;
-  rating: number;
-  description: string;
-  bedrooms: number;
-  goods: string[];
-  host: {
-    name: string;
-    avatarUrl: string;
-    isPro: boolean;
-  };
-  images: string[];
-  maxAdults: number;
-}
+import { Offer } from '../app';
 
 interface CardProps {
-  offer: Offer;
+  offer?: Offer;
 }
 
-const getOfferType = (offerType: string): string | undefined => offerType[0].toUpperCase() + offerType.slice(1);
+const getOfferType = (offerType: string = ''): string | undefined => offerType[0].toUpperCase() + offerType.slice(1);
 
 function Card({offer}: CardProps): JSX.Element {
   return (
     <article className="cities__card place-card">
-      <div className={offer.isPremium ? 'place-card__mark' : '' }>
-        <span>{offer.isPremium ? 'Premium' : ''}</span>
+      <div className={offer?.isPremium ? 'place-card__mark' : '' }>
+        <span>{offer?.isPremium ? 'Premium' : ''}</span>
       </div>
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="#">
@@ -48,7 +20,7 @@ function Card({offer}: CardProps): JSX.Element {
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">&euro;{offer.price}</b>
+            <b className="place-card__price-value">&euro;{offer?.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button className="place-card__bookmark-button button" type="button">
@@ -65,7 +37,7 @@ function Card({offer}: CardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{offer.title}</a>
+          <a href="#">{offer?.title}</a>
         </h2>
         <p className="place-card__type">{ getOfferType(offer?.type) }</p>
       </div>

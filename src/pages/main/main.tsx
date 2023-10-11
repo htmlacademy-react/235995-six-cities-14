@@ -1,10 +1,12 @@
 import { Card } from '../../components/card/card';
+import { Offer } from '../../components/app';
 
 interface MainProps {
-  cards: number;
+  cardsAmount: number;
+  offer: Offer;
 }
 
-function MainPage ({cards}: MainProps): JSX.Element {
+function MainPage ({cardsAmount, offer}: MainProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -95,7 +97,7 @@ function MainPage ({cards}: MainProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {Array.from({ length: cards }, (_, i) => <Card key={i + 1} />)}
+                {Array.from({ length: cardsAmount }, (_, i: number): JSX.Element => <Card key={offer.id + i} />)}
               </div>
             </section>
             <div className="cities__right-section">
