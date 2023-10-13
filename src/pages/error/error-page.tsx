@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
 function NotFoundPage(): JSX.Element {
@@ -79,6 +80,7 @@ function NotFoundPage(): JSX.Element {
               <div className="cities__status-wrapper tabs__content">
                 <b className="cities__status">Error 404</b>
                 <p className="cities__status-description">We can not seem to find the resource you are looking for.</p>
+                <b style={{color: '#4481c3'}}><Link to='/'>Go to main page</Link></b>
               </div>
             </section>
             <div className="cities__right-section"></div>
