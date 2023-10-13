@@ -1,7 +1,11 @@
+import { Helmet } from 'react-helmet-async';
 
-function offer(): JSX.Element {
+function OfferPage(): JSX.Element {
   return (
     <div className="page">
+      <Helmet>
+        <title>Offer</title>
+      </Helmet>
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
@@ -337,4 +341,4 @@ function offer(): JSX.Element {
   );
 }
 
-export { offer };
+export { OfferPage };

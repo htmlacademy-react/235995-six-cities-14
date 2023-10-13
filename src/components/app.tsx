@@ -1,4 +1,13 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
+// pages
 import { MainPage } from '../pages/main/main';
+import { LoginPage } from '../pages/login/login';
+import { OfferPage } from '../pages/offer/offer';
+import { FavoritesPage } from '../pages/favorites/favorites';
+import { NotFoundPage } from '../pages/error/error-page';
+// components
+import { PrivateRoute, AuthorizationStatus } from './private-route/private-route';
 
 type Location = {
   latitude: number;
@@ -68,11 +77,60 @@ const OFFER: Offer = {
   'maxAdults': 4
 };
 
+enum AppRoute {
+  Root = '/',
+  Login = '/login',
+  Offer = '/offer/',
+  Favorites = '/favorites',
+  Error= '*'
+}
+
 function App(): JSX.Element {
   const CARDS_AMOUNT: number = 5;
   return (
-    <MainPage cardsAmount={CARDS_AMOUNT} offer={OFFER} />
+    <HelmetProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path={AppRoute.Root}
+            element={<MainPage cardsAmount={CARDS_AMOUNT} offer={OFFER} />}
+          >
+          </Route>
+          <Route
+            path={AppRoute.Login}
+            element={<LoginPage />}
+          >
+          </Route>
+          <Route
+            path={AppRoute.Favorites}
+            element={
+              <PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}>
+                <FavoritesPage />
+              </PrivateRoute>
+            }
+          >
+          </Route>
+          <Route
+            path={AppRoute.Offer}
+          >
+            <Route
+              index
+              element={<OfferPage />}
+            />
+            <Route
+              path=':id'
+              element={<OfferPage />}
+            />
+          </Route>
+          <Route
+            path={AppRoute.Error}
+            element={<NotFoundPage />}
+          >
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </HelmetProvider>
   );
 }
 
-export { App };
+export { App, AppRoute };

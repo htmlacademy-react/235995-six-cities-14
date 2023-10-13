@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import { Card } from '../../components/card/card';
 import { Offer } from '../../components/app';
 
@@ -9,6 +10,9 @@ interface MainProps {
 function MainPage ({cardsAmount, offer}: MainProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
+      <Helmet>
+        <title>Main page</title>
+      </Helmet>
       <header className="header">
         <div className="container">
           <div className="header__wrapper">

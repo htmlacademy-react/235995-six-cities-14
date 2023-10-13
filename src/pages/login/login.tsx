@@ -1,7 +1,11 @@
+import { Helmet } from 'react-helmet-async';
 
-function login(): JSX.Element {
+function LoginPage(): JSX.Element {
   return (
     <div className="page page--gray page--login">
+      <Helmet>
+        <title>Login</title>
+      </Helmet>
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
@@ -43,4 +47,4 @@ function login(): JSX.Element {
   );
 }
 
-export { login };
+export { LoginPage };
