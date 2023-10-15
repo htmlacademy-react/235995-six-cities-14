@@ -1,0 +1,61 @@
+import { Offer } from '../types/offer';
+
+const OFFERS: Offer[] = [
+  {
+    'id': 'offer-001',
+    'city': 'Amsterdam',
+    'title': 'Beautiful & luxurious studio at great location',
+    'type': 'apartment',
+    'price': 125,
+    'isFavorite': false,
+    'isPremium': true,
+    'rating': 2.2,
+    'image': 'img/apartment-02.jpg',
+  },
+  {
+    'id': 'offer-002',
+    'city': 'Amsterdam',
+    'title': 'Wood and stone place',
+    'type': 'room',
+    'price': 179,
+    'isFavorite': true,
+    'isPremium': false,
+    'rating': 3,
+    'image': 'img/room.jpg',
+  },
+  {
+    'id': 'offer-003',
+    'city': 'Amsterdam',
+    'title': 'Canal View Prinsengracht',
+    'type': 'apartment',
+    'price': 209,
+    'isFavorite': false,
+    'isPremium': false,
+    'rating': 3.4,
+    'image': 'img/apartment-02.jpg',
+  },
+  {
+    'id': 'offer-004',
+    'city': 'Amsterdam',
+    'title': 'Nice, cozy, warm big bed apartment',
+    'type': 'apartment',
+    'price': 233,
+    'isFavorite': false,
+    'isPremium': true,
+    'rating': 4.4,
+    'image': 'img/apartment-03.jpg',
+  },
+  {
+    'id': 'offer-005',
+    'city': 'Amsterdam',
+    'title': 'Wood and stone place',
+    'type': 'room',
+    'price': 163,
+    'isFavorite': false,
+    'isPremium': false,
+    'rating': 5,
+    'image': 'img/room.jpg',
+  },
+];
+
+export {OFFERS};

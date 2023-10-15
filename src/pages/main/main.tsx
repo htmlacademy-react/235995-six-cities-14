@@ -1,13 +1,12 @@
 import { Helmet } from 'react-helmet-async';
 import { Card } from '../../components/card/card';
-import { Offer } from '../../components/app';
+import { Offer } from '../../types/offer';
 
 interface MainProps {
-  cardsAmount: number;
-  offer: Offer;
+  offers: Offer[];
 }
 
-function MainPage ({cardsAmount, offer}: MainProps): JSX.Element {
+function MainPage ({offers}: MainProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -101,7 +100,7 @@ function MainPage ({cardsAmount, offer}: MainProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {Array.from({ length: cardsAmount }, (_, i: number): JSX.Element => <Card key={1 + i} offer={offer} />)}
+                {offers?.map((offer): JSX.Element => <Card key={offer.id} offer={offer} />)}
               </div>
             </section>
             <div className="cities__right-section">
