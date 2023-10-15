@@ -40,7 +40,7 @@ const REVIEWS: IReview[] = [
   },
   {
     'comment': 'Not enough honey, Too much bees',
-    'date': '2023-01-07',
+    'date': '2023-07-09',
     'id': 3,
     'rating': 2.5,
     'user': {

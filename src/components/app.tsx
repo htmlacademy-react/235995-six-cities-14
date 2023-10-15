@@ -16,7 +16,7 @@ enum AppRoute {
   Login = '/login',
   Offer = '/offer/',
   Favorites = '/favorites',
-  Error= '*'
+  Error= '*',
 }
 
 function App(): JSX.Element {
@@ -37,7 +37,7 @@ function App(): JSX.Element {
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}>
+              <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
                 <FavoritesPage />
               </PrivateRoute>
             }

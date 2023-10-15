@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Offer } from '../../types/offer';
 
 interface CardProps {
@@ -7,6 +8,9 @@ interface CardProps {
 const getOfferType = (offerType: string = ''): string => offerType[0].toUpperCase() + offerType.slice(1);
 
 function Card({offer}: CardProps): JSX.Element {
+  const [isActiveCard, SetIsActiveCard] = useState(false);
+  isActiveCard ? SetIsActiveCard(true) : SetIsActiveCard(false); // пока не задействовано! @TODO доделать
+  // Состояние пригодится нам в дальнейшем для реализации отображения маркеров предложений на карте.
   return (
     <article className="cities__card place-card">
       <div className={offer.isPremium ? 'place-card__mark' : '' }>

@@ -1,6 +1,10 @@
 import { IReview } from '../../mocks/reviews';
 
-function Review(review: IReview): JSX.Element {
+interface ReviewProps {
+  review: IReview;
+}
+
+function Review({review}: ReviewProps): JSX.Element {
   return (
     <li className="reviews__item">
       <div className="reviews__user user">
@@ -14,12 +18,12 @@ function Review(review: IReview): JSX.Element {
       <div className="reviews__info">
         <div className="reviews__rating rating">
           <div className="reviews__stars rating__stars">
-            <span style={{width: '80%'}}></span>
+            <span style={{width: `${review.rating * 100 / 5}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <p className="reviews__text">
-        {review.comment}
+          {review.comment}
         </p>
         <time className="reviews__time" dateTime={review.date}>{review.date}</time>
       </div>
