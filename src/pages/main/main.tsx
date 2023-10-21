@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { CardList } from '../../components/card-list/card-list';
 import { Offer } from '../../types/offer';
+import { LOCATIONS } from '../../const';
+import { LocationItem } from '../../components/location-item/location-item';
 
 interface MainProps {
   offers: Offer[];
@@ -46,36 +48,7 @@ function MainPage ({offers}: MainProps): JSX.Element {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
+              {LOCATIONS.map((city) => <LocationItem key={city} city={city}/>)}
             </ul>
           </section>
         </div>
@@ -83,7 +56,7 @@ function MainPage ({offers}: MainProps): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">312 places to stay in Amsterdam</b>
+              <b className="places__found">{offers.length} places to stay in Amsterdam</b> /* @TODO Сделать чтобы фильтровалось кол-во по выбранному городу.*/
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>

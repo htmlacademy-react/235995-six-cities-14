@@ -8,16 +8,12 @@ import { FavoritesPage } from '../pages/favorites/favorites';
 import { NotFoundPage } from '../pages/error/error-page';
 // components
 import { PrivateRoute, AuthorizationStatus } from './private-route/private-route';
+import { RedirectToMainPage } from './redirect-to-main-page/redirect-to-main-page';
+import { AppRoute } from '../const';
 import { OFFERS } from '../mocks/offers';
 import { REVIEWS } from '../mocks/reviews';
 
-enum AppRoute {
-  Root = '/',
-  Login = '/login',
-  Offer = '/offer/',
-  Favorites = '/favorites',
-  Error= '*',
-}
+const offersID: string[] = OFFERS.map((offer)=> offer.id);
 
 function App(): JSX.Element {
   return (
@@ -26,19 +22,23 @@ function App(): JSX.Element {
         <Routes>
           <Route
             path={AppRoute.Root}
-            element={<MainPage offers={OFFERS} />}
+            element={<MainPage offers={OFFERS} offersId={offersID} />}
           >
           </Route>
           <Route
             path={AppRoute.Login}
-            element={<LoginPage />}
+            element={
+              <RedirectToMainPage authorizationStatus={AuthorizationStatus.NoAuth}>
+                <LoginPage/>
+              </RedirectToMainPage>
+            }
           >
           </Route>
           <Route
             path={AppRoute.Favorites}
             element={
               <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-                <FavoritesPage />
+                <FavoritesPage offers={OFFERS} />
               </PrivateRoute>
             }
           >
@@ -48,11 +48,11 @@ function App(): JSX.Element {
           >
             <Route
               index
-              element={<OfferPage reviews ={REVIEWS}/>}
+              element={<OfferPage reviews ={REVIEWS} />}
             />
             <Route
               path=':id'
-              element={<OfferPage reviews ={REVIEWS} />}
+              element={<OfferPage offers={OFFERS} reviews ={REVIEWS} />}
             />
           </Route>
           <Route

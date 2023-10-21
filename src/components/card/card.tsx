@@ -1,25 +1,25 @@
 import { useState } from 'react';
 import { Offer } from '../../types/offer';
+import { getOfferType, getRating } from '../../utils';
+import { Link } from 'react-router-dom';
 
 interface CardProps {
   offer: Offer;
 }
 
-const getOfferType = (offerType: string = ''): string => offerType[0].toUpperCase() + offerType.slice(1);
-
 function Card({offer}: CardProps): JSX.Element {
   const [isActiveCard, SetIsActiveCard] = useState(false);
-  isActiveCard ? SetIsActiveCard(true) : SetIsActiveCard(false); // пока не задействовано! @TODO доделать
-  // Состояние пригодится нам в дальнейшем для реализации отображения маркеров предложений на карте.
+  // const some = isActiveCard ? SetIsActiveCard(true) : SetIsActiveCard(false); // пока не задействовано isActiveCard! @TODO доделать
+  // onMouseOver={() => SetIsActiveCard(true)} onMouseOut={() => SetIsActiveCard(false)}
   return (
-    <article className="cities__card place-card">
+    <article className="cities__card place-card" >
       <div className={offer.isPremium ? 'place-card__mark' : '' }>
         <span>{offer.isPremium ? 'Premium' : ''}</span>
       </div>
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
+        <Link to={`/offer/${offer.id}`}>
           <img className="place-card__image" src={offer.image} width="260" height="200" alt="Place image" />
-        </a>
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
@@ -36,12 +36,12 @@ function Card({offer}: CardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `${offer.rating * 100 / 5}%`}}></span>
+            <span style={{width: `${getRating(offer.rating)}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{offer.title}</a>
+          <Link to={`/offer/${offer.id}`}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{ getOfferType(offer.type) }</p>
       </div>

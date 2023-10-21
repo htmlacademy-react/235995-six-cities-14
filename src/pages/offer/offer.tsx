@@ -1,14 +1,21 @@
+import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { IReview } from '../../mocks/reviews';
 import { Review } from '../../components/review/review';
+import { Logo } from '../../components/logo/logo';
 import { OfferForm } from '../../components/offer-form/offer-form';
+import { getOfferType, getRating } from '../../utils';
+import { Offer } from '../../types/offer';
 
 interface OfferProps {
   reviews: IReview[];
+  offers?: Offer[];
 }
 
+function OfferPage({reviews, offers}: OfferProps): JSX.Element {
+  const params = useParams();
+  const offerById = offers?.find((offer): boolean => offer.id === params.id);
 
-function OfferPage({reviews}: OfferProps): JSX.Element {
   return (
     <div className="page">
       <Helmet>
@@ -18,9 +25,7 @@ function OfferPage({reviews}: OfferProps): JSX.Element {
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <a className="header__logo-link" href="main.html">
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
-              </a>
+              <Logo />
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
@@ -74,7 +79,7 @@ function OfferPage({reviews}: OfferProps): JSX.Element {
               </div>
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">
-                  Beautiful &amp; luxurious studio at great location
+                  {offerById?.title}
                 </h1>
                 <button className="offer__bookmark-button button" type="button">
                   <svg className="offer__bookmark-icon" width="31" height="33">
@@ -85,14 +90,14 @@ function OfferPage({reviews}: OfferProps): JSX.Element {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{width: '80%'}}></span>
+                  <span style={{width: `${getRating(offerById?.rating)}%`}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="offer__rating-value rating__value">4.8</span>
+                <span className="offer__rating-value rating__value">{offerById?.rating}</span>
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
-                  Apartment
+                  {getOfferType(offerById?.type)}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
                   3 Bedrooms
@@ -102,7 +107,7 @@ function OfferPage({reviews}: OfferProps): JSX.Element {
                 </li>
               </ul>
               <div className="offer__price">
-                <b className="offer__price-value">&euro;120</b>
+                <b className="offer__price-value">&euro;{offerById?.price}</b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
               <div className="offer__inside">
