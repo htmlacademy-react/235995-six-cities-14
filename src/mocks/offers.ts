@@ -1,4 +1,4 @@
-import { Offer } from '../types/offer';
+import { Offer, IOfferFull } from '../types/offer';
 
 const OFFERS: Offer[] = [
   {
@@ -58,4 +58,194 @@ const OFFERS: Offer[] = [
   },
 ];
 
-export {OFFERS};
+const OFFERS_FULL: IOfferFull[] = [
+  {
+    'id': 'offer-001',
+    'city': 'Amsterdam',
+    'title': 'Beautiful & luxurious studio at great location',
+    'type': 'apartment',
+    'price': 125,
+    'isFavorite': true,
+    'isPremium': true,
+    'rating': 2.2,
+    'image': 'img/apartment-02.jpg',
+    'bedrooms': 3,
+    'description': 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
+    'goods': [
+      'Heating',
+      'Wi-Fi',
+      'Washing machine',
+      'Cabel TV',
+      'Towels'
+    ],
+    'host': {
+      'avatarUrl': 'https://i.pravatar.cc/253',
+      'id': 3,
+      'isPro': true,
+      'name': 'Angelina'
+    },
+    'images': [
+      'img/apartment-small-04.jpg',
+      'img/apartment-01.jpg',
+      'img/apartment-02.jpg',
+      'img/apartment-03.jpg',
+      'img/apartment-small-03.jpg',
+      'img/room-small.jpg',
+    ],
+    'maxAdults': 4,
+  },
+  {
+    'id': 'offer-002',
+    'city': 'Paris',
+    'title': 'Wood and stone place',
+    'type': 'room',
+    'price': 179,
+    'isFavorite': true,
+    'isPremium': false,
+    'rating': 3,
+    'image': 'img/room.jpg',
+    'bedrooms': 4,
+    'description': 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Paris.',
+    'goods': [
+      'Heating',
+      'Wi-Fi',
+      'Kitchen',
+      'Washing machine',
+      'Coffee machine',
+      'Cabel TV',
+      'Towels',
+      'Fridge'
+    ],
+    'host': {
+      'avatarUrl': 'https://i.pravatar.cc/159',
+      'id': 4,
+      'isPro': true,
+      'name': 'Yana'
+    },
+    'images': [
+      'img/apartment-small-04.jpg',
+      'img/room-small.jpg',
+      'img/apartment-01.jpg',
+      'img/apartment-02.jpg',
+      'img/studio-01.jpg',
+      'img/apartment-small-03.jpg',
+    ],
+    'maxAdults': 3,
+  },
+  {
+    'id': 'offer-003',
+    'city': 'Amsterdam',
+    'title': 'Canal View Prinsengracht',
+    'type': 'apartment',
+    'price': 209,
+    'isFavorite': false,
+    'isPremium': false,
+    'rating': 3.4,
+    'image': 'img/apartment-02.jpg',
+    'bedrooms': 2,
+    'description': 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
+    'goods': [
+      'Heating',
+      'Wi-Fi',
+      'Coffee machine',
+      'Cabel TV',
+      'Towels',
+      'Fridge'
+    ],
+    'host': {
+      'avatarUrl': 'https://i.pravatar.cc/139',
+      'id': 5,
+      'isPro': false,
+      'name': 'Alex'
+    },
+    'images': [
+      'img/apartment-03.jpg',
+      'img/apartment-01.jpg',
+      'img/apartment-02.jpg',
+      'img/apartment-small-04.jpg',
+      'img/apartment-small-03.jpg',
+      'img/studio-01.jpg',
+    ],
+    'maxAdults': 2,
+  },
+  {
+    'id': 'offer-004',
+    'city': 'Amsterdam',
+    'title': 'Nice, cozy, warm big bed apartment',
+    'type': 'apartment',
+    'price': 233,
+    'isFavorite': true,
+    'isPremium': true,
+    'rating': 4.4,
+    'image': 'img/apartment-03.jpg',
+    'bedrooms': 3,
+    'description': 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
+    'goods': [
+      'Heating',
+      'Wi-Fi',
+      'Kitchen',
+      'Washing machine',
+      'Coffee machine',
+      'Towels',
+      'Fridge',
+      'Baby seat',
+      'Dishwasher'
+    ],
+    'host': {
+      'avatarUrl': 'https://i.pravatar.cc/311',
+      'id': 6,
+      'isPro': false,
+      'name': 'John'
+    },
+    'images': [
+      'img/apartment-03.jpg',
+      'img/apartment-01.jpg',
+      'img/apartment-02.jpg',
+      'img/apartment-small-03.jpg',
+      'img/studio-01.jpg',
+      'img/room-small.jpg',
+    ],
+    'maxAdults': 3,
+  },
+  {
+    'id': 'offer-005',
+    'city': 'Cologne',
+    'title': 'White castle',
+    'type': 'apartment',
+    'price': 483,
+    'isFavorite': true,
+    'isPremium': false,
+    'rating': 5,
+    'image': 'img/apartment-small-04.jpg',
+    'bedrooms': 5,
+    'description': 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Cologne.',
+    'goods': [
+      'Heating',
+      'Wi-Fi',
+      'Kitchen',
+      'Washing machine',
+      'Coffee machine',
+      'Towels',
+      'Fridge',
+      'Baby seat',
+      'Dishwasher'
+    ],
+    'host': {
+      'avatarUrl': 'https://i.pravatar.cc/517',
+      'id': 7,
+      'isPro': true,
+      'name': 'Anna'
+    },
+    'images': [
+      'img/apartment-01.jpg',
+      'img/apartment-02.jpg',
+      'img/apartment-small-03.jpg',
+      'img/apartment-small-04.jpg',
+      'img/room-small.jpg',
+      'img/apartment-03.jpg',
+    ],
+    'maxAdults': 7,
+  },
+];
+
+export { OFFERS, OFFERS_FULL };

@@ -3,6 +3,8 @@ import { Helmet } from 'react-helmet-async';
 import { Offer } from '../../types/offer';
 import { Logo } from '../../components/logo/logo';
 import { FavoritesLocation } from '../../components/favorites-location/favorites-location';
+import { UserNavigation } from '../../components/user-navigation/user-navigation';
+import { AuthorizationStatus } from '../../const.ts';
 
 interface FavoritesProps {
   offers: Offer[];
@@ -12,7 +14,7 @@ function FavoritesPage({offers}: FavoritesProps): JSX.Element {
   return (
     <div className="page">
       <Helmet>
-        <title>Favorites</title>
+        <title>6 cities: favorites</title>
       </Helmet>
       <header className="header">
         <div className="container">
@@ -20,23 +22,7 @@ function FavoritesPage({offers}: FavoritesProps): JSX.Element {
             <div className="header__left">
               <Logo />
             </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+            <UserNavigation authorizationStatus={AuthorizationStatus.Auth} />
           </div>
         </div>
       </header>
