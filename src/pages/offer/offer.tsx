@@ -9,7 +9,7 @@ import { IOfferFull } from '../../types/offer';
 import { CardNearPlace } from '../../components/card-near-place/card-near-place';
 import { OFFERS_FULL } from '../../mocks/offers';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
-import { AuthorizationStatus } from '../../const.ts';
+import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACES_OFFER_COUNT } from '../../const.ts';
 
 interface OfferProps {
   reviews: IReview[];
@@ -41,12 +41,12 @@ function OfferPage({reviews, offersFull}: OfferProps): JSX.Element {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {offerById?.images.map((image) => {
+              {offerById?.images.slice(0, MAX_IMAGES_COUNT).map((image) => {
                 return (
-                <div key={image} className="offer__image-wrapper">
-                  <img className="offer__image" src={image} alt="Photo studio" />
-                </div>
-              );
+                  <div key={image} className="offer__image-wrapper">
+                    <img className="offer__image" src={image} alt="Photo studio" />
+                  </div>
+                );
               })}
             </div>
           </div>
@@ -93,9 +93,9 @@ function OfferPage({reviews, offersFull}: OfferProps): JSX.Element {
                 <ul className="offer__inside-list">
                   {offerById?.goods.map((item) => {
                     return (
-                    <li key={item} className="offer__inside-item">
-                      {item}
-                    </li>);
+                      <li key={item} className="offer__inside-item">
+                        {item}
+                      </li>);
                   })}
                 </ul>
               </div>
@@ -121,7 +121,7 @@ function OfferPage({reviews, offersFull}: OfferProps): JSX.Element {
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
                 <ul className="reviews__list">
-                  {reviews?.map((review: IReview) => <Review key={review.id} review={review} />)}
+                  {reviews?.slice(0, MAX_REVIEW_COUNT).map((review: IReview) => <Review key={review.id} review={review} />)}
                 </ul>
                 <OfferForm />
               </section>
@@ -133,7 +133,7 @@ function OfferPage({reviews, offersFull}: OfferProps): JSX.Element {
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              {OFFERS_FULL?.slice(0, 3).map((offerCard) => <CardNearPlace key={offerCard.id} offerCard={offerCard} />)}
+              {OFFERS_FULL?.slice(0, MAX_NEAR_PLACES_OFFER_COUNT).map((offerCard) => <CardNearPlace key={offerCard.id} offerCard={offerCard} />)}
             </div>
           </section>
         </div>

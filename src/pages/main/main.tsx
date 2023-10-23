@@ -1,3 +1,4 @@
+import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { CardList } from '../../components/card-list/card-list';
 import { Offer } from '../../types/offer';
@@ -5,6 +6,8 @@ import { LOCATIONS } from '../../const';
 import { LocationItem } from '../../components/location-item/location-item';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
 import { AuthorizationStatus } from '../../const.ts';
+import { MainEmpty } from '../../components/main-empty/main-empty.tsx';
+import { useEffect } from 'react';
 
 interface MainProps {
   offers: Offer[];
@@ -12,7 +15,17 @@ interface MainProps {
 }
 
 function MainPage ({offers}: MainProps): JSX.Element {
+  const {city} = useParams();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if(!city) {
+      navigate('/Paris');
+    }
+  }, [city, navigate]);
+  const amountCity = offers.filter((offer) => offer.city === city).length;
+  const isEmpty = amountCity > 0;
   return (
+
     <div className="page page--gray page--main">
       <Helmet>
         <title>6 cities</title>
@@ -30,42 +43,44 @@ function MainPage ({offers}: MainProps): JSX.Element {
         </div>
       </header>
 
-      <main className="page__main page__main--index">
+      <main className={`page__main page__main--index ${isEmpty ? '' : 'page__main--index-empty'}`}>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              {LOCATIONS.map((city) => <LocationItem key={city} city={city}/>)}
+              {LOCATIONS.map((localCity) => <LocationItem key={localCity} city={localCity}/>)}
             </ul>
           </section>
         </div>
-        <div className="cities">
-          <div className="cities__places-container container">
-            <section className="cities__places places">
-              <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offers.length} places to stay in Amsterdam</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-                  <li className="places__option" tabIndex={0}>Price: low to high</li>
-                  <li className="places__option" tabIndex={0}>Price: high to low</li>
-                  <li className="places__option" tabIndex={0}>Top rated first</li>
-                </ul>
-              </form>
-              <CardList offers={offers}/>
-            </section>
-            <div className="cities__right-section">
-              <section className="cities__map map"></section>
+        { isEmpty ?
+          <div className="cities">
+            <div className="cities__places-container container">
+              <section className="cities__places places">
+                <h2 className="visually-hidden">Places</h2>
+                <b className="places__found">{amountCity} {amountCity > 1 ? 'places' : 'place'} to stay in {city}</b>
+                <form className="places__sorting" action="#" method="get">
+                  <span className="places__sorting-caption">Sort by</span>
+                  <span className="places__sorting-type" tabIndex={0}>
+                    Popular
+                    <svg className="places__sorting-arrow" width="7" height="4">
+                      <use xlinkHref="#icon-arrow-select"></use>
+                    </svg>
+                  </span>
+                  <ul className="places__options places__options--custom places__options--opened">
+                    <li className="places__option places__option--active" tabIndex={0}>Popular</li>
+                    <li className="places__option" tabIndex={0}>Price: low to high</li>
+                    <li className="places__option" tabIndex={0}>Price: high to low</li>
+                    <li className="places__option" tabIndex={0}>Top rated first</li>
+                  </ul>
+                </form>
+                <CardList offers={offers}/>
+              </section>
+              <div className="cities__right-section">
+                <section className="cities__map map"></section>
+              </div>
             </div>
           </div>
-        </div>
+          : <MainEmpty />}
       </main>
     </div>
   );

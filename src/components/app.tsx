@@ -23,6 +23,10 @@ function App(): JSX.Element {
             path={AppRoute.Root}
             element={<MainPage offers={OFFERS} authorizationStatus={AuthorizationStatus.Auth} />}
           >
+            <Route
+              path=':city'
+              element={<MainPage offers={OFFERS} authorizationStatus={AuthorizationStatus.Auth} />}
+            />
           </Route>
           <Route
             path={AppRoute.Login}

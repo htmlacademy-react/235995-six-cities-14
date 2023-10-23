@@ -1,3 +1,7 @@
+export const MAX_IMAGES_COUNT = 6;
+export const MAX_REVIEW_COUNT = 10;
+export const MAX_NEAR_PLACES_OFFER_COUNT = 3;
+
 export enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
