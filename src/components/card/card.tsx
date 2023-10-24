@@ -8,11 +8,17 @@ interface CardProps {
 }
 
 function Card({offer}: CardProps): JSX.Element {
-  const [isActiveCard, setIsActiveCard] = useState(false);
+  const [isActiveCard, setIsActiveCard] = useState('null');
   const offerId: string = `/offer/${offer.id}`;
-  // onMouseOver={() => setIsActiveCard(true)} onMouseOut={() => setIsActiveCard(false)}
+  console.log(isActiveCard);
+  const onMouseOverHandler = (): void => {
+    setIsActiveCard(offer.id);
+  };
+  const onMouseLeave = (): void => {
+    setIsActiveCard('null');
+  };
   return (
-    <article className="cities__card place-card" >
+    <article onMouseOver={onMouseOverHandler} onMouseOut={onMouseLeave} className="cities__card place-card" >
       <div className={offer.isPremium ? 'place-card__mark' : '' }>
         <span>{offer.isPremium ? 'Premium' : ''}</span>
       </div>

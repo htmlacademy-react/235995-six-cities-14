@@ -14,7 +14,6 @@ import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACE
 interface OfferProps {
   reviews: IReview[];
   offersFull?: IOfferFull[];
-  authorizationStatus: AuthorizationStatus;
 }
 
 function OfferPage({reviews, offersFull}: OfferProps): JSX.Element {
@@ -41,13 +40,12 @@ function OfferPage({reviews, offersFull}: OfferProps): JSX.Element {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {offerById?.images.slice(0, MAX_IMAGES_COUNT).map((image) => {
-                return (
-                  <div key={image} className="offer__image-wrapper">
-                    <img className="offer__image" src={image} alt="Photo studio" />
-                  </div>
-                );
-              })}
+              {offerById?.images.slice(0, MAX_IMAGES_COUNT).map((image) => (
+                <div key={image} className="offer__image-wrapper">
+                  <img className="offer__image" src={image} alt="Photo studio" />
+                </div>
+              )
+              )}
             </div>
           </div>
           <div className="offer__container container">
@@ -91,12 +89,11 @@ function OfferPage({reviews, offersFull}: OfferProps): JSX.Element {
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What&apos;s inside</h2>
                 <ul className="offer__inside-list">
-                  {offerById?.goods.map((item) => {
-                    return (
-                      <li key={item} className="offer__inside-item">
-                        {item}
-                      </li>);
-                  })}
+                  {offerById?.goods.map((item) => (
+                    <li key={item} className="offer__inside-item">
+                      {item}
+                    </li>)
+                  )}
                 </ul>
               </div>
               <div className="offer__host">

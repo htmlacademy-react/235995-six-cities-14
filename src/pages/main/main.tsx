@@ -11,7 +11,6 @@ import { useEffect } from 'react';
 
 interface MainProps {
   offers: Offer[];
-  authorizationStatus: AuthorizationStatus;
 }
 
 function MainPage ({offers}: MainProps): JSX.Element {
