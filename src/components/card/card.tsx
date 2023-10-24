@@ -8,16 +8,16 @@ interface CardProps {
 }
 
 function Card({offer}: CardProps): JSX.Element {
-  const [isActiveCard, SetIsActiveCard] = useState(false);
-  // const some = isActiveCard ? SetIsActiveCard(true) : SetIsActiveCard(false); // пока не задействовано isActiveCard! @TODO доделать
-  // onMouseOver={() => SetIsActiveCard(true)} onMouseOut={() => SetIsActiveCard(false)}
+  const [isActiveCard, setIsActiveCard] = useState(false);
+  const offerId: string = `/offer/${offer.id}`;
+  // onMouseOver={() => setIsActiveCard(true)} onMouseOut={() => setIsActiveCard(false)}
   return (
     <article className="cities__card place-card" >
       <div className={offer.isPremium ? 'place-card__mark' : '' }>
         <span>{offer.isPremium ? 'Premium' : ''}</span>
       </div>
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`/offer/${offer.id}`}>
+        <Link to={offerId}>
           <img className="place-card__image" src={offer.image} width="260" height="200" alt="Place image" />
         </Link>
       </div>
@@ -41,7 +41,7 @@ function Card({offer}: CardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${offer.id}`}>{offer.title}</Link>
+          <Link to={offerId}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{ getOfferType(offer.type) }</p>
       </div>
