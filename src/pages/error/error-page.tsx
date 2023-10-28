@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Logo } from '../../components/logo/logo';
+import { UserNavigation } from '../../components/user-navigation/user-navigation';
+import { AuthorizationStatus } from '../../const.ts';
+import { LOCATIONS } from '../../const';
+import { LocationItem } from '../../components/location-item/location-item';
 
 function NotFoundPage(): JSX.Element {
   return (
@@ -14,23 +18,7 @@ function NotFoundPage(): JSX.Element {
             <div className="header__left">
               <Logo />
             </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+            <UserNavigation authorizationStatus={AuthorizationStatus.Auth} />
           </div>
         </div>
       </header>
@@ -40,36 +28,7 @@ function NotFoundPage(): JSX.Element {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
+            {LOCATIONS.map((localCity) => <LocationItem key={localCity} city={localCity}/>)}
             </ul>
           </section>
         </div>
@@ -82,7 +41,11 @@ function NotFoundPage(): JSX.Element {
                 <b style={{color: '#4481c3'}}><Link to='/'>Go to main page</Link></b>
               </div>
             </section>
-            <div className="cities__right-section"></div>
+            <div className="cities__right-section" style={{backgroundImage: 'none'}}>
+              <img src="../../../public/img/city-404.jpg" alt="Error city"
+              style={{display: 'block'}}
+              />
+            </div>
           </div>
         </div>
       </main>

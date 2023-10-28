@@ -1,27 +1,36 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { CardList } from '../../components/card-list/card-list';
 import { Offer } from '../../types/offer';
-import { LOCATIONS } from '../../const';
+import { LOCATIONS, AppRoute } from '../../const';
 import { LocationItem } from '../../components/location-item/location-item';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
 import { AuthorizationStatus } from '../../const.ts';
 import { MainEmpty } from '../../components/main-empty/main-empty.tsx';
-import { useEffect } from 'react';
+import { Map } from '../../components/map/map.tsx';
 
 interface MainProps {
   offers: Offer[];
+  authorizationStatus: AuthorizationStatus;
 }
 
 function MainPage ({offers}: MainProps): JSX.Element {
   const {city} = useParams();
+  // Почему не работает? @TODO
+  if (city !== undefined) {
+    if(!LOCATIONS.includes(city)) {
+      return <Navigate to={AppRoute.Error} />
+    }
+  }
+
   const navigate = useNavigate();
   useEffect(() => {
     if(!city) {
       navigate('/Paris');
     }
   }, [city, navigate]);
-  const amountCity = offers.filter((offer) => offer.city === city).length;
+  const amountCity = offers?.filter((offer: Offer) => offer.city.name === city).length;
   const isEmpty = amountCity > 0;
   return (
 
@@ -75,7 +84,7 @@ function MainPage ({offers}: MainProps): JSX.Element {
                 <CardList offers={offers}/>
               </section>
               <div className="cities__right-section">
-                <section className="cities__map map"></section>
+                <Map city={city} points={offers}/>
               </div>
             </div>
           </div>

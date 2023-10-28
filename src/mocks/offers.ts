@@ -2,8 +2,15 @@ import { Offer, IOfferFull } from '../types/offer';
 
 const OFFERS: Offer[] = [
   {
+    'city': {
+      'name': 'Amsterdam',
+      'location': {
+        'latitude': 52.3909553943508,
+        'longitude': 4.85309666406198,
+        'zoom': 13
+      }
+    },
     'id': 'offer-001',
-    'city': 'Amsterdam',
     'title': 'Beautiful & luxurious studio at great location',
     'type': 'apartment',
     'price': 125,
@@ -11,10 +18,22 @@ const OFFERS: Offer[] = [
     'isPremium': true,
     'rating': 2.2,
     'image': 'img/apartment-02.jpg',
+    'location': {
+      'latitude': 52.3809553943508,
+      'longitude': 4.939309666406198,
+      'zoom': 16,
+    },
   },
   {
     'id': 'offer-002',
-    'city': 'Paris',
+    'city': {
+      'name': 'Paris',
+      'location': {
+        'latitude': 48.85661,
+        'longitude': 2.351499,
+        'zoom': 13
+      }
+    },
     'title': 'Wood and stone place',
     'type': 'room',
     'price': 179,
@@ -22,10 +41,22 @@ const OFFERS: Offer[] = [
     'isPremium': false,
     'rating': 3,
     'image': 'img/room.jpg',
+    'location': {
+      'latitude': 52.3809553943508,
+      'longitude': 4.939309666406198,
+      'zoom': 16,
+    },
   },
   {
     'id': 'offer-003',
-    'city': 'Amsterdam',
+    'city': {
+      'name': 'Amsterdam',
+      'location': {
+        'latitude': 52.3909553943508,
+        'longitude': 4.85309666406198,
+        'zoom': 13
+      }
+    },
     'title': 'Canal View Prinsengracht',
     'type': 'apartment',
     'price': 209,
@@ -33,10 +64,27 @@ const OFFERS: Offer[] = [
     'isPremium': false,
     'rating': 3.4,
     'image': 'img/apartment-02.jpg',
+    'location': {
+      'latitude': 52.3809553943508,
+      'longitude': 4.939309666406198,
+      'zoom': 16,
+    },
   },
   {
+    'city': {
+      'name': 'Amsterdam',
+      'location': {
+        'latitude': 52.3909553943508,
+        'longitude': 4.85309666406198,
+        'zoom': 13
+      },
+    },
+    'location': {
+      'latitude': 52.3909553943508,
+      'longitude': 4.929309666406198,
+      'zoom': 16
+    },
     'id': 'offer-004',
-    'city': 'Amsterdam',
     'title': 'Nice, cozy, warm big bed apartment',
     'type': 'apartment',
     'price': 233,
@@ -46,8 +94,20 @@ const OFFERS: Offer[] = [
     'image': 'img/apartment-03.jpg',
   },
   {
+    'city': {
+      'name': 'Amsterdam',
+      'location': {
+        'latitude': 52.3909553943508,
+        'longitude': 4.85309666406198,
+        'zoom': 13
+      },
+    },
+    'location': {
+      'latitude': 52.3809553943508,
+      'longitude': 4.939309666406198,
+      'zoom': 13
+    },
     'id': 'offer-005',
-    'city': 'Cologne',
     'title': 'White castle',
     'type': 'apartment',
     'price': 483,
@@ -60,8 +120,20 @@ const OFFERS: Offer[] = [
 
 const OFFERS_FULL: IOfferFull[] = [
   {
+    'location': {
+      'latitude': 52.3809553943508,
+      'longitude': 4.939309666406198,
+      'zoom': 13
+    },
+    'city': {
+      'name': 'Amsterdam',
+      'location': {
+        'latitude': 52.3909553943508,
+        'longitude': 4.85309666406198,
+        'zoom': 13
+      }
+    },
     'id': 'offer-001',
-    'city': 'Amsterdam',
     'title': 'Beautiful & luxurious studio at great location',
     'type': 'apartment',
     'price': 125,
@@ -95,8 +167,20 @@ const OFFERS_FULL: IOfferFull[] = [
     'maxAdults': 4,
   },
   {
+    'location': {
+      'latitude': 48.85661,
+      'longitude': 2.351499,
+      'zoom': 13
+    },
+    'city': {
+      'name': 'Paris',
+      'location': {
+        'latitude': 48.85661,
+        'longitude': 2.351499,
+        'zoom': 13
+      }
+    },
     'id': 'offer-002',
-    'city': 'Paris',
     'title': 'Wood and stone place',
     'type': 'room',
     'price': 179,
@@ -133,8 +217,20 @@ const OFFERS_FULL: IOfferFull[] = [
     'maxAdults': 3,
   },
   {
+    'location': {
+      'latitude': 52.3809553943508,
+      'longitude': 4.939309666406198,
+      'zoom': 13
+    },
+    'city': {
+      'name': 'Amsterdam',
+      'location': {
+        'latitude': 52.3909553943508,
+        'longitude': 4.85309666406198,
+        'zoom': 13
+      }
+    },
     'id': 'offer-003',
-    'city': 'Amsterdam',
     'title': 'Canal View Prinsengracht',
     'type': 'apartment',
     'price': 209,
@@ -169,8 +265,20 @@ const OFFERS_FULL: IOfferFull[] = [
     'maxAdults': 2,
   },
   {
+    'location': {
+      'latitude': 52.3809553943508,
+      'longitude': 4.939309666406198,
+      'zoom': 13
+    },
+    'city': {
+      'name': 'Amsterdam',
+      'location': {
+        'latitude': 52.3909553943508,
+        'longitude': 4.85309666406198,
+        'zoom': 13
+      }
+    },
     'id': 'offer-004',
-    'city': 'Amsterdam',
     'title': 'Nice, cozy, warm big bed apartment',
     'type': 'apartment',
     'price': 233,
@@ -208,8 +316,20 @@ const OFFERS_FULL: IOfferFull[] = [
     'maxAdults': 3,
   },
   {
+    'location': {
+      'latitude': 50.954361,
+      'longitude': 6.982974,
+      'zoom': 16
+    },
+    'city': {
+      'name': 'Cologne',
+      'location': {
+        'latitude': 50.954361,
+      'longitude': 6.982974,
+        'zoom': 13
+      }
+    },
     'id': 'offer-005',
-    'city': 'Cologne',
     'title': 'White castle',
     'type': 'apartment',
     'price': 483,

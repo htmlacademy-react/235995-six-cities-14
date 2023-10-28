@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { IReview } from '../../mocks/reviews';
 import { Review } from '../../components/review/review';
@@ -9,16 +9,21 @@ import { IOfferFull } from '../../types/offer';
 import { CardNearPlace } from '../../components/card-near-place/card-near-place';
 import { OFFERS_FULL } from '../../mocks/offers';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
-import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACES_OFFER_COUNT } from '../../const.ts';
+import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACES_OFFER_COUNT, AppRoute } from '../../const.ts';
 
 interface OfferProps {
   reviews: IReview[];
   offersFull?: IOfferFull[];
+  authorizationStatus: AuthorizationStatus;
 }
 
 function OfferPage({reviews, offersFull}: OfferProps): JSX.Element {
   const params = useParams();
   const offerById = offersFull?.find(({id}): boolean => id === params.id);
+
+  if(!offerById) {
+    return <Navigate to={AppRoute.Error} />
+  }
 
   return (
     <div className="page">

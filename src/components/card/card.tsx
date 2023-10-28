@@ -19,9 +19,10 @@ function Card({offer}: CardProps): JSX.Element {
   };
   return (
     <article onMouseOver={onMouseOverHandler} onMouseOut={onMouseLeave} className="cities__card place-card" >
-      <div className={offer.isPremium ? 'place-card__mark' : '' }>
-        <span>{offer.isPremium ? 'Premium' : ''}</span>
-      </div>
+      {offer.isPremium &&
+      <div className='place-card__mark'>
+        <span>Premium</span>
+      </div>}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={offerId}>
           <img className="place-card__image" src={offer.image} width="260" height="200" alt="Place image" />
