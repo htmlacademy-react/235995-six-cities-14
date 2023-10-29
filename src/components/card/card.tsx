@@ -1,21 +1,20 @@
-import { useState } from 'react';
 import { Offer } from '../../types/offer';
 import { getOfferType, getRating } from '../../utils';
 import { Link } from 'react-router-dom';
+import { useCard } from '../../hooks/use-card.ts';
 
 interface CardProps {
   offer: Offer;
 }
 
 function Card({offer}: CardProps): JSX.Element {
-  const [isActiveCard, setIsActiveCard] = useState('null');
+  // const [isActiveCard, setIsActiveCard] = useState('null');
   const offerId: string = `/offer/${offer.id}`;
-  console.log(isActiveCard);
   const onMouseOverHandler = (): void => {
-    setIsActiveCard(offer.id);
+    useCard().setIsActiveCard(offer.id);
   };
   const onMouseLeave = (): void => {
-    setIsActiveCard('null');
+    useCard().setIsActiveCard('null');
   };
   return (
     <article onMouseOver={onMouseOverHandler} onMouseOut={onMouseLeave} className="cities__card place-card" >

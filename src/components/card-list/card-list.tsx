@@ -10,7 +10,7 @@ function CardList({offers}: CardListProps): JSX.Element {
   const {city} = useParams();
   return (
     <div className="cities__places-list places__list tabs__content">
-      {offers.filter((item) => item.city === city)?.map((offer): JSX.Element => <Card key={offer.id} offer={offer} />)}
+      {offers.filter((item) => item.city.name === city)?.map((offer): JSX.Element => <Card key={offer.id} offer={offer} />)}
     </div>
   );
 }

@@ -3,11 +3,11 @@ import { useLocation } from "react-router-dom";
 import { Icon, Marker, layerGroup } from 'leaflet';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 import 'leaflet/dist/leaflet.css';
-import { Offer } from '../../types/offer';
+import { Offer, Location } from '../../types/offer';
 import { useMap } from "../../hooks/use-map";
 
 type MapProps = {
-  city: string | undefined;
+  city: Location;
   points: Offer[];
   selectedPoint?: Offer | undefined;
 };
@@ -35,8 +35,8 @@ function Map({city, points, selectedPoint}: MapProps): JSX.Element {
       const markerLayer = layerGroup().addTo(map);
       points.forEach((point) => {
         const marker = new Marker({
-          lat: point.location.latitude,
-          lng: point.location.longitude
+          lat: point.city.location.latitude,
+          lng: point.city.location.longitude
         });
 
         marker

@@ -6,7 +6,7 @@ const OFFERS: Offer[] = [
       'name': 'Amsterdam',
       'location': {
         'latitude': 52.3909553943508,
-        'longitude': 4.85309666406198,
+        'longitude': 4.85309666406190,
         'zoom': 13
       }
     },
@@ -43,7 +43,7 @@ const OFFERS: Offer[] = [
     'image': 'img/room.jpg',
     'location': {
       'latitude': 52.3809553943508,
-      'longitude': 4.939309666406198,
+      'longitude': 4.939309666406205,
       'zoom': 16,
     },
   },
@@ -53,7 +53,7 @@ const OFFERS: Offer[] = [
       'name': 'Amsterdam',
       'location': {
         'latitude': 52.3909553943508,
-        'longitude': 4.85309666406198,
+        'longitude': 4.85309666406220,
         'zoom': 13
       }
     },
@@ -98,7 +98,7 @@ const OFFERS: Offer[] = [
       'name': 'Amsterdam',
       'location': {
         'latitude': 52.3909553943508,
-        'longitude': 4.85309666406198,
+        'longitude': 4.85309666406191,
         'zoom': 13
       },
     },
