@@ -5,24 +5,24 @@ import { Review } from '../../components/review/review';
 import { Logo } from '../../components/logo/logo';
 import { OfferForm } from '../../components/offer-form/offer-form';
 import { getOfferType, getRating } from '../../utils';
-import { IOfferFull } from '../../types/offer';
+// import { IOfferFull } from '../../types/offer';
 import { CardNearPlace } from '../../components/card-near-place/card-near-place';
 import { OFFERS_FULL } from '../../mocks/offers';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
 import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACES_OFFER_COUNT, AppRoute } from '../../const.ts';
+import { OfferApi } from '../../mocks/offers-api.ts';
 
 interface OfferProps {
   reviews: IReview[];
-  offersFull?: IOfferFull[];
-  authorizationStatus: AuthorizationStatus;
+  offersFull?: OfferApi[];
 }
 
 function OfferPage({reviews, offersFull}: OfferProps): JSX.Element {
   const params = useParams();
-  const offerById = offersFull?.find(({id}): boolean => id === params.id);
+  const offerById = offersFull?.find(({id}): boolean => (id).toString() === params.id);
 
   if(!offerById) {
-    return <Navigate to={AppRoute.Error} />
+    return <Navigate to={AppRoute.Error} />;
   }
 
   return (
@@ -129,7 +129,8 @@ function OfferPage({reviews, offersFull}: OfferProps): JSX.Element {
               </section>
             </div>
           </div>
-          <section className="offer__map map"></section>
+          <section className="offer__map map">
+          </section>
         </section>
         <div className="container">
           <section className="near-places places">

@@ -1,9 +1,10 @@
 import { Card } from '../card/card';
-import { Offer } from '../../types/offer';
+// import { Offer } from '../../types/offer';
 import { useParams } from 'react-router-dom';
+import { OfferApi } from '../../mocks/offers-api';
 
 interface CardListProps {
-  offers: Offer[];
+  offers: OfferApi[];
 }
 
 function CardList({offers}: CardListProps): JSX.Element {

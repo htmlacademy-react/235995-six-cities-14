@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { CardContext, cardContextType } from "../context/card-context";
+import { useContext } from 'react';
+import { CardContext, cardContextType } from '../context/card-context';
 
 export function useCard() {
   const activeCard = useContext<cardContextType>(CardContext);

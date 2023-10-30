@@ -1,13 +1,12 @@
-import { Offer } from '../../types/offer';
+import { OfferApi } from '../../mocks/offers-api';
 import { FavoritesCard } from '../favorites-card/favorites-card';
 
 interface FavoritesLocationProps {
-  offers: Offer[];
+  favoriteOffers: OfferApi[];
 }
 
-function FavoritesLocation({offers}: FavoritesLocationProps) {
-  const favoriteOffers: Offer[] = offers.filter((offer: Offer): boolean => offer.isFavorite);
-  const uniqueCitiesNames: string[] = [...new Set(favoriteOffers?.map((favoriteOffer: Offer): string => favoriteOffer.city))];
+function FavoritesLocation({favoriteOffers}: FavoritesLocationProps) {
+  const uniqueCitiesNames: string[] = [...new Set(favoriteOffers?.map((favoriteOffer: OfferApi): string => favoriteOffer.city.name))];
   return (
     uniqueCitiesNames.map((cityName: string) => (
       <li key={ cityName } className="favorites__locations-items">
@@ -19,7 +18,7 @@ function FavoritesLocation({offers}: FavoritesLocationProps) {
           </div>
         </div>
         <div className="favorites__places">
-          {favoriteOffers?.filter((it) => it.city === cityName)?.map((offer)=> <FavoritesCard key={offer.id} offer={offer}/>)}
+          {favoriteOffers?.filter((it) => it.city.name === cityName)?.map((offer)=> <FavoritesCard key={offer.id} offer={offer}/>)}
         </div>
       </li>)
     )

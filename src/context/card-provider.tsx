@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { CardContext } from "./card-context";
+import { useState } from 'react';
+import { CardContext } from './card-context';
 
 type CardProviderProps = {
   children: React.ReactNode;
@@ -11,5 +11,5 @@ export function CardProvider({children}: CardProviderProps) {
     <CardContext.Provider value={{isActiveCard, setIsActiveCard}}>
       {children}
     </CardContext.Provider>
-  )
+  );
 }

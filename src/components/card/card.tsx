@@ -1,20 +1,20 @@
-import { Offer } from '../../types/offer';
 import { getOfferType, getRating } from '../../utils';
 import { Link } from 'react-router-dom';
-import { useCard } from '../../hooks/use-card.ts';
+import { useCard } from '../../hooks/use-card';
+import { OfferApi } from '../../mocks/offers-api';
 
 interface CardProps {
-  offer: Offer;
+  offer: OfferApi;
 }
 
 function Card({offer}: CardProps): JSX.Element {
-  // const [isActiveCard, setIsActiveCard] = useState('null');
   const offerId: string = `/offer/${offer.id}`;
+  const activeCard = useCard();
   const onMouseOverHandler = (): void => {
-    useCard().setIsActiveCard(offer.id);
+    activeCard.setIsActiveCard((offer.id).toString());
   };
   const onMouseLeave = (): void => {
-    useCard().setIsActiveCard('null');
+    activeCard.setIsActiveCard('null');
   };
   return (
     <article onMouseOver={onMouseOverHandler} onMouseOut={onMouseLeave} className="cities__card place-card" >
@@ -24,7 +24,7 @@ function Card({offer}: CardProps): JSX.Element {
       </div>}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={offerId}>
-          <img className="place-card__image" src={offer.image} width="260" height="200" alt="Place image" />
+          <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image" />
         </Link>
       </div>
       <div className="place-card__info">

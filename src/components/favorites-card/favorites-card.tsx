@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import { Offer } from '../../types/offer';
 import { getOfferType, getRating } from '../../utils';
+import { OfferApi } from '../../mocks/offers-api';
 
 interface FavoritesCardProps {
-  offer: Offer;
+  offer: OfferApi;
 }
 
 function FavoritesCard({offer}: FavoritesCardProps) {
@@ -11,7 +11,7 @@ function FavoritesCard({offer}: FavoritesCardProps) {
     <article className="favorites__card place-card">
       <div className="favorites__image-wrapper place-card__image-wrapper">
         <Link to={`/offer/${offer.id}`}>
-          <img className="place-card__image" src={offer.image} width="150" height="110" alt="Place image" />
+          <img className="place-card__image" src={offer.previewImage} width="150" height="110" alt="Place image" />
         </Link>
       </div>
       <div className="favorites__card-info place-card__info">

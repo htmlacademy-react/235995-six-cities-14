@@ -1,7 +1,7 @@
 export type Location = {
-  'latitude': number,
-  'longitude': number,
-  'zoom': number
+  'latitude': number;
+  'longitude': number;
+  'zoom': number;
 }
 
 export interface Offer {
@@ -17,7 +17,7 @@ export interface Offer {
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;
-  image: string;
+  previewImage: string;
 }
 
 export interface IOfferFull extends Offer {

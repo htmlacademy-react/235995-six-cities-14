@@ -1,49 +1,40 @@
-import { useRef, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { Icon, Marker, layerGroup } from 'leaflet';
-import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
+import { useRef, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Marker, layerGroup } from 'leaflet';
+import { DEFAULT_CUSTOM_ICON, CURRENT_CUSTOM_ICON } from '../../const';
 import 'leaflet/dist/leaflet.css';
-import { Offer, Location } from '../../types/offer';
-import { useMap } from "../../hooks/use-map";
+import { Location } from '../../types/offer';
+import { useMap } from '../../hooks/use-map';
+import { OfferApi } from '../../mocks/offers-api';
 
 type MapProps = {
   city: Location;
-  points: Offer[];
-  selectedPoint?: Offer | undefined;
+  points: OfferApi[];
+  selectedPoint?: OfferApi | undefined;
 };
-
-const defaultCustomIcon = new Icon({
-  iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [27, 39],
-  iconAnchor: [27, 39],
-});
-
-const currentCustomIcon = new Icon({
-  iconUrl: URL_MARKER_CURRENT,
-  iconSize: [27, 39],
-  iconAnchor: [27, 39],
-});
 
 function Map({city, points, selectedPoint}: MapProps): JSX.Element {
   const location = useLocation();
-  const pathNames =location.pathname.split('/');
+  const pathNames = location.pathname.split('/');
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
 
   useEffect(() => {
     if (map) {
+      const {latitude, longitude, zoom} = city;
+      map.setView([latitude, longitude], zoom);
       const markerLayer = layerGroup().addTo(map);
       points.forEach((point) => {
         const marker = new Marker({
-          lat: point.city.location.latitude,
-          lng: point.city.location.longitude
+          lat: point.location.latitude,
+          lng: point.location.longitude
         });
 
         marker
           .setIcon(
-            selectedPoint !== undefined && point.title === selectedPoint.title
-              ? currentCustomIcon
-              : defaultCustomIcon
+            selectedPoint !== undefined && point.id === selectedPoint.id
+              ? CURRENT_CUSTOM_ICON
+              : DEFAULT_CUSTOM_ICON
           )
           .addTo(markerLayer);
       });
@@ -52,12 +43,12 @@ function Map({city, points, selectedPoint}: MapProps): JSX.Element {
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, points, selectedPoint]);
+  }, [map, points, selectedPoint, city]);
 
   return (
     <section className={pathNames.includes('offer') ? 'offer__map map' : 'cities__map map'}
-    ref={mapRef} >
-
+      ref={mapRef}
+    >
     </section>
   );
 }

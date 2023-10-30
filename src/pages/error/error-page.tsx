@@ -28,7 +28,7 @@ function NotFoundPage(): JSX.Element {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-            {LOCATIONS.map((localCity) => <LocationItem key={localCity} city={localCity}/>)}
+              {LOCATIONS.map((localCity) => <LocationItem key={localCity} city={localCity}/>)}
             </ul>
           </section>
         </div>
@@ -43,7 +43,7 @@ function NotFoundPage(): JSX.Element {
             </section>
             <div className="cities__right-section" style={{backgroundImage: 'none'}}>
               <img src="../../../public/img/city-404.jpg" alt="Error city"
-              style={{display: 'block'}}
+                style={{display: 'block'}}
               />
             </div>
           </div>

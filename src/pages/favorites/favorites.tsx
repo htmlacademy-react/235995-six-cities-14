@@ -1,18 +1,20 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Offer } from '../../types/offer';
 import { Logo } from '../../components/logo/logo';
 import { FavoritesLocation } from '../../components/favorites-location/favorites-location';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
 import { AuthorizationStatus } from '../../const.ts';
+import { OfferApi } from '../../mocks/offers-api.ts';
+import { FavoritesEmpty } from '../../components/favorites-empty/favorites-empty.tsx';
 
 interface FavoritesProps {
-  offers: Offer[];
+  offers: OfferApi[];
 }
 
 function FavoritesPage({offers}: FavoritesProps): JSX.Element {
+  const favoriteOffers: OfferApi[] = offers.filter((offer: OfferApi): boolean => offer.isFavorite);
   return (
-    <div className="page">
+    <div className={favoriteOffers.length ? 'page' : 'page page--favorites-empty'}>
       <Helmet>
         <title>6 cities: favorites</title>
       </Helmet>
@@ -26,17 +28,19 @@ function FavoritesPage({offers}: FavoritesProps): JSX.Element {
           </div>
         </div>
       </header>
-
-      <main className="page__main page__main--favorites">
-        <div className="page__favorites-container container">
-          <section className="favorites">
-            <h1 className="favorites__title">Saved listing</h1>
-            <ul className="favorites__list">
-              <FavoritesLocation offers={offers} />
-            </ul>
-          </section>
-        </div>
-      </main>
+      {favoriteOffers.length ?
+        <main className="page__main page__main--favorites">
+          <div className="page__favorites-container container">
+            <section className="favorites">
+              <h1 className="favorites__title">Saved listing</h1>
+              <ul className="favorites__list">
+                <FavoritesLocation favoriteOffers={favoriteOffers} />
+              </ul>
+            </section>
+          </div>
+        </main>
+        :
+        <FavoritesEmpty/>}
       <footer className="footer container">
         <Link className="footer__logo-link" to={'../'}>
           <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33" />
