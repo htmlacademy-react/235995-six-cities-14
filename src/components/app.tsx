@@ -10,7 +10,7 @@ import { NotFoundPage } from '../pages/error/error-page';
 import { PrivateRoute, AuthorizationStatus } from './private-route/private-route';
 import { RedirectToMainPage } from './redirect-to-main-page/redirect-to-main-page';
 // Data
-import { AppRoute } from '../const';
+import { AppRoute, LOCATIONS } from '../const';
 //import { OFFERS, OFFERS_FULL } from '../mocks/offers';
 import { REVIEWS } from '../mocks/reviews';
 import { OFFERS_API } from '../mocks/offers-api';
@@ -26,10 +26,15 @@ function App(): JSX.Element {
               path={AppRoute.Root}
               element={<MainPage offers={OFFERS_API} authorizationStatus={AuthorizationStatus.Auth} />}
             >
-              <Route
-                path=':city'
-                element={<MainPage offers={OFFERS_API} authorizationStatus={AuthorizationStatus.Auth} />}
-              />
+              {LOCATIONS.map((city) => (
+                <Route
+                  key={city}
+                  path= {city}
+                  element={<MainPage offers={OFFERS_API} authorizationStatus={AuthorizationStatus.Auth} />}
+                >
+                </Route>
+              ))}
+
             </Route>
             <Route
               path={AppRoute.Login}

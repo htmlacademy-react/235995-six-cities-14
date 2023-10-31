@@ -1,8 +1,8 @@
-import { useParams, useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { CardList } from '../../components/card-list/card-list';
-import { LOCATIONS, AppRoute } from '../../const';
+import { LOCATIONS } from '../../const';
 import { LocationItem } from '../../components/location-item/location-item';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
 import { AuthorizationStatus } from '../../const.ts';
@@ -10,6 +10,7 @@ import { MainEmpty } from '../../components/main-empty/main-empty.tsx';
 import { Map } from '../../components/map/map.tsx';
 import { useCard } from '../../hooks/use-card.ts';
 import { OfferApi } from '../../mocks/offers-api.ts';
+import classNames from 'classnames';
 
 interface MainProps {
   offers: OfferApi[];
@@ -17,23 +18,17 @@ interface MainProps {
 }
 
 function MainPage ({offers}: MainProps): JSX.Element {
-  const {city} = useParams();
-  const offersByCity = offers.filter((item) => item.city.name === city);
-  // Почему не работает? @TODO
-  if (city !== undefined) {
-    if(!LOCATIONS.includes(city)) {
-      return <Navigate to={AppRoute.Error} />;
-    }
-  }
-
-  const {isActiveCard} = useCard();
-  const selectedPoint = offersByCity.filter((offer) => (offer.id).toString() === isActiveCard);
+  const location = useLocation();
+  const city = location.pathname.split('/').join('');
   const navigate = useNavigate();
   useEffect(() => {
     if(!city) {
       navigate('/Paris');
     }
   }, [city, navigate]);
+  const {isActiveCard} = useCard();
+  const offersByCity = offers.filter((item) => item.city.name === city);
+  const selectedPoint = offersByCity.filter((offer) => (offer.id).toString() === isActiveCard);
   const amountCity = offersByCity.length;
   const isEmpty = amountCity > 0;
   return (
@@ -53,8 +48,7 @@ function MainPage ({offers}: MainProps): JSX.Element {
           </div>
         </div>
       </header>
-
-      <main className={`page__main page__main--index ${isEmpty ? '' : 'page__main--index-empty'}`}>
+      <main className={classNames('page__main', 'page__main--index', { 'page__main page__main--index': !isEmpty }) }>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
@@ -84,7 +78,7 @@ function MainPage ({offers}: MainProps): JSX.Element {
                     <li className="places__option" tabIndex={0}>Top rated first</li>
                   </ul>
                 </form>
-                <CardList offers={offers}/>
+                <CardList offers={offers} city={city}/>
               </section>
               <div className="cities__right-section">
                 {<Map city={offersByCity[0].city.location} points={offersByCity} selectedPoint={selectedPoint[0]}/>}

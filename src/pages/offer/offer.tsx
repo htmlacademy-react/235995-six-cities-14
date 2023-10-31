@@ -15,6 +15,7 @@ import { OfferApi } from '../../mocks/offers-api.ts';
 interface OfferProps {
   reviews: IReview[];
   offersFull?: OfferApi[];
+  authorizationStatus: AuthorizationStatus;
 }
 
 function OfferPage({reviews, offersFull}: OfferProps): JSX.Element {
