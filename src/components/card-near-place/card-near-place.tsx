@@ -1,9 +1,10 @@
-import { IOfferFull } from '../../types/offer';
 import { getOfferType, getRating } from '../../utils';
 import { Link } from 'react-router-dom';
+import { OfferApi } from '../../mocks/offers-api.ts';
+
 
 interface CardNearPlaceProps {
-  offerCard: IOfferFull;
+  offerCard: OfferApi;
 }
 
 function CardNearPlace({offerCard}: CardNearPlaceProps) {
@@ -11,7 +12,7 @@ function CardNearPlace({offerCard}: CardNearPlaceProps) {
     <article className="near-places__card place-card">
       <div className="near-places__image-wrapper place-card__image-wrapper">
         <Link to={`/offer/${offerCard.id}`}>
-          <img className="place-card__image" src={offerCard.image} width="260" height="200" alt="Place image" />
+          <img className="place-card__image" src={offerCard.previewImage} width="260" height="200" alt="Place image" />
         </Link>
       </div>
       <div className="place-card__info">

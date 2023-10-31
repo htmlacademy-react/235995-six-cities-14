@@ -1,30 +1,37 @@
-import { useState } from 'react';
-import { Offer } from '../../types/offer';
 import { getOfferType, getRating } from '../../utils';
 import { Link } from 'react-router-dom';
+import { useCard } from '../../hooks/use-card';
+import { OfferApi } from '../../mocks/offers-api';
+import classNames from 'classnames';
+import { useState } from 'react';
 
 interface CardProps {
-  offer: Offer;
+  offer: OfferApi;
 }
 
 function Card({offer}: CardProps): JSX.Element {
-  const [isActiveCard, setIsActiveCard] = useState('null');
+  const [isFavoriteCard, setIsFavoriteCard] = useState(offer.isFavorite);
+  const favoriteButtonHandle = (): void => {
+    setIsFavoriteCard(!isFavoriteCard);
+    offer.isFavorite = isFavoriteCard;
+  };
   const offerId: string = `/offer/${offer.id}`;
-  console.log(isActiveCard);
+  const activeCard = useCard();
   const onMouseOverHandler = (): void => {
-    setIsActiveCard(offer.id);
+    activeCard.setIsActiveCard((offer.id).toString());
   };
   const onMouseLeave = (): void => {
-    setIsActiveCard('null');
+    activeCard.setIsActiveCard('null');
   };
   return (
     <article onMouseOver={onMouseOverHandler} onMouseOut={onMouseLeave} className="cities__card place-card" >
-      <div className={offer.isPremium ? 'place-card__mark' : '' }>
-        <span>{offer.isPremium ? 'Premium' : ''}</span>
-      </div>
+      {offer.isPremium &&
+      <div className='place-card__mark'>
+        <span>Premium</span>
+      </div>}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={offerId}>
-          <img className="place-card__image" src={offer.image} width="260" height="200" alt="Place image" />
+          <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image" />
         </Link>
       </div>
       <div className="place-card__info">
@@ -33,7 +40,9 @@ function Card({offer}: CardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={offer.isFavorite ? 'place-card__bookmark-button--active place-card__bookmark-button button' : 'place-card__bookmark-button button'} type="button">
+          <button onClick={favoriteButtonHandle} className={classNames('place-card__bookmark-button button', {
+            'place-card__bookmark-button--active': offer.isFavorite})} type="button"
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>

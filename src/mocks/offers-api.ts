@@ -4,7 +4,7 @@ type LocationCity = {
   zoom: number;
 }
 
-type OfferApi = {
+export type OfferApi = {
   id: number;
   title: string;
   type: string;
@@ -1732,8 +1732,8 @@ export const OFFERS_API: OfferApi[] = [
     'city': {
       'name': 'Paris',
       'location': {
-        'latitude': 48.85661,
-        'longitude': 2.351499,
+        'latitude': 48.856611,
+        'longitude': 2.3514991,
         'zoom': 13
       }
     },
@@ -1901,8 +1901,8 @@ export const OFFERS_API: OfferApi[] = [
     'city': {
       'name': 'Paris',
       'location': {
-        'latitude': 48.85661,
-        'longitude': 2.351499,
+        'latitude': 48.856612,
+        'longitude': 2.3514992,
         'zoom': 13
       }
     },
@@ -2009,8 +2009,8 @@ export const OFFERS_API: OfferApi[] = [
     'city': {
       'name': 'Amsterdam',
       'location': {
-        'latitude': 52.37454,
-        'longitude': 4.897976,
+        'latitude': 52.374541,
+        'longitude': 4.8979761,
         'zoom': 13
       }
     },
@@ -2625,8 +2625,8 @@ export const OFFERS_API: OfferApi[] = [
     'city': {
       'name': 'Amsterdam',
       'location': {
-        'latitude': 52.37454,
-        'longitude': 4.897976,
+        'latitude': 52.374542,
+        'longitude': 4.8979762,
         'zoom': 13
       }
     },
@@ -2741,8 +2741,8 @@ export const OFFERS_API: OfferApi[] = [
     'city': {
       'name': 'Amsterdam',
       'location': {
-        'latitude': 52.37454,
-        'longitude': 4.897976,
+        'latitude': 52.3745413,
+        'longitude': 4.89797612,
         'zoom': 13
       }
     },
@@ -3134,8 +3134,8 @@ export const OFFERS_API: OfferApi[] = [
     'city': {
       'name': 'Amsterdam',
       'location': {
-        'latitude': 52.37454,
-        'longitude': 4.897976,
+        'latitude': 52.37454123,
+        'longitude': 4.897976156,
         'zoom': 13
       }
     },
@@ -3644,8 +3644,8 @@ export const OFFERS_API: OfferApi[] = [
     'city': {
       'name': 'Brussels',
       'location': {
-        'latitude': 50.846557,
-        'longitude': 4.351697,
+        'latitude': 50.84655712,
+        'longitude': 4.35169705,
         'zoom': 13
       }
     },
