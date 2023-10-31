@@ -14,9 +14,10 @@ import classNames from 'classnames';
 
 interface MainProps {
   offers: OfferApi[];
+  authorizationStatus: AuthorizationStatus;
 }
 
-function MainPage ({offers}: MainProps): JSX.Element {
+function MainPage ({offers, authorizationStatus}: MainProps): JSX.Element {
   const location = useLocation();
   const city = location.pathname.split('/').join('');
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ function MainPage ({offers}: MainProps): JSX.Element {
                 <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
               </a>
             </div>
-            <UserNavigation authorizationStatus={AuthorizationStatus.Auth} />
+            <UserNavigation authorizationStatus={authorizationStatus} />
           </div>
         </div>
       </header>

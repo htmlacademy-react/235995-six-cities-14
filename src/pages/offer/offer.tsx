@@ -13,9 +13,10 @@ import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACE
 interface OfferProps {
   reviews: IReview[];
   offersFull?: OfferApi[];
+  authorizationStatus: AuthorizationStatus;
 }
 
-function OfferPage({reviews, offersFull}: OfferProps): JSX.Element {
+function OfferPage({reviews, offersFull, authorizationStatus}: OfferProps): JSX.Element {
   const params = useParams();
   const offerById = offersFull?.find(({id}): boolean => (id).toString() === params.id);
 
@@ -34,7 +35,7 @@ function OfferPage({reviews, offersFull}: OfferProps): JSX.Element {
             <div className="header__left">
               <Logo />
             </div>
-            <UserNavigation authorizationStatus={AuthorizationStatus.Auth} />
+            <UserNavigation authorizationStatus={authorizationStatus} />
           </div>
         </div>
       </header>
