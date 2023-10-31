@@ -13,7 +13,6 @@ import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACE
 interface OfferProps {
   reviews: IReview[];
   offersFull?: OfferApi[];
-  authorizationStatus: AuthorizationStatus;
 }
 
 function OfferPage({reviews, offersFull}: OfferProps): JSX.Element {

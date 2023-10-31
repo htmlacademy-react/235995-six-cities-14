@@ -9,7 +9,7 @@ interface FavoritesCardProps {
 }
 
 function FavoritesCard({offer}: FavoritesCardProps) {
-  const [isFavoriteCard, setIsFavoriteCard] = useState(true);
+  const [isFavoriteCard, setIsFavoriteCard] = useState(offer.isFavorite);
   const favoriteButtonHandle = (): void => {
     setIsFavoriteCard(!isFavoriteCard);
     offer.isFavorite = isFavoriteCard;

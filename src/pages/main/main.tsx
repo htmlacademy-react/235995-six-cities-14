@@ -14,7 +14,6 @@ import classNames from 'classnames';
 
 interface MainProps {
   offers: OfferApi[];
-  authorizationStatus: AuthorizationStatus;
 }
 
 function MainPage ({offers}: MainProps): JSX.Element {
