@@ -5,6 +5,7 @@ import { Logo } from '../../components/logo/logo';
 import { OfferForm } from '../../components/offer-form/offer-form';
 import { CardNearPlace } from '../../components/card-near-place/card-near-place';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
+import { Map } from '../../components/map/map.tsx';
 import { getOfferType, getRating } from '../../utils';
 import { OFFERS_API, OfferApi } from '../../mocks/offers-api.ts';
 import { IReview } from '../../mocks/reviews';
@@ -12,14 +13,14 @@ import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACE
 
 interface OfferProps {
   reviews: IReview[];
-  offersFull?: OfferApi[];
+  offersFull: OfferApi[];
   authorizationStatus: AuthorizationStatus;
 }
 
 function OfferPage({reviews, offersFull, authorizationStatus}: OfferProps): JSX.Element {
   const params = useParams();
   const offerById = offersFull?.find(({id}): boolean => (id).toString() === params.id);
-
+  const offersByCity = OFFERS_API.filter((offer) => offer.city.name === offerById?.city.name).slice(0, MAX_NEAR_PLACES_OFFER_COUNT);
   if(!offerById) {
     return <Navigate to={AppRoute.Error} />;
   }
@@ -131,13 +132,14 @@ function OfferPage({reviews, offersFull, authorizationStatus}: OfferProps): JSX.
             </div>
           </div>
           <section className="offer__map map">
+            {<Map city={offerById.city.location} points={offersByCity} selectedPoint={offerById}/>}
           </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              {OFFERS_API?.slice(0, MAX_NEAR_PLACES_OFFER_COUNT).map((offerCard) => <CardNearPlace key={offerCard.id} offerCard={offerCard} />)}
+              {offersByCity.map((offerCard) => <CardNearPlace key={offerCard.id} offerCard={offerCard} />)}
             </div>
           </section>
         </div>
