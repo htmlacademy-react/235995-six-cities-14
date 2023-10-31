@@ -1,16 +1,14 @@
 import { Navigate, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { IReview } from '../../mocks/reviews';
 import { Review } from '../../components/review/review';
 import { Logo } from '../../components/logo/logo';
 import { OfferForm } from '../../components/offer-form/offer-form';
-import { getOfferType, getRating } from '../../utils';
-// import { IOfferFull } from '../../types/offer';
 import { CardNearPlace } from '../../components/card-near-place/card-near-place';
-import { OFFERS_FULL } from '../../mocks/offers';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
+import { getOfferType, getRating } from '../../utils';
+import { OFFERS_API, OfferApi } from '../../mocks/offers-api.ts';
+import { IReview } from '../../mocks/reviews';
 import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACES_OFFER_COUNT, AppRoute } from '../../const.ts';
-import { OfferApi } from '../../mocks/offers-api.ts';
 
 interface OfferProps {
   reviews: IReview[];
@@ -121,13 +119,15 @@ function OfferPage({reviews, offersFull}: OfferProps): JSX.Element {
                   </p>
                 </div>
               </div>
+              {AuthorizationStatus.Auth &&
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
                 <ul className="reviews__list">
                   {reviews?.slice(0, MAX_REVIEW_COUNT).map((review: IReview) => <Review key={review.id} review={review} />)}
                 </ul>
                 <OfferForm />
-              </section>
+              </section>}
+
             </div>
           </div>
           <section className="offer__map map">
@@ -137,7 +137,7 @@ function OfferPage({reviews, offersFull}: OfferProps): JSX.Element {
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              {OFFERS_FULL?.slice(0, MAX_NEAR_PLACES_OFFER_COUNT).map((offerCard) => <CardNearPlace key={offerCard.id} offerCard={offerCard} />)}
+              {OFFERS_API?.slice(0, MAX_NEAR_PLACES_OFFER_COUNT).map((offerCard) => <CardNearPlace key={offerCard.id} offerCard={offerCard} />)}
             </div>
           </section>
         </div>

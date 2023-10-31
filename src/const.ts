@@ -23,7 +23,7 @@ export const enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export enum AppRoute {
+export const enum AppRoute {
   Root = '/',
   Login = '/login',
   Offer = '/offer/',
@@ -31,7 +31,7 @@ export enum AppRoute {
   Error= '*',
 }
 
-export enum CityName {
+export const enum CityName {
   Paris = 'Paris',
   Cologne = 'Cologne',
   Brussels = 'Brussels',

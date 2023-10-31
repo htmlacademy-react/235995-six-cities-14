@@ -1,9 +1,10 @@
-import { IOfferFull } from '../../types/offer';
 import { getOfferType, getRating } from '../../utils';
 import { Link } from 'react-router-dom';
+import { OfferApi } from '../../mocks/offers-api.ts';
+
 
 interface CardNearPlaceProps {
-  offerCard: IOfferFull;
+  offerCard: OfferApi;
 }
 
 function CardNearPlace({offerCard}: CardNearPlaceProps) {

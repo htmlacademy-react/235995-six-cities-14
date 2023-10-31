@@ -2,12 +2,19 @@ import { getOfferType, getRating } from '../../utils';
 import { Link } from 'react-router-dom';
 import { useCard } from '../../hooks/use-card';
 import { OfferApi } from '../../mocks/offers-api';
+import classNames from 'classnames';
+import { useState } from 'react';
 
 interface CardProps {
   offer: OfferApi;
 }
 
 function Card({offer}: CardProps): JSX.Element {
+  const [isFavoriteCard, setIsFavoriteCard] = useState(offer.isFavorite);
+  const favoriteButtonHandle = (): void => {
+    setIsFavoriteCard(!isFavoriteCard);
+    offer.isFavorite = isFavoriteCard;
+  };
   const offerId: string = `/offer/${offer.id}`;
   const activeCard = useCard();
   const onMouseOverHandler = (): void => {
@@ -33,7 +40,9 @@ function Card({offer}: CardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={offer.isFavorite ? 'place-card__bookmark-button--active place-card__bookmark-button button' : 'place-card__bookmark-button button'} type="button">
+          <button onClick={favoriteButtonHandle} className={classNames('place-card__bookmark-button button', {
+            'place-card__bookmark-button--active': offer.isFavorite})} type="button"
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
