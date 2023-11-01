@@ -11,7 +11,6 @@ import { PrivateRoute, AuthorizationStatus } from './private-route/private-route
 import { RedirectToMainPage } from './redirect-to-main-page/redirect-to-main-page';
 // Data
 import { AppRoute, LOCATIONS } from '../const';
-//import { OFFERS, OFFERS_FULL } from '../mocks/offers';
 import { REVIEWS } from '../mocks/reviews';
 import { OFFERS_API } from '../mocks/offers-api';
 import { CardProvider } from '../context/card-provider';

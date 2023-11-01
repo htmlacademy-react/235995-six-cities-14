@@ -21,8 +21,15 @@ function Map({city, points, selectedPoint}: MapProps): JSX.Element {
 
   useEffect(() => {
     if (map) {
-      const {latitude, longitude, zoom} = city;
-      map.setView([latitude, longitude], zoom);
+      map.scrollWheelZoom.disable();
+      map.on('click', (): void => {
+        if (map.scrollWheelZoom.disable()) {
+          map.scrollWheelZoom.enable();
+        }
+      });
+      map.on('mouseout', (): void => {
+        map.scrollWheelZoom.disable();
+      });
       const markerLayer = layerGroup().addTo(map);
       points.forEach((point) => {
         const marker = new Marker({
@@ -43,7 +50,12 @@ function Map({city, points, selectedPoint}: MapProps): JSX.Element {
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, points, selectedPoint, city]);
+  }, [map, points, selectedPoint]);
+
+  useEffect(() => {
+    const {latitude, longitude, zoom} = city;
+    map?.setView([latitude, longitude], zoom);
+  }, [city, map]);
 
   return (
     <section className={pathNames.includes('offer') ? 'offer__map map' : 'cities__map map'}
