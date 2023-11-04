@@ -1,4 +1,4 @@
-import { createAction  } from "@reduxjs/toolkit";
+import { createAction } from '@reduxjs/toolkit';
 
 export const Action = {
   SET_CURRENT_CITY: 'SET_CURRENT_CITY',
@@ -14,12 +14,6 @@ export const setCurrentCity = (cityName: string) => ({
   type: Action.SET_CURRENT_CITY,
   payload: cityName,
 });
-
-// export const setCurrentCity = createAction(Action.SET_CURRENT_CITY, (cityName: string) => {
-//   return {
-//         payload: cityName,
-//       };
-// });
 
 export const setActiveCard = (offerId: number) => ({
   type: Action.SET_ACTIVE_CARD,
