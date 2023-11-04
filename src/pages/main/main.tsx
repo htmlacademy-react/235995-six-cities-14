@@ -19,7 +19,9 @@ interface MainProps {
 
 function MainPage ({offers, authorizationStatus}: MainProps): JSX.Element {
   const location = useLocation();
+  // Получаем название города из адресной строки
   const city = location.pathname.split('/').join('');
+  // По умолчанию перенаправляем на оферы города Париж
   const navigate = useNavigate();
   useEffect(() => {
     if(!city) {
@@ -27,10 +29,13 @@ function MainPage ({offers, authorizationStatus}: MainProps): JSX.Element {
     }
   }, [city, navigate]);
   const {isActiveCard} = useCard();
+  // Получаем массив оферов по заданному городу
   const offersByCity = offers.filter((item) => item.city.name === city);
+  // Получаем офер активной карточки города
   const selectedPoint = offersByCity.filter((offer) => (offer.id).toString() === isActiveCard);
-  const amountCity = offersByCity.length;
-  const isEmpty = amountCity > 0;
+  // Получаем кол-во количество оферов по городу
+  const amountOffers = offersByCity.length;
+  const isEmpty = amountOffers > 0;
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -62,7 +67,7 @@ function MainPage ({offers, authorizationStatus}: MainProps): JSX.Element {
             <div className="cities__places-container container">
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">{amountCity} {amountCity > 1 ? 'places' : 'place'} to stay in {city}</b>
+                <b className="places__found">{amountOffers} {amountOffers > 1 ? 'places' : 'place'} to stay in {city}</b>
                 <form className="places__sorting" action="#" method="get">
                   <span className="places__sorting-caption">Sort by</span>
                   <span className="places__sorting-type" tabIndex={0}>
