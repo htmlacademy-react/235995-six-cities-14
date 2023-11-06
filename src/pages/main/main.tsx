@@ -1,6 +1,7 @@
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useSelector } from 'react-redux';
 import { CardList } from '../../components/card-list/card-list';
 import { LOCATIONS } from '../../const';
 import { LocationItem } from '../../components/location-item/location-item';
@@ -10,16 +11,18 @@ import { MainEmpty } from '../../components/main-empty/main-empty.tsx';
 import { Map } from '../../components/map/map.tsx';
 import { useCard } from '../../hooks/use-card.ts';
 import { OfferApi } from '../../mocks/offers-api.ts';
+import { State } from '../../store/';
 import classNames from 'classnames';
 
 interface MainProps {
-  offers: OfferApi[];
   authorizationStatus: AuthorizationStatus;
 }
 
-function MainPage ({offers, authorizationStatus}: MainProps): JSX.Element {
-  const location = useLocation();
-  const city = location.pathname.split('/').join('');
+function MainPage ({authorizationStatus}: MainProps): JSX.Element {
+  const offers = useSelector((state: State): OfferApi[] => state.offers.offers);
+  const city = useSelector((state: State): string => state.offers.city);
+
+  // По умолчанию перенаправляем на оферы города Париж
   const navigate = useNavigate();
   useEffect(() => {
     if(!city) {
@@ -27,10 +30,13 @@ function MainPage ({offers, authorizationStatus}: MainProps): JSX.Element {
     }
   }, [city, navigate]);
   const {isActiveCard} = useCard();
+  // Получаем массив оферов по заданному городу
   const offersByCity = offers.filter((item) => item.city.name === city);
+  // Получаем офер активной карточки города
   const selectedPoint = offersByCity.filter((offer) => (offer.id).toString() === isActiveCard);
-  const amountCity = offersByCity.length;
-  const isEmpty = amountCity > 0;
+  // Получаем кол-во количество оферов по городу
+  const amountOffers = offersByCity.length;
+  const isEmpty = amountOffers > 0;
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -62,7 +68,7 @@ function MainPage ({offers, authorizationStatus}: MainProps): JSX.Element {
             <div className="cities__places-container container">
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">{amountCity} {amountCity > 1 ? 'places' : 'place'} to stay in {city}</b>
+                <b className="places__found">{amountOffers} {amountOffers > 1 ? 'places' : 'place'} to stay in {city}</b>
                 <form className="places__sorting" action="#" method="get">
                   <span className="places__sorting-caption">Sort by</span>
                   <span className="places__sorting-type" tabIndex={0}>
@@ -78,7 +84,7 @@ function MainPage ({offers, authorizationStatus}: MainProps): JSX.Element {
                     <li className="places__option" tabIndex={0}>Top rated first</li>
                   </ul>
                 </form>
-                <CardList offers={offers} city={city}/>
+                <CardList />
               </section>
               <div className="cities__right-section">
                 {<Map city={offersByCity[0].city.location} points={offersByCity} selectedPoint={selectedPoint[0]}/>}
