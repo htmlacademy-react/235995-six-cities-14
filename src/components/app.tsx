@@ -16,7 +16,7 @@ import { REVIEWS } from '../mocks/reviews';
 import { OFFERS_API } from '../mocks/offers-api';
 // Context
 import { CardProvider } from '../context/card-provider';
-import { store } from '../store/store';
+import { store } from '../store/';
 
 function App(): JSX.Element {
   return (
@@ -27,13 +27,13 @@ function App(): JSX.Element {
             <Routes>
               <Route
                 path={AppRoute.Root}
-                element={<MainPage offers={OFFERS_API} authorizationStatus={AuthorizationStatus.Auth} />}
+                element={<MainPage authorizationStatus={AuthorizationStatus.Auth} />}
               >
                 {LOCATIONS.map((city) => (
                   <Route
                     key={city}
                     path= {city}
-                    element={<MainPage offers={OFFERS_API} authorizationStatus={AuthorizationStatus.Auth} />}
+                    element={<MainPage authorizationStatus={AuthorizationStatus.Auth} />}
                   >
                   </Route>
                 ))}

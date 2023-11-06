@@ -1,6 +1,7 @@
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useSelector } from 'react-redux';
 import { CardList } from '../../components/card-list/card-list';
 import { LOCATIONS } from '../../const';
 import { LocationItem } from '../../components/location-item/location-item';
@@ -10,17 +11,17 @@ import { MainEmpty } from '../../components/main-empty/main-empty.tsx';
 import { Map } from '../../components/map/map.tsx';
 import { useCard } from '../../hooks/use-card.ts';
 import { OfferApi } from '../../mocks/offers-api.ts';
+import { State } from '../../store/';
 import classNames from 'classnames';
 
 interface MainProps {
-  offers: OfferApi[];
   authorizationStatus: AuthorizationStatus;
 }
 
-function MainPage ({offers, authorizationStatus}: MainProps): JSX.Element {
-  const location = useLocation();
-  // Получаем название города из адресной строки
-  const city = location.pathname.split('/').join('');
+function MainPage ({authorizationStatus}: MainProps): JSX.Element {
+  const offers = useSelector((state: State): OfferApi[] => state.offers.offers);
+  const city = useSelector((state: State): string => state.offers.city);
+
   // По умолчанию перенаправляем на оферы города Париж
   const navigate = useNavigate();
   useEffect(() => {
@@ -83,7 +84,7 @@ function MainPage ({offers, authorizationStatus}: MainProps): JSX.Element {
                     <li className="places__option" tabIndex={0}>Top rated first</li>
                   </ul>
                 </form>
-                <CardList offers={offers} city={city}/>
+                <CardList />
               </section>
               <div className="cities__right-section">
                 {<Map city={offersByCity[0].city.location} points={offersByCity} selectedPoint={selectedPoint[0]}/>}
