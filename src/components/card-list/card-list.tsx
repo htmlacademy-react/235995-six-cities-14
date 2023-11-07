@@ -8,7 +8,7 @@ function CardList(): JSX.Element {
   const city = useSelector((state: State): string => state.offers.city);
   return (
     <div className="cities__places-list places__list tabs__content">
-      {offers.filter((item) => item.city.name === city)?.map((offer): JSX.Element => <Card key={offer.id} offer={offer} />)}
+      {offers.filter((item) => item.city.name === city)?.map((offer: OfferApi): JSX.Element => <Card key={offer.id} offer={offer} />)}
     </div>
   );
 }

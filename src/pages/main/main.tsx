@@ -1,18 +1,18 @@
-import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { Helmet } from 'react-helmet-async';
 import classNames from 'classnames';
 import { CardList } from '../../components/card-list/card-list';
-import { LOCATIONS, AuthorizationStatus } from '../../const';
 import { LocationItem } from '../../components/location-item/location-item';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
 import { MainEmpty } from '../../components/main-empty/main-empty.tsx';
 import { Map } from '../../components/map/map.tsx';
-import { useCard } from '../../hooks/use-card.ts';
-import { OfferApi } from '../../mocks/offers-api.ts';
-import { State } from '../../store/';
 import { OffersSorting } from '../../components/offers-sorting/offers-sorting.tsx';
+// import { useCard } from '../../hooks/use-card.ts';
+import { OfferApi } from '../../mocks/offers-api.ts';
+import { LOCATIONS, AuthorizationStatus } from '../../const';
+import { State } from '../../store/';
 import { offersSlice } from '../../store/slices/offers.ts';
 
 interface MainProps {
@@ -25,7 +25,8 @@ function MainPage ({authorizationStatus}: MainProps): JSX.Element {
   const offers = useSelector((state: State): OfferApi[] => state.offers.offers);
   const city = useSelector((state: State): string => state.offers.city);
   const currentSortType = useSelector((state: State): string => state.offers.sortingType);
-
+  const activeCard = useSelector((state: State): string => state.offers.activeOffer);
+  console.log(activeCard);
   // По умолчанию перенаправляем на оферы города Париж
   const navigate = useNavigate();
   useEffect(() => {
@@ -33,10 +34,10 @@ function MainPage ({authorizationStatus}: MainProps): JSX.Element {
       navigate('/Paris');
     }
   }, [city, navigate]);
-  const {isActiveCard} = useCard();
+  // const {isActiveCard} = useCard();
   // Получаем массив оферов по заданному городу
   const offersByCity = offers.filter((item) => item.city.name === city);
-
+  // Функции сортировки предложений
   const utilsSort: {[key:string]: OfferApi[]} = {
     'Popular': offersByCity,
     'Price: low to high': offersByCity.slice().sort((a, b) => a.price - b.price),
@@ -46,7 +47,7 @@ function MainPage ({authorizationStatus}: MainProps): JSX.Element {
   // Получаем массив оферов отсортированных по выбранному типу сортировки
   dispatch(offersSlice.actions.getSortedOffers(utilsSort[currentSortType]));
   // Получаем офер активной карточки города
-  const selectedPoint = offersByCity.filter((offer) => (offer.id).toString() === isActiveCard);
+  const selectedPoint = offersByCity.filter((offer) => (offer.id).toString() === activeCard);
   // Получаем кол-во количество оферов по городу
   const amountOffers = offersByCity.length;
   const isEmpty = amountOffers > 0;
@@ -86,7 +87,7 @@ function MainPage ({authorizationStatus}: MainProps): JSX.Element {
                 <CardList />
               </section>
               <div className="cities__right-section">
-                {<Map city={offersByCity[0].city.location} points={offersByCity} selectedPoint={selectedPoint[0]}/>}
+                {<Map city={offersByCity[0].city.location} points={offersByCity} />}
               </div>
             </div>
           </div>

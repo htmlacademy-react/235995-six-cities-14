@@ -10,14 +10,16 @@ import { getOfferType, getRating } from '../../utils';
 import { OFFERS_API, OfferApi } from '../../mocks/offers-api.ts';
 import { IReview } from '../../mocks/reviews';
 import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACES_OFFER_COUNT, AppRoute } from '../../const.ts';
+import { useSelector } from 'react-redux';
+import { State } from '../../store/';
 
 interface OfferProps {
   reviews: IReview[];
-  offersFull: OfferApi[];
   authorizationStatus: AuthorizationStatus;
 }
 
-function OfferPage({reviews, offersFull, authorizationStatus}: OfferProps): JSX.Element {
+function OfferPage({reviews, authorizationStatus}: OfferProps): JSX.Element {
+  const offersFull = useSelector((state: State): OfferApi[] => state.offers.offers);
   const params = useParams();
   const offerById = offersFull?.find(({id}): boolean => (id).toString() === params.id);
   const offersByCity = OFFERS_API.filter((offer) => offer.city.name === offerById?.city.name).slice(0, MAX_NEAR_PLACES_OFFER_COUNT);

@@ -1,27 +1,28 @@
 import { getOfferType, getRating } from '../../utils';
 import { Link } from 'react-router-dom';
-import { useCard } from '../../hooks/use-card';
+// import { useCard } from '../../hooks/use-card';
 import { OfferApi } from '../../mocks/offers-api';
 import classNames from 'classnames';
 import { useState } from 'react';
+import { useDispatch} from 'react-redux';
+import { offersSlice } from '../../store/slices/offers';
 
-interface CardProps {
-  offer: OfferApi;
-}
-
-function Card({offer}: CardProps): JSX.Element {
+function Card(offer: OfferApi): JSX.Element {
+  console.log(offer.type);
+  const dispatch = useDispatch();
   const [isFavoriteCard, setIsFavoriteCard] = useState(offer.isFavorite);
   const favoriteButtonHandle = (): void => {
     setIsFavoriteCard(!isFavoriteCard);
     offer.isFavorite = isFavoriteCard;
   };
   const offerId: string = `/offer/${offer.id}`;
-  const activeCard = useCard();
   const onMouseOverHandler = (): void => {
-    activeCard.setIsActiveCard((offer.id).toString());
+    dispatch(offersSlice.actions.getActiveOffer(offer.id.toString()));
+    // setIsActiveCard((offer.id).toString());
   };
   const onMouseLeave = (): void => {
-    activeCard.setIsActiveCard('null');
+    dispatch(offersSlice.actions.getActiveOffer('null'))
+    // setIsActiveCard('null');
   };
   return (
     <article onMouseOver={onMouseOverHandler} onMouseOut={onMouseLeave} className="cities__card place-card" >

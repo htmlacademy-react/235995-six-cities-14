@@ -1,19 +1,22 @@
 import { useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Marker, layerGroup } from 'leaflet';
 import { DEFAULT_CUSTOM_ICON, CURRENT_CUSTOM_ICON } from '../../const';
 import 'leaflet/dist/leaflet.css';
 import { Location } from '../../types/offer';
 import { useMap } from '../../hooks/use-map';
 import { OfferApi } from '../../mocks/offers-api';
+import { State } from '../../store';
 
 type MapProps = {
   city: Location;
   points: OfferApi[];
-  selectedPoint?: OfferApi | undefined;
 };
 
-function Map({city, points, selectedPoint}: MapProps): JSX.Element {
+function Map({city, points}: MapProps): JSX.Element {
+  const selectedPointId = useSelector((state: State): string => state.offers.activeOffer);
+  const selectedPoint = points.filter((point) => (point.id).toString() === selectedPointId)[0];
   const location = useLocation();
   const pathNames = location.pathname.split('/');
   const mapRef = useRef(null);
@@ -39,7 +42,7 @@ function Map({city, points, selectedPoint}: MapProps): JSX.Element {
 
         marker
           .setIcon(
-            selectedPoint !== undefined && point.id === selectedPoint.id
+            selectedPoint !== undefined && point.id === selectedPoint.id && !pathNames.includes('offer')
               ? CURRENT_CUSTOM_ICON
               : DEFAULT_CUSTOM_ICON
           )

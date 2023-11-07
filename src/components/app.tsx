@@ -52,7 +52,7 @@ function App(): JSX.Element {
                 path={AppRoute.Favorites}
                 element={
                   <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-                    <FavoritesPage offers={OFFERS_API} />
+                    <FavoritesPage />
                   </PrivateRoute>
                 }
               >
@@ -62,7 +62,7 @@ function App(): JSX.Element {
               >
                 <Route
                   path=':id'
-                  element={<OfferPage offersFull={OFFERS_API} reviews ={REVIEWS} authorizationStatus={AuthorizationStatus.Auth} />}
+                  element={<OfferPage reviews ={REVIEWS} authorizationStatus={AuthorizationStatus.Auth} />}
                 />
               </Route>
               <Route
