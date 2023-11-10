@@ -1,4 +1,4 @@
-import { BaseSyntheticEvent, useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { State } from '../../types/state';
 import classNames from 'classnames';
@@ -9,8 +9,8 @@ function OffersSorting() {
   const [isOpened, setIsOpened] = useState(false);
   const dispatch = useDispatch();
   const activeSortType = useSelector((state: State): string => state.offers.sortingType);
-  const sortTypeClickHandle = (event: BaseSyntheticEvent): void => {
-    const currentTypeSort = event.target.getAttribute('data-sort-type') as string;
+  const handleSortTypeClick = (event: MouseEvent<HTMLElement>): void => {
+    const currentTypeSort = event.currentTarget.dataset.sortType ?? SORT_TYPES[0];
     dispatch(offersSlice.actions.sortType(currentTypeSort));
     setIsOpened(!isOpened);
   };
@@ -30,7 +30,7 @@ function OffersSorting() {
         'places__options--opened': isOpened
       })}
       >
-        {SORT_TYPES.map((sortType) => <li className={classNames('places__option', {'places__option--active': activeSortType === sortType})} onClick={sortTypeClickHandle} tabIndex={0} key={sortType} data-sort-type={sortType} >{sortType}</li>)}
+        {SORT_TYPES.map((sortType) => <li className={classNames('places__option', {'places__option--active': activeSortType === sortType})} onClick={handleSortTypeClick} tabIndex={0} key={sortType} data-sort-type={sortType} >{sortType}</li>)}
       </ul>
     </form>
   );

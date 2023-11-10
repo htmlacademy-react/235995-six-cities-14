@@ -10,15 +10,13 @@ import { Map } from '../../components/map/map.tsx';
 import { OffersSorting } from '../../components/offers-sorting/offers-sorting.tsx';
 import { OfferApi } from '../../mocks/offers-api.ts';
 import { LOCATIONS, AuthorizationStatus, DEFAULT_LOCATION } from '../../const';
-import { offersSlice } from '../../store/slices/offers.ts';
-import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
+import { useAppSelector } from '../../hooks/store.ts';
 
 interface MainProps {
   authorizationStatus: AuthorizationStatus;
 }
 
 function MainPage ({authorizationStatus}: MainProps): JSX.Element {
-  const dispatch = useAppDispatch();
   const offers = useAppSelector((state) => state.offers.offers);
   const city = useAppSelector((state) => state.offers.city);
   const currentSortType = useAppSelector((state) => state.offers.sortingType);
@@ -41,8 +39,6 @@ function MainPage ({authorizationStatus}: MainProps): JSX.Element {
     'Top rated first': offersByCity.slice().sort((a, b) => b.rating - a.rating),
   };
   const sortedOffers = utilsSort[currentSortType];
-  // Получаем массив оферов отсортированных по выбранному типу сортировки
-  dispatch(offersSlice.actions.getSortedOffers(sortedOffers));
   // Получаем кол-во количество оферов по городу
   const amountOffers = offersByCity.length;
   const isEmpty = amountOffers > 0;
@@ -79,7 +75,7 @@ function MainPage ({authorizationStatus}: MainProps): JSX.Element {
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">{amountOffers} {amountOffers > 1 ? 'places' : 'place'} to stay in {city}</b>
                 <OffersSorting />
-                <CardList />
+                <CardList sortedOffers={sortedOffers} />
               </section>
               <div className="cities__right-section">
                 {<Map city={offersByCity[0].city.location} points={offersByCity} />}
