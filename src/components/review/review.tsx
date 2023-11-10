@@ -5,6 +5,11 @@ interface ReviewProps {
 }
 
 function Review({review}: ReviewProps): JSX.Element {
+  const date = new Date(review.date);
+  const month = date.toLocaleString('en', { month: 'long' });
+  const year = date.getFullYear();
+  const reviewDate = `${month} ${year}`;
+  const dateTimeReview = `${year}-${(date.getMonth()).toString().padStart(2, '0')}-${(date.getDate()).toString().padStart(2, '0')}`;
   return (
     <li className="reviews__item">
       <div className="reviews__user user">
@@ -25,7 +30,7 @@ function Review({review}: ReviewProps): JSX.Element {
         <p className="reviews__text">
           {review.comment}
         </p>
-        <time className="reviews__time" dateTime={review.date}>{review.date}</time>
+        <time className="reviews__time" dateTime={dateTimeReview}>{reviewDate}</time>
       </div>
     </li>
   );

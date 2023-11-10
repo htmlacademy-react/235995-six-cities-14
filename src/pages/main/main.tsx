@@ -18,12 +18,12 @@ interface MainProps {
 }
 
 function MainPage ({authorizationStatus}: MainProps): JSX.Element {
-  const location = useLocation().pathname.slice(1);
   const dispatch = useAppDispatch();
   const offers = useAppSelector((state) => state.offers.offers);
   const city = useAppSelector((state) => state.offers.city);
   const currentSortType = useAppSelector((state) => state.offers.sortingType);
-  // По умолчанию перенаправляем на оферы города Париж
+  const location = useLocation().pathname.slice(1);
+  // По умолчанию перенаправляем на город Париж
   const navigate = useNavigate();
   useEffect(() => {
     if(!location) {
@@ -40,8 +40,9 @@ function MainPage ({authorizationStatus}: MainProps): JSX.Element {
     'Price: high to low': offersByCity.slice().sort((a, b) => b.price - a.price),
     'Top rated first': offersByCity.slice().sort((a, b) => b.rating - a.rating),
   };
+  const sortedOffers = utilsSort[currentSortType];
   // Получаем массив оферов отсортированных по выбранному типу сортировки
-  dispatch(offersSlice.actions.getSortedOffers(utilsSort[currentSortType]));
+  dispatch(offersSlice.actions.getSortedOffers(sortedOffers));
   // Получаем кол-во количество оферов по городу
   const amountOffers = offersByCity.length;
   const isEmpty = amountOffers > 0;

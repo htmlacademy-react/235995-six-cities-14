@@ -22,25 +22,30 @@ function Card({offer, cardClassName}: CardProps): JSX.Element {
   const pathName = location.pathname.slice(1,6);
   const offerId: string = `/offer/${offer.id}`;
 
-  const onMouseOverHandler = (): void => {
+  const handleOnMouseOver = (): void => {
     if(pathName !== 'offer') {
       dispatch(offersSlice.actions.getActiveOffer(offer));
     }
 
   };
-  const onMouseLeave = (): void => {
+  const handleOnMouseLeave = (): void => {
     if(pathName !== 'offer') {
       dispatch(offersSlice.actions.getActiveOffer(undefined));
     }
   };
+  // Меняет активный город на странице офера
+  const handleClickCard = (): void => {
+    dispatch(offersSlice.actions.getActiveOffer(offer));
+  };
+
   return (
-    <article onMouseOver={onMouseOverHandler} onMouseOut={onMouseLeave} className={`${cardClassName}__card place-card`} >
+    <article onMouseOver={handleOnMouseOver} onMouseOut={handleOnMouseLeave} className={`${cardClassName}__card place-card`} >
       {offer.isPremium &&
       <div className='place-card__mark'>
         <span>Premium</span>
       </div>}
       <div className={`${cardClassName}__image-wrapper place-card__image-wrapper`}>
-        <Link to={offerId}>
+        <Link to={offerId} onClick={handleClickCard}>
           <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image" />
         </Link>
       </div>
@@ -66,7 +71,7 @@ function Card({offer, cardClassName}: CardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={offerId}>{offer.title}</Link>
+          <Link to={offerId} onClick={handleClickCard}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{ getOfferType(offer.type) }</p>
       </div>

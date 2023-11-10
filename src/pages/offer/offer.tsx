@@ -25,6 +25,8 @@ function OfferPage({reviews, authorizationStatus}: OfferProps): JSX.Element {
 
   const offersByCity = offersFull.filter((offer) => offer.city.name === offerById?.city.name);
   const offersNearLocation = offersByCity.slice(0, MAX_NEAR_PLACES_OFFER_COUNT);
+  // Получаем массив отзывов отсортированных по дате
+  const listReviews = reviews?.slice(0, MAX_REVIEW_COUNT).sort((a, b)=> (new Date(b.date)).getTime() - (new Date(a.date)).getTime());
   // Проверяем включен ли офер в список оферов и если включен то добавляем еще один офер
   const getOffersNearLocation = (offersNearPlaces: OfferApi[], currentOffer: OfferApi): OfferApi[] => {
     const cloneOffersNearPlaces = offersNearPlaces.slice();
@@ -134,9 +136,9 @@ function OfferPage({reviews, authorizationStatus}: OfferProps): JSX.Element {
               </div>
               {AuthorizationStatus.Auth &&
               <section className="offer__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
+                <h2 className="reviews__title">{reviews.length > 1 ? 'Reviews' : 'Review'} &middot; <span className="reviews__amount">{reviews.length}</span></h2>
                 <ul className="reviews__list">
-                  {reviews?.slice(0, MAX_REVIEW_COUNT).map((review: IReview) => <Review key={review.id} review={review} />)}
+                  {listReviews.map((review: IReview) => <Review key={review.id} review={review} />)}
                 </ul>
                 <OfferForm />
               </section>}
