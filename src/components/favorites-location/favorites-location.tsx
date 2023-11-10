@@ -1,5 +1,6 @@
+import { OFFER_CLASSES } from '../../const';
 import { OfferApi } from '../../mocks/offers-api';
-import { FavoritesCard } from '../favorites-card/favorites-card';
+import { Card } from '../card/card';
 
 interface FavoritesLocationProps {
   favoriteOffers: OfferApi[];
@@ -18,7 +19,7 @@ function FavoritesLocation({favoriteOffers}: FavoritesLocationProps) {
           </div>
         </div>
         <div className="favorites__places">
-          {favoriteOffers?.filter((it) => it.city.name === cityName)?.map((offer)=> <FavoritesCard key={offer.id} offer={offer}/>)}
+          {favoriteOffers?.filter((it) => it.city.name === cityName)?.map((offer)=> <Card key={offer.id} offer={offer} cardClassName={OFFER_CLASSES.FavoritesPage} />)}
         </div>
       </li>)
     )

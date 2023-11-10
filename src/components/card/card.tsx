@@ -1,36 +1,45 @@
 import { getOfferType, getRating } from '../../utils';
-import { Link } from 'react-router-dom';
-// import { useCard } from '../../hooks/use-card';
+import { Link, useLocation } from 'react-router-dom';
 import { OfferApi } from '../../mocks/offers-api';
 import classNames from 'classnames';
 import { useState } from 'react';
-import { useDispatch} from 'react-redux';
+import { useAppDispatch } from '../../hooks/store.ts'; //, useAppSelector
 import { offersSlice } from '../../store/slices/offers';
 
-function Card(offer: OfferApi): JSX.Element {
-  console.log(offer.type);
-  const dispatch = useDispatch();
+interface CardProps {
+  offer: OfferApi;
+  cardClassName: string;
+}
+
+function Card({offer, cardClassName}: CardProps): JSX.Element {
+  const dispatch = useAppDispatch();
   const [isFavoriteCard, setIsFavoriteCard] = useState(offer.isFavorite);
   const favoriteButtonHandle = (): void => {
     setIsFavoriteCard(!isFavoriteCard);
     offer.isFavorite = isFavoriteCard;
   };
+  const location = useLocation();
+  const pathName = location.pathname.slice(1,6);
   const offerId: string = `/offer/${offer.id}`;
+
   const onMouseOverHandler = (): void => {
-    dispatch(offersSlice.actions.getActiveOffer(offer.id.toString()));
-    // setIsActiveCard((offer.id).toString());
+    if(pathName !== 'offer') {
+      dispatch(offersSlice.actions.getActiveOffer(offer));
+    }
+
   };
   const onMouseLeave = (): void => {
-    dispatch(offersSlice.actions.getActiveOffer('null'))
-    // setIsActiveCard('null');
+    if(pathName !== 'offer') {
+      dispatch(offersSlice.actions.getActiveOffer(undefined));
+    }
   };
   return (
-    <article onMouseOver={onMouseOverHandler} onMouseOut={onMouseLeave} className="cities__card place-card" >
+    <article onMouseOver={onMouseOverHandler} onMouseOut={onMouseLeave} className={`${cardClassName}__card place-card`} >
       {offer.isPremium &&
       <div className='place-card__mark'>
         <span>Premium</span>
       </div>}
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={`${cardClassName}__image-wrapper place-card__image-wrapper`}>
         <Link to={offerId}>
           <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image" />
         </Link>

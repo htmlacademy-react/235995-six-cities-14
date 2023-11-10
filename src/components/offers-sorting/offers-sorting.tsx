@@ -1,6 +1,6 @@
 import { BaseSyntheticEvent, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { State } from '../../store/';
+import { State } from '../../types/state';
 import classNames from 'classnames';
 import { SORT_TYPES } from '../../const';
 import { offersSlice } from '../../store/slices/offers';

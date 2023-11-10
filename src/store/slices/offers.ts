@@ -8,7 +8,7 @@ export interface OffersProps {
   city: string;
   sortingType: string;
   sortedOffers: OfferApi[] | [];
-  activeOffer: string;
+  activeOffer: OfferApi | undefined;
 }
 
 const initialState: OffersProps = {
@@ -16,7 +16,7 @@ const initialState: OffersProps = {
   city: DEFAULT_LOCATION,
   sortingType: DEFAULT_TYPE_SORTING,
   sortedOffers: [],
-  activeOffer: 'null',
+  activeOffer: undefined,
 };
 
 export const offersSlice = createSlice({
@@ -29,7 +29,7 @@ export const offersSlice = createSlice({
     getSortedOffers: (state, action: PayloadAction<OfferApi[]>) => {
       state.sortedOffers = action.payload;
     },
-    getActiveOffer: (state, action: PayloadAction<string>) => {
+    getActiveOffer: (state, action: PayloadAction<OfferApi | undefined>) => {
       state.activeOffer = action.payload;
     },
     setCity: (state, action: PayloadAction<string>) => {

@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import { Logo } from '../../components/logo/logo';
 import { FavoritesLocation } from '../../components/favorites-location/favorites-location';
@@ -7,10 +6,10 @@ import { UserNavigation } from '../../components/user-navigation/user-navigation
 import { AuthorizationStatus } from '../../const.ts';
 import { OfferApi } from '../../mocks/offers-api.ts';
 import { FavoritesEmpty } from '../../components/favorites-empty/favorites-empty.tsx';
-import { State } from '../../store/index.ts';
+import { useAppSelector } from '../../hooks/store.ts';
 
 function FavoritesPage(): JSX.Element {
-  const offers = useSelector((state: State): OfferApi[] => state.offers.offers);
+  const offers = useAppSelector((state) => state.offers.offers);
   const favoriteOffers: OfferApi[] = offers.filter((offer: OfferApi): boolean => offer.isFavorite);
   return (
     <div className={favoriteOffers.length ? 'page' : 'page page--favorites-empty'}>

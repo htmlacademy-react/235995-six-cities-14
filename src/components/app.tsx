@@ -13,67 +13,61 @@ import { RedirectToMainPage } from './redirect-to-main-page/redirect-to-main-pag
 // Data
 import { AppRoute, LOCATIONS } from '../const';
 import { REVIEWS } from '../mocks/reviews';
-import { OFFERS_API } from '../mocks/offers-api';
-// Context
-import { CardProvider } from '../context/card-provider';
 import { store } from '../store/';
 
 function App(): JSX.Element {
   return (
     <Provider store={store} >
-      <CardProvider>
-        <HelmetProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route
-                path={AppRoute.Root}
-                element={<MainPage authorizationStatus={AuthorizationStatus.Auth} />}
-              >
-                {LOCATIONS.map((city) => (
-                  <Route
-                    key={city}
-                    path= {city}
-                    element={<MainPage authorizationStatus={AuthorizationStatus.Auth} />}
-                  >
-                  </Route>
-                ))}
-
-              </Route>
-              <Route
-                path={AppRoute.Login}
-                element={
-                  <RedirectToMainPage authorizationStatus={AuthorizationStatus.NoAuth}>
-                    <LoginPage/>
-                  </RedirectToMainPage>
-                }
-              >
-              </Route>
-              <Route
-                path={AppRoute.Favorites}
-                element={
-                  <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-                    <FavoritesPage />
-                  </PrivateRoute>
-                }
-              >
-              </Route>
-              <Route
-                path={AppRoute.Offer}
-              >
+      <HelmetProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path={AppRoute.Root}
+              element={<MainPage authorizationStatus={AuthorizationStatus.Auth} />}
+            >
+              {LOCATIONS.map((city) => (
                 <Route
-                  path=':id'
-                  element={<OfferPage reviews ={REVIEWS} authorizationStatus={AuthorizationStatus.Auth} />}
-                />
-              </Route>
+                  key={city}
+                  path= {city}
+                  element={<MainPage authorizationStatus={AuthorizationStatus.Auth} />}
+                >
+                </Route>
+              ))}
+            </Route>
+            <Route
+              path={AppRoute.Login}
+              element={
+                <RedirectToMainPage authorizationStatus={AuthorizationStatus.NoAuth}>
+                  <LoginPage/>
+                </RedirectToMainPage>
+              }
+            >
+            </Route>
+            <Route
+              path={AppRoute.Favorites}
+              element={
+                <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+                  <FavoritesPage />
+                </PrivateRoute>
+              }
+            >
+            </Route>
+            <Route
+              path={AppRoute.Offer}
+            >
               <Route
-                path={AppRoute.Error}
-                element={<NotFoundPage />}
-              >
-              </Route>
-            </Routes>
-          </BrowserRouter>
-        </HelmetProvider>
-      </CardProvider>
+                path=':id'
+                element={<OfferPage reviews ={REVIEWS} authorizationStatus={AuthorizationStatus.Auth} />}
+              />
+            </Route>
+            <Route
+              path={AppRoute.Error}
+              element={<NotFoundPage />}
+            >
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </HelmetProvider>
     </Provider>
   );
 }

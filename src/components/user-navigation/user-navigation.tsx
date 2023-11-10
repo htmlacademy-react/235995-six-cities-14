@@ -1,16 +1,14 @@
 import { Link } from 'react-router-dom';
 import { AuthorizationStatus } from '../../const.ts';
-import { useSelector } from 'react-redux';
-import { OfferApi } from '../../mocks/offers-api.ts';
-import { State } from '../../store/';
+import { useAppSelector } from '../../hooks/store.ts';
 
 type UserNavigationProps = {
   authorizationStatus: AuthorizationStatus;
 }
 
 function UserNavigation({authorizationStatus}: UserNavigationProps) {
-  const offers = useSelector((state: State): OfferApi[] => state.offers.offers);
-  const favoriteCardCount = offers.filter((offer) => offer.isFavorite).length
+  const offers = useAppSelector((state) => state.offers.offers);
+  const favoriteCardCount = offers.filter((offer) => offer.isFavorite).length;
   return (
     authorizationStatus === AuthorizationStatus.Auth ?
       <nav className="header__nav">

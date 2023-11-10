@@ -1,27 +1,24 @@
 import { useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { Marker, layerGroup } from 'leaflet';
 import { DEFAULT_CUSTOM_ICON, CURRENT_CUSTOM_ICON } from '../../const';
 import 'leaflet/dist/leaflet.css';
 import { Location } from '../../types/offer';
 import { useMap } from '../../hooks/use-map';
 import { OfferApi } from '../../mocks/offers-api';
-import { State } from '../../store';
+import { useAppSelector } from '../../hooks/store.ts';
 
 type MapProps = {
   city: Location;
-  points: OfferApi[];
+  points: OfferApi[] | [];
 };
 
 function Map({city, points}: MapProps): JSX.Element {
-  const selectedPointId = useSelector((state: State): string => state.offers.activeOffer);
-  const selectedPoint = points.filter((point) => (point.id).toString() === selectedPointId)[0];
+  const selectedPoint = useAppSelector((state) => state.offers.activeOffer);
   const location = useLocation();
   const pathNames = location.pathname.split('/');
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
-
   useEffect(() => {
     if (map) {
       map.scrollWheelZoom.disable();
@@ -42,7 +39,7 @@ function Map({city, points}: MapProps): JSX.Element {
 
         marker
           .setIcon(
-            selectedPoint !== undefined && point.id === selectedPoint.id && !pathNames.includes('offer')
+            selectedPoint !== undefined && point.id === selectedPoint.id
               ? CURRENT_CUSTOM_ICON
               : DEFAULT_CUSTOM_ICON
           )

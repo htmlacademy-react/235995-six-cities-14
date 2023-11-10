@@ -7,6 +7,11 @@ export const MAX_REVIEW_COUNT = 10;
 export const MAX_NEAR_PLACES_OFFER_COUNT = 3;
 export const URL_MARKER_DEFAULT = './markup/img/pin.svg';
 export const URL_MARKER_CURRENT = './markup/img/pin-active.svg';
+export const OFFER_CLASSES = {
+  MainPage:  'cities',
+  FavoritesPage: 'favorites',
+  offerPage:  'near-places',
+};
 
 export const DEFAULT_CUSTOM_ICON = new Icon({
   iconUrl: URL_MARKER_DEFAULT,
