@@ -10,21 +10,24 @@ import { Map } from '../../components/map/map.tsx';
 import { OffersSorting } from '../../components/offers-sorting/offers-sorting.tsx';
 import { OfferApi } from '../../mocks/offers-api.ts';
 import { LOCATIONS, DEFAULT_LOCATION } from '../../const';
-import { useAppSelector } from '../../hooks/store.ts';
+import { useAppSelector, useAppDispatch } from '../../hooks/store.ts';
+import { offersSlice } from '../../store/slices/offers.ts';
 
 function MainPage (): JSX.Element {
+  const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const offers = useAppSelector((state) => state.offers.offers);
   const city = useAppSelector((state) => state.offers.city);
-  const currentSortType = useAppSelector((state) => state.offers.sortingType);
   const location = useLocation().pathname.slice(1);
+  const currentSortType = useAppSelector((state) => state.offers.sortingType);
   // По умолчанию перенаправляем на город Париж
   const navigate = useNavigate();
   useEffect(() => {
-    if(!location) {
+    if(!location || location !== city) {
+      dispatch(offersSlice.actions.setCity(location));
       navigate(`/${DEFAULT_LOCATION}`);
     }
-  }, [city, navigate, location]);
+  }, [city, navigate, location, dispatch]);
 
   // Получаем массив оферов по заданному городу
   const offersByCity = offers.filter((item) => item.city.name === city);
