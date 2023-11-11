@@ -8,7 +8,7 @@ import { OfferPage } from '../pages/offer/offer';
 import { FavoritesPage } from '../pages/favorites/favorites';
 import { NotFoundPage } from '../pages/error/error-page';
 // components
-import { PrivateRoute, AuthorizationStatus } from './private-route/private-route';
+import { PrivateRoute } from './private-route/private-route';
 import { RedirectToMainPage } from './redirect-to-main-page/redirect-to-main-page';
 // Data
 import { AppRoute, LOCATIONS } from '../const';
@@ -23,13 +23,13 @@ function App(): JSX.Element {
           <Routes>
             <Route
               path={AppRoute.Root}
-              element={<MainPage authorizationStatus={AuthorizationStatus.Auth} />}
+              element={<MainPage />}
             >
               {LOCATIONS.map((city) => (
                 <Route
                   key={city}
                   path= {city}
-                  element={<MainPage authorizationStatus={AuthorizationStatus.Auth} />}
+                  element={<MainPage />}
                 >
                 </Route>
               ))}
@@ -37,7 +37,7 @@ function App(): JSX.Element {
             <Route
               path={AppRoute.Login}
               element={
-                <RedirectToMainPage authorizationStatus={AuthorizationStatus.NoAuth}>
+                <RedirectToMainPage>
                   <LoginPage/>
                 </RedirectToMainPage>
               }
@@ -46,7 +46,7 @@ function App(): JSX.Element {
             <Route
               path={AppRoute.Favorites}
               element={
-                <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+                <PrivateRoute>
                   <FavoritesPage />
                 </PrivateRoute>
               }
@@ -57,7 +57,7 @@ function App(): JSX.Element {
             >
               <Route
                 path=':id'
-                element={<OfferPage reviews ={REVIEWS} authorizationStatus={AuthorizationStatus.Auth} />}
+                element={<OfferPage reviews ={REVIEWS} />}
               />
             </Route>
             <Route

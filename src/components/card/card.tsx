@@ -1,10 +1,11 @@
 import { getOfferType, getRating } from '../../utils';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { OfferApi } from '../../mocks/offers-api';
 import classNames from 'classnames';
 import { useState } from 'react';
-import { useAppDispatch } from '../../hooks/store.ts'; //, useAppSelector
+import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
 import { offersSlice } from '../../store/slices/offers';
+import { AppRoute, AuthorizationStatus } from '../../const.ts';
 
 interface CardProps {
   offer: OfferApi;
@@ -12,9 +13,15 @@ interface CardProps {
 }
 
 function Card({offer, cardClassName}: CardProps): JSX.Element {
+  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [isFavoriteCard, setIsFavoriteCard] = useState(offer.isFavorite);
-  const favoriteButtonHandle = (): void => {
+  const handleOnFavoriteButton = (): void => {
+    if(authorizationStatus === AuthorizationStatus.Unknown || authorizationStatus === AuthorizationStatus.NoAuth) {
+      navigate(AppRoute.Login);
+      return;
+    }
     setIsFavoriteCard(!isFavoriteCard);
     offer.isFavorite = isFavoriteCard;
   };
@@ -55,7 +62,7 @@ function Card({offer, cardClassName}: CardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button onClick={favoriteButtonHandle} className={classNames('place-card__bookmark-button button', {
+          <button onClick={handleOnFavoriteButton} className={classNames('place-card__bookmark-button button', {
             'place-card__bookmark-button--active': offer.isFavorite})} type="button"
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">

@@ -9,14 +9,11 @@ import { MainEmpty } from '../../components/main-empty/main-empty.tsx';
 import { Map } from '../../components/map/map.tsx';
 import { OffersSorting } from '../../components/offers-sorting/offers-sorting.tsx';
 import { OfferApi } from '../../mocks/offers-api.ts';
-import { LOCATIONS, AuthorizationStatus, DEFAULT_LOCATION } from '../../const';
+import { LOCATIONS, DEFAULT_LOCATION } from '../../const';
 import { useAppSelector } from '../../hooks/store.ts';
 
-interface MainProps {
-  authorizationStatus: AuthorizationStatus;
-}
-
-function MainPage ({authorizationStatus}: MainProps): JSX.Element {
+function MainPage (): JSX.Element {
+  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const offers = useAppSelector((state) => state.offers.offers);
   const city = useAppSelector((state) => state.offers.city);
   const currentSortType = useAppSelector((state) => state.offers.sortingType);

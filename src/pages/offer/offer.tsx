@@ -15,10 +15,10 @@ import { Card } from '../../components/card/card.tsx';
 
 interface OfferProps {
   reviews: IReview[];
-  authorizationStatus: AuthorizationStatus;
 }
 
-function OfferPage({reviews, authorizationStatus}: OfferProps): JSX.Element {
+function OfferPage({reviews}: OfferProps): JSX.Element {
+  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const offersFull = useAppSelector((state: State): OfferApi[] => state.offers.offers);
   const params = useParams();
   const offerById = offersFull?.find(({id}): boolean => (id).toString() === params.id);
