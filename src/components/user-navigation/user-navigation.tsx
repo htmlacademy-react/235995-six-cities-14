@@ -1,11 +1,14 @@
 import { Link } from 'react-router-dom';
 import { AuthorizationStatus } from '../../const.ts';
+import { useAppSelector } from '../../hooks/store.ts';
 
 type UserNavigationProps = {
   authorizationStatus: AuthorizationStatus;
 }
 
 function UserNavigation({authorizationStatus}: UserNavigationProps) {
+  const offers = useAppSelector((state) => state.offers.offers);
+  const favoriteCardCount = offers.filter((offer) => offer.isFavorite).length;
   return (
     authorizationStatus === AuthorizationStatus.Auth ?
       <nav className="header__nav">
@@ -15,7 +18,7 @@ function UserNavigation({authorizationStatus}: UserNavigationProps) {
               <div className="header__avatar-wrapper user__avatar-wrapper">
               </div>
               <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-              <span className="header__favorite-count">3</span>
+              <span className="header__favorite-count">{favoriteCardCount}</span>
             </Link>
           </li>
           <li className="header__nav-item">

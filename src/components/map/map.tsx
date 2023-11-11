@@ -6,19 +6,19 @@ import 'leaflet/dist/leaflet.css';
 import { Location } from '../../types/offer';
 import { useMap } from '../../hooks/use-map';
 import { OfferApi } from '../../mocks/offers-api';
+import { useAppSelector } from '../../hooks/store.ts';
 
 type MapProps = {
   city: Location;
-  points: OfferApi[];
-  selectedPoint?: OfferApi | undefined;
+  points: OfferApi[] | [];
 };
 
-function Map({city, points, selectedPoint}: MapProps): JSX.Element {
+function Map({city, points}: MapProps): JSX.Element {
+  const selectedPoint = useAppSelector((state) => state.offers.activeOffer);
   const location = useLocation();
   const pathNames = location.pathname.split('/');
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
-
   useEffect(() => {
     if (map) {
       map.scrollWheelZoom.disable();

@@ -1,36 +1,58 @@
 import { getOfferType, getRating } from '../../utils';
-import { Link } from 'react-router-dom';
-import { useCard } from '../../hooks/use-card';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { OfferApi } from '../../mocks/offers-api';
 import classNames from 'classnames';
 import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
+import { offersSlice } from '../../store/slices/offers';
+import { AppRoute, AuthorizationStatus } from '../../const.ts';
 
 interface CardProps {
   offer: OfferApi;
+  cardClassName: string;
 }
 
-function Card({offer}: CardProps): JSX.Element {
+function Card({offer, cardClassName}: CardProps): JSX.Element {
+  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [isFavoriteCard, setIsFavoriteCard] = useState(offer.isFavorite);
-  const favoriteButtonHandle = (): void => {
+  const handleOnFavoriteButton = (): void => {
+    if(authorizationStatus === AuthorizationStatus.Unknown || authorizationStatus === AuthorizationStatus.NoAuth) {
+      navigate(AppRoute.Login);
+      return;
+    }
     setIsFavoriteCard(!isFavoriteCard);
     offer.isFavorite = isFavoriteCard;
   };
+  const location = useLocation();
+  const pathName = location.pathname.slice(1,6);
   const offerId: string = `/offer/${offer.id}`;
-  const activeCard = useCard();
-  const onMouseOverHandler = (): void => {
-    activeCard.setIsActiveCard((offer.id).toString());
+
+  const handleOnMouseOver = (): void => {
+    if(pathName !== 'offer') {
+      dispatch(offersSlice.actions.getActiveOffer(offer));
+    }
+
   };
-  const onMouseLeave = (): void => {
-    activeCard.setIsActiveCard('null');
+  const handleOnMouseLeave = (): void => {
+    if(pathName !== 'offer') {
+      dispatch(offersSlice.actions.getActiveOffer(undefined));
+    }
   };
+  // Меняет активный город на странице офера
+  const handleClickCard = (): void => {
+    dispatch(offersSlice.actions.getActiveOffer(offer));
+  };
+
   return (
-    <article onMouseOver={onMouseOverHandler} onMouseOut={onMouseLeave} className="cities__card place-card" >
+    <article onMouseOver={handleOnMouseOver} onMouseOut={handleOnMouseLeave} className={`${cardClassName}__card place-card`} >
       {offer.isPremium &&
       <div className='place-card__mark'>
         <span>Premium</span>
       </div>}
-      <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={offerId}>
+      <div className={`${cardClassName}__image-wrapper place-card__image-wrapper`}>
+        <Link to={offerId} onClick={handleClickCard}>
           <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image" />
         </Link>
       </div>
@@ -40,7 +62,7 @@ function Card({offer}: CardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button onClick={favoriteButtonHandle} className={classNames('place-card__bookmark-button button', {
+          <button onClick={handleOnFavoriteButton} className={classNames('place-card__bookmark-button button', {
             'place-card__bookmark-button--active': offer.isFavorite})} type="button"
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
@@ -56,7 +78,7 @@ function Card({offer}: CardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={offerId}>{offer.title}</Link>
+          <Link to={offerId} onClick={handleClickCard}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{ getOfferType(offer.type) }</p>
       </div>
