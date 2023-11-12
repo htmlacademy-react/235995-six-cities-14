@@ -2,11 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { AuthorizationStatus } from '../../const';
 
-export interface OffersProps {
+export interface UserProps {
   authorizationStatus: AuthorizationStatus;
 }
 
-const initialState: OffersProps = {
+const initialState: UserProps = {
   authorizationStatus: AuthorizationStatus.Auth,
 };
 
