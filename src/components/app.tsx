@@ -15,9 +15,10 @@ import { AppRoute, LOCATIONS } from '../const';
 import { REVIEWS } from '../mocks/reviews';
 // Store
 import { store } from '../store/';
-import { fetchOffersAction } from '../store/api-actions';
+import { checkAuthAction, fetchOffersAction } from '../store/api-actions';
 import { useAppSelector } from '../hooks/store';
 
+store.dispatch(checkAuthAction());
 store.dispatch(fetchOffersAction());
 
 function App(): JSX.Element {

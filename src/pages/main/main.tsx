@@ -32,7 +32,6 @@ function MainPage (): JSX.Element {
       navigate(`/${DEFAULT_LOCATION}`);
     }
   }, [city, navigate, location, dispatch]);
-
   // Получаем массив оферов по заданному городу
   const offersByCity = offers.filter((item) => item.city.name === city);
   // Функции сортировки предложений

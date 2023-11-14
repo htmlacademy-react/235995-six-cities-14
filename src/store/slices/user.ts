@@ -4,10 +4,12 @@ import { AuthorizationStatus, NameSpace } from '../../const';
 
 export interface UserProps {
   authorizationStatus: AuthorizationStatus;
+  userEmail: string;
 }
 
 const initialState: UserProps = {
   authorizationStatus: AuthorizationStatus.NoAuth,
+  userEmail: '',
 };
 
 export const userSlice = createSlice({
@@ -16,8 +18,11 @@ export const userSlice = createSlice({
   reducers: {
     setAuthorizationStatus: (state, action: PayloadAction<AuthorizationStatus>) => {
       state.authorizationStatus = action.payload;
+    },
+    setUserEmail: (state, action: PayloadAction<string>) => {
+      state.userEmail = action.payload;
     }
   }
 });
 
-export const { setAuthorizationStatus } = userSlice.actions;
+export const { setAuthorizationStatus, setUserEmail } = userSlice.actions;
