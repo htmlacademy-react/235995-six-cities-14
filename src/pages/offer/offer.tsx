@@ -6,7 +6,7 @@ import { OfferForm } from '../../components/offer-form/offer-form';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
 import { Map } from '../../components/map/map.tsx';
 import { getOfferType, getRating } from '../../utils';
-import { OfferApi } from '../../mocks/offers-api.ts';
+import { OfferApi } from '../../types/offer.ts';
 import { IReview } from '../../mocks/reviews';
 import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACES_OFFER_COUNT, AppRoute, OFFER_CLASSES } from '../../const.ts';
 import { State } from '../../types/state.ts';

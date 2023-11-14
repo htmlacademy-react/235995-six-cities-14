@@ -8,10 +8,11 @@ import { UserNavigation } from '../../components/user-navigation/user-navigation
 import { MainEmpty } from '../../components/main-empty/main-empty.tsx';
 import { Map } from '../../components/map/map.tsx';
 import { OffersSorting } from '../../components/offers-sorting/offers-sorting.tsx';
-import { OfferApi } from '../../mocks/offers-api.ts';
+import { OfferApi } from '../../types/offer.ts';
 import { LOCATIONS, DEFAULT_LOCATION } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks/store.ts';
 import { offersSlice } from '../../store/slices/offers.ts';
+import { Spinner } from '../../components/spinner/spinner.tsx';
 
 function MainPage (): JSX.Element {
   const dispatch = useAppDispatch();
@@ -19,11 +20,16 @@ function MainPage (): JSX.Element {
   const offers = useAppSelector((state) => state.offers.offers);
   const city = useAppSelector((state) => state.offers.city);
   const location = useLocation().pathname.slice(1);
+  const loadingStatus = useAppSelector((state) => state.loadOffers.isOffersDataLoading);
+  // При переходе со страницы логин на случайный город
+  if (city !== location && LOCATIONS.includes(location)) {
+    dispatch(offersSlice.actions.setCity(location));
+  }
   const currentSortType = useAppSelector((state) => state.offers.sortingType);
   // По умолчанию перенаправляем на город Париж
   const navigate = useNavigate();
   useEffect(() => {
-    if(!location || location !== city) {
+    if(!location || !LOCATIONS.includes(location)) {
       dispatch(offersSlice.actions.setCity(location));
       navigate(`/${DEFAULT_LOCATION}`);
     }
@@ -42,6 +48,11 @@ function MainPage (): JSX.Element {
   // Получаем кол-во количество оферов по городу
   const amountOffers = offersByCity.length;
   const isEmpty = amountOffers > 0;
+
+  if (loadingStatus) {
+    return <Spinner />;
+  }
+
   return (
     <div className="page page--gray page--main">
       <Helmet>

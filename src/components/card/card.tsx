@@ -1,6 +1,6 @@
 import { getOfferType, getRating } from '../../utils';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { OfferApi } from '../../mocks/offers-api';
+import { OfferApi } from '../../types/offer.ts';
 import classNames from 'classnames';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';

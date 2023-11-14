@@ -1,8 +1,11 @@
 import { Helmet } from 'react-helmet-async';
 import { Logo } from '../../components/logo/logo';
 import { Link } from 'react-router-dom';
+import { LOCATIONS } from '../../const';
 
 function LoginPage(): JSX.Element {
+  const getRandomCity = (cities: string[]) => cities[Math.floor(Math.random() * 6)];
+  const randomCity = getRandomCity(LOCATIONS);
   return (
     <div className="page page--gray page--login">
       <Helmet>
@@ -38,8 +41,8 @@ function LoginPage(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <Link className="locations__item-link" to="/Amsterdam">
-                <span>Amsterdam</span>
+              <Link className="locations__item-link" to={`/${randomCity}`}>
+                <span>{randomCity}</span>
               </Link>
             </div>
           </section>

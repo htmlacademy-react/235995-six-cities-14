@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Logo } from '../../components/logo/logo';
 import { FavoritesLocation } from '../../components/favorites-location/favorites-location';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
-import { OfferApi } from '../../mocks/offers-api.ts';
+import { OfferApi } from '../../types/offer.ts';
 import { FavoritesEmpty } from '../../components/favorites-empty/favorites-empty.tsx';
 import { useAppSelector } from '../../hooks/store.ts';
 

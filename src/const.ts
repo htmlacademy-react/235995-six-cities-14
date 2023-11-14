@@ -1,6 +1,6 @@
 import { Icon } from 'leaflet';
 
-export const AUTH_TOKEN_KEY_NAME = '6-cities-token';
+export const AUTH_TOKEN_KEY_NAME = 'six-cities-token';
 export const REQUEST_TIMEOUT = 5000;
 export const BASE_URL = 'https://14.design.pages.academy/six-cities';
 export const DEFAULT_TYPE_SORTING = 'Popular';
@@ -44,12 +44,20 @@ export const CURRENT_CUSTOM_ICON = new Icon({
   iconAnchor: [27, 39],
 });
 
+export const enum NameSpace {
+  Offers = 'offers',
+  LoadOffers ='loadOffers',
+  loadError = 'loadError',
+  User = 'user',
+  Favorites = 'favorites',
+}
+
 export const enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
-
+// ручки
 export const enum APIRoute {
   Offers = '/offers',
   Nearby = '/nearby',

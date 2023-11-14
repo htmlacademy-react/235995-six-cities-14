@@ -1,17 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { AuthorizationStatus } from '../../const';
+import { AuthorizationStatus, NameSpace } from '../../const';
 
 export interface UserProps {
   authorizationStatus: AuthorizationStatus;
 }
 
 const initialState: UserProps = {
-  authorizationStatus: AuthorizationStatus.Auth,
+  authorizationStatus: AuthorizationStatus.NoAuth,
 };
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: NameSpace.User,
   initialState,
   reducers: {
     setAuthorizationStatus: (state, action: PayloadAction<AuthorizationStatus>) => {

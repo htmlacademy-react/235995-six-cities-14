@@ -14,6 +14,9 @@ import { RedirectToMainPage } from './redirect-to-main-page/redirect-to-main-pag
 import { AppRoute, LOCATIONS } from '../const';
 import { REVIEWS } from '../mocks/reviews';
 import { store } from '../store/';
+import { fetchOffersAction } from '../store/api-actions';
+
+store.dispatch(fetchOffersAction());
 
 function App(): JSX.Element {
   return (
