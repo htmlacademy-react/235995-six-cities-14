@@ -1,7 +1,7 @@
 import { Card } from '../card/card';
 import { useAppSelector } from '../../hooks/store.ts';
 import { OFFER_CLASSES } from '../../const.ts';
-import { OfferApi } from '../../mocks/offers-api.ts';
+import { OfferApi } from '../../types/offer.ts';
 
 type cardListProps = {
   sortedOffers: OfferApi[];

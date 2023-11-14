@@ -5,7 +5,7 @@ import { DEFAULT_CUSTOM_ICON, CURRENT_CUSTOM_ICON } from '../../const';
 import 'leaflet/dist/leaflet.css';
 import { Location } from '../../types/offer';
 import { useMap } from '../../hooks/use-map';
-import { OfferApi } from '../../mocks/offers-api';
+import { OfferApi } from '../../types/offer.ts';
 import { useAppSelector } from '../../hooks/store.ts';
 
 type MapProps = {
