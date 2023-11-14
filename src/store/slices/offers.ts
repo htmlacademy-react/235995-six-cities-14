@@ -23,9 +23,6 @@ export const offersSlice = createSlice({
   name: NameSpace.Offers,
   initialState,
   reducers: {
-    getOffers: (state, action: PayloadAction<OfferApi[]>) => {
-      state.offers = action.payload;
-    },
     getSortedOffers: (state, action: PayloadAction<OfferApi[]>) => {
       state.sortedOffers = action.payload;
     },
@@ -41,4 +38,4 @@ export const offersSlice = createSlice({
   }
 });
 
-export const { getOffers, setCity, sortType, getSortedOffers, getActiveOffer } = offersSlice.actions;
+export const { setCity, sortType, getSortedOffers, getActiveOffer } = offersSlice.actions;

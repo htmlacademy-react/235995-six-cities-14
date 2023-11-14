@@ -11,7 +11,7 @@ import { PrivateRoute } from './private-route/private-route';
 import { RedirectToMainPage } from './redirect-to-main-page/redirect-to-main-page';
 import { Spinner } from './spinner/spinner';
 // Data
-import { AppRoute, LOCATIONS } from '../const';
+import { AppRoute, AuthorizationStatus, LOCATIONS } from '../const';
 import { REVIEWS } from '../mocks/reviews';
 // Store
 import { store } from '../store/';
@@ -22,8 +22,9 @@ store.dispatch(checkAuthAction());
 store.dispatch(fetchOffersAction());
 
 function App(): JSX.Element {
+  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const loadingStatus = useAppSelector((state) => state.loadOffers.isOffersDataLoading);
-  if (loadingStatus) {
+  if (loadingStatus || authorizationStatus === AuthorizationStatus.Unknown) {
     return <Spinner />;
   }
   return (

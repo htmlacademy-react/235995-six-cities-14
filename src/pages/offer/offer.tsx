@@ -10,7 +10,7 @@ import { OfferApi } from '../../types/offer.ts';
 import { IReview } from '../../mocks/reviews';
 import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACES_OFFER_COUNT, AppRoute, OFFER_CLASSES } from '../../const.ts';
 import { State } from '../../types/state.ts';
-import { useAppSelector } from '../../hooks/store.ts'; // useAppDispatch,
+import { useAppSelector } from '../../hooks/store.ts';
 import { Card } from '../../components/card/card.tsx';
 
 interface OfferProps {
@@ -19,7 +19,7 @@ interface OfferProps {
 
 function OfferPage({reviews}: OfferProps): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
-  const offersFull = useAppSelector((state: State): OfferApi[] => state.offers.offers);
+  const offersFull = useAppSelector((state: State): OfferApi[] => state.loadOffers.offers);
   const params = useParams();
   const offerById = offersFull?.find(({id}): boolean => (id).toString() === params.id);
 

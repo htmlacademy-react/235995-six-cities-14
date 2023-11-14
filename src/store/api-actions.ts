@@ -4,29 +4,26 @@ import { APIRoute, AuthorizationStatus } from '../const';
 import { AppDispatch } from '../types/state';
 import { OfferApi } from '../types/offer';
 import { State } from '../types/state';
-import { offersSlice } from './slices/offers';
 import { userSlice } from './slices/user';
 import { saveToken, dropToken } from '../services/token';
 import { AuthData, UserData } from '../types/user';
 
-export const fetchOffersAction = createAsyncThunk<void, undefined, {
+type Extra = {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
-}>(
+}
+
+export const fetchOffersAction = createAsyncThunk<OfferApi[], undefined, Extra>(
   'data/fetchOffers',
-  async (_arg, {dispatch, extra: api}) => {
+  async (_arg, {extra: api}) => {
     const {data} = await api.get<OfferApi[]>(APIRoute.Offers);
 
-    dispatch(offersSlice.actions.getOffers(data));
+    return data;
   },
 );
 
-export const checkAuthAction = createAsyncThunk<void, undefined, {
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-}>(
+export const checkAuthAction = createAsyncThunk<void, undefined, Extra>(
   'user/checkAuth',
   async (_arg, {dispatch, extra: api}) => {
     try {
@@ -38,11 +35,7 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
   },
 );
 
-export const loginAction = createAsyncThunk<void, AuthData, {
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-}>(
+export const loginAction = createAsyncThunk<void, AuthData, Extra>(
   'user/login',
   async ({login: email, password}, {dispatch, extra: api}) => {
     const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
@@ -51,11 +44,7 @@ export const loginAction = createAsyncThunk<void, AuthData, {
   },
 );
 
-export const logoutAction = createAsyncThunk<void, undefined, {
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-}>(
+export const logoutAction = createAsyncThunk<void, undefined, Extra>(
   'user/logout',
   async (_arg, {dispatch, extra: api}) => {
     await api.delete(APIRoute.Logout);

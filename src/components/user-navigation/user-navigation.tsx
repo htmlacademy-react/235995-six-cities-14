@@ -5,7 +5,7 @@ import { logoutAction } from '../../store/api-actions.ts';
 
 function UserNavigation() {
   const dispatch = useAppDispatch();
-  const offers = useAppSelector((state) => state.offers.offers);
+  const offers = useAppSelector((state) => state.loadOffers.offers);
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const favoriteCardCount = offers.filter((offer) => offer.isFavorite).length;
   const userEmail = useAppSelector((state) => state.user.userEmail);
