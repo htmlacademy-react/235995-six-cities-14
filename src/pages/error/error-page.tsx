@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Logo } from '../../components/logo/logo';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
-import { AuthorizationStatus } from '../../const.ts';
 import { LOCATIONS } from '../../const';
 import { LocationItem } from '../../components/location-item/location-item';
 
@@ -18,7 +17,7 @@ function NotFoundPage(): JSX.Element {
             <div className="header__left">
               <Logo />
             </div>
-            <UserNavigation authorizationStatus={AuthorizationStatus.Auth} />
+            <UserNavigation />
           </div>
         </div>
       </header>
