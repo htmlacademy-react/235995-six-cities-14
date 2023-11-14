@@ -20,11 +20,12 @@ function LoginPage(): JSX.Element {
     evt.preventDefault();
 
     if (loginRef.current !== null && passwordRef.current !== null) {
+      const login = loginRef.current.value;
       dispatch(loginAction({
-        login: loginRef.current.value,
+        login,
         password: passwordRef.current.value
       }));
-      dispatch(userSlice.actions.setUserEmail(loginRef.current.value));
+      dispatch(userSlice.actions.setUserEmail(login));
     }
   };
 
@@ -60,7 +61,6 @@ function LoginPage(): JSX.Element {
               </div>
               <button className="login__submit form__submit button" type="submit">Sign in</button>
             </form>
-            {/* onClick={() => navigate(AppRoute.Root)} */}
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">

@@ -17,7 +17,6 @@ function MainPage (): JSX.Element {
   const dispatch = useAppDispatch();
   const city = useAppSelector((state) => state.offers.city);
   const location = useLocation().pathname.slice(1);
-  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const offers = useAppSelector((state) => state.offers.offers);
   const currentSortType = useAppSelector((state) => state.offers.sortingType);
   // По умолчанию перенаправляем на город Париж
@@ -59,7 +58,7 @@ function MainPage (): JSX.Element {
                 <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
               </a>
             </div>
-            <UserNavigation authorizationStatus={authorizationStatus} />
+            <UserNavigation />
           </div>
         </div>
       </header>
