@@ -18,6 +18,7 @@ interface OfferProps {
 }
 
 function OfferPage({reviews}: OfferProps): JSX.Element {
+  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const offersFull = useAppSelector((state: State): OfferApi[] => state.loadOffers.offers);
   const params = useParams();
   const offerById = offersFull?.find(({id}): boolean => (id).toString() === params.id);
@@ -133,7 +134,7 @@ function OfferPage({reviews}: OfferProps): JSX.Element {
                   </p>
                 </div>
               </div>
-              {AuthorizationStatus.Auth &&
+              {authorizationStatus === AuthorizationStatus.Auth &&
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">{reviews.length > 1 ? 'Reviews' : 'Review'} &middot; <span className="reviews__amount">{reviews.length}</span></h2>
                 <ul className="reviews__list">
