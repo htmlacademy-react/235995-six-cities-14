@@ -6,11 +6,11 @@ import { OfferForm } from '../../components/offer-form/offer-form';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
 import { Map } from '../../components/map/map.tsx';
 import { getOfferType, getRating } from '../../utils';
-import { OfferApi } from '../../mocks/offers-api.ts';
+import { OfferApi } from '../../types/offer.ts';
 import { IReview } from '../../mocks/reviews';
 import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACES_OFFER_COUNT, AppRoute, OFFER_CLASSES } from '../../const.ts';
 import { State } from '../../types/state.ts';
-import { useAppSelector } from '../../hooks/store.ts'; // useAppDispatch,
+import { useAppSelector } from '../../hooks/store.ts';
 import { Card } from '../../components/card/card.tsx';
 
 interface OfferProps {
@@ -19,7 +19,7 @@ interface OfferProps {
 
 function OfferPage({reviews}: OfferProps): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
-  const offersFull = useAppSelector((state: State): OfferApi[] => state.offers.offers);
+  const offersFull = useAppSelector((state: State): OfferApi[] => state.loadOffers.offers);
   const params = useParams();
   const offerById = offersFull?.find(({id}): boolean => (id).toString() === params.id);
 
@@ -50,7 +50,7 @@ function OfferPage({reviews}: OfferProps): JSX.Element {
             <div className="header__left">
               <Logo />
             </div>
-            <UserNavigation authorizationStatus={authorizationStatus} />
+            <UserNavigation />
           </div>
         </div>
       </header>
@@ -134,7 +134,7 @@ function OfferPage({reviews}: OfferProps): JSX.Element {
                   </p>
                 </div>
               </div>
-              {AuthorizationStatus.Auth &&
+              {authorizationStatus === AuthorizationStatus.Auth &&
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">{reviews.length > 1 ? 'Reviews' : 'Review'} &middot; <span className="reviews__amount">{reviews.length}</span></h2>
                 <ul className="reviews__list">

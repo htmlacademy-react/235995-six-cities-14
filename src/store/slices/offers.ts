@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { OfferApi, OFFERS_API } from '../../mocks/offers-api';
-import { DEFAULT_LOCATION, DEFAULT_TYPE_SORTING } from '../../const';
+import { OfferApi } from '../../types/offer';
+import { DEFAULT_LOCATION, DEFAULT_TYPE_SORTING, NameSpace } from '../../const';
 
 export interface OffersProps {
   offers: OfferApi[];
@@ -12,7 +12,7 @@ export interface OffersProps {
 }
 
 const initialState: OffersProps = {
-  offers: OFFERS_API,
+  offers: [],
   city: DEFAULT_LOCATION,
   sortingType: DEFAULT_TYPE_SORTING,
   sortedOffers: [],
@@ -20,12 +20,9 @@ const initialState: OffersProps = {
 };
 
 export const offersSlice = createSlice({
-  name: 'offers',
+  name: NameSpace.Offers,
   initialState,
   reducers: {
-    getOffers: (state, action: PayloadAction<OfferApi[]>) => {
-      state.offers = action.payload;
-    },
     getSortedOffers: (state, action: PayloadAction<OfferApi[]>) => {
       state.sortedOffers = action.payload;
     },
@@ -41,4 +38,4 @@ export const offersSlice = createSlice({
   }
 });
 
-export const { getOffers, setCity, sortType, getSortedOffers, getActiveOffer } = offersSlice.actions;
+export const { setCity, sortType, getSortedOffers, getActiveOffer } = offersSlice.actions;

@@ -8,27 +8,29 @@ import { UserNavigation } from '../../components/user-navigation/user-navigation
 import { MainEmpty } from '../../components/main-empty/main-empty.tsx';
 import { Map } from '../../components/map/map.tsx';
 import { OffersSorting } from '../../components/offers-sorting/offers-sorting.tsx';
-import { OfferApi } from '../../mocks/offers-api.ts';
+import { OfferApi } from '../../types/offer.ts';
 import { LOCATIONS, DEFAULT_LOCATION } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks/store.ts';
 import { offersSlice } from '../../store/slices/offers.ts';
 
 function MainPage (): JSX.Element {
   const dispatch = useAppDispatch();
-  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
-  const offers = useAppSelector((state) => state.offers.offers);
   const city = useAppSelector((state) => state.offers.city);
   const location = useLocation().pathname.slice(1);
+  const offers = useAppSelector((state) => state.loadOffers.offers);
   const currentSortType = useAppSelector((state) => state.offers.sortingType);
   // По умолчанию перенаправляем на город Париж
   const navigate = useNavigate();
   useEffect(() => {
-    if(!location || location !== city) {
+    // При переходе со страницы логин на случайный город
+    if (city !== location && LOCATIONS.includes(location)) {
+      dispatch(offersSlice.actions.setCity(location));
+    }
+    if(!location || !LOCATIONS.includes(location)) {
       dispatch(offersSlice.actions.setCity(location));
       navigate(`/${DEFAULT_LOCATION}`);
     }
   }, [city, navigate, location, dispatch]);
-
   // Получаем массив оферов по заданному городу
   const offersByCity = offers.filter((item) => item.city.name === city);
   // Функции сортировки предложений
@@ -42,6 +44,7 @@ function MainPage (): JSX.Element {
   // Получаем кол-во количество оферов по городу
   const amountOffers = offersByCity.length;
   const isEmpty = amountOffers > 0;
+
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -55,7 +58,7 @@ function MainPage (): JSX.Element {
                 <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
               </a>
             </div>
-            <UserNavigation authorizationStatus={authorizationStatus} />
+            <UserNavigation />
           </div>
         </div>
       </header>

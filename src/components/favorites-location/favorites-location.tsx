@@ -1,5 +1,5 @@
 import { OFFER_CLASSES } from '../../const';
-import { OfferApi } from '../../mocks/offers-api';
+import { OfferApi } from '../../types/offer.ts';
 import { Card } from '../card/card';
 
 interface FavoritesLocationProps {

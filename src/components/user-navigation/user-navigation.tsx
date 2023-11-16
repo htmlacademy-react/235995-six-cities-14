@@ -1,14 +1,18 @@
 import { Link } from 'react-router-dom';
 import { AuthorizationStatus } from '../../const.ts';
-import { useAppSelector } from '../../hooks/store.ts';
+import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
+import { logoutAction } from '../../store/api-actions.ts';
 
-type UserNavigationProps = {
-  authorizationStatus: AuthorizationStatus;
-}
-
-function UserNavigation({authorizationStatus}: UserNavigationProps) {
-  const offers = useAppSelector((state) => state.offers.offers);
+function UserNavigation() {
+  const dispatch = useAppDispatch();
+  const offers = useAppSelector((state) => state.loadOffers.offers);
+  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const favoriteCardCount = offers.filter((offer) => offer.isFavorite).length;
+  const userEmail = useAppSelector((state) => state.user.userEmail);
+  const handleLogout = (evt: { preventDefault: () => void }) => {
+    evt.preventDefault();
+    dispatch(logoutAction());
+  };
   return (
     authorizationStatus === AuthorizationStatus.Auth ?
       <nav className="header__nav">
@@ -17,12 +21,12 @@ function UserNavigation({authorizationStatus}: UserNavigationProps) {
             <Link className="header__nav-link header__nav-link--profile" to={'/favorites'} >
               <div className="header__avatar-wrapper user__avatar-wrapper">
               </div>
-              <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+              <span className="header__user-name user__name">{userEmail}</span>
               <span className="header__favorite-count">{favoriteCardCount}</span>
             </Link>
           </li>
           <li className="header__nav-item">
-            <Link className="header__nav-link" to={'/'}>
+            <Link onClick={handleLogout} className="header__nav-link" to={'/'}>
               <span className="header__signout">Sign out</span>
             </Link>
           </li>
