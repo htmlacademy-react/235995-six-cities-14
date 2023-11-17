@@ -32,7 +32,7 @@ function App(): JSX.Element {
   }
   return (
     <HelmetProvider>
-      <HistoryRouter history={browserHistory}x>
+      <HistoryRouter history={browserHistory}>
         <Routes>
           <Route
             path={AppRoute.Root}
