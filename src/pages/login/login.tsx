@@ -5,7 +5,6 @@ import { LOCATIONS } from '../../const';
 import { FormEvent, useRef } from 'react';
 import { useAppDispatch } from '../../hooks/store';
 import { loginAction } from '../../store/api-actions';
-import { userSlice } from '../../store/slices/user';
 
 function LoginPage(): JSX.Element {
   const getRandomCity = (cities: string[]) => cities[Math.floor(Math.random() * 6)];
@@ -18,14 +17,11 @@ function LoginPage(): JSX.Element {
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-
     if (loginRef.current !== null && passwordRef.current !== null) {
-      const login = loginRef.current.value;
       dispatch(loginAction({
-        login,
-        password: passwordRef.current.value
+        login: loginRef.current.value,
+        password: passwordRef.current.value,
       }));
-      dispatch(userSlice.actions.setUserEmail(login));
     }
   };
 

@@ -1,5 +1,6 @@
 import { Icon } from 'leaflet';
 
+export const TIMEOUT_SHOW_ERROR = 3000;
 export const AUTH_TOKEN_KEY_NAME = 'six-cities-token';
 export const REQUEST_TIMEOUT = 5000;
 export const BASE_URL = 'https://14.design.pages.academy/six-cities';

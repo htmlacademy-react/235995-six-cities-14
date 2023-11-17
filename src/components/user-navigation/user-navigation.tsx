@@ -8,7 +8,7 @@ function UserNavigation() {
   const offers = useAppSelector((state) => state.loadOffers.offers);
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const favoriteCardCount = offers.filter((offer) => offer.isFavorite).length;
-  const userEmail = useAppSelector((state) => state.user.userEmail);
+  const userEmail = 'example@email.com';
   const handleLogout = (evt: { preventDefault: () => void }) => {
     evt.preventDefault();
     dispatch(logoutAction());
