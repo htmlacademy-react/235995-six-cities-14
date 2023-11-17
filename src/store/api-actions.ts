@@ -1,10 +1,10 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { APIRoute, AppRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
+import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 import { AppDispatch } from '../types/state';
 import { OfferApi } from '../types/offer';
 import { State } from '../types/state';
-import { redirectToRoute, userSlice } from './slices/user';
+import { userSlice } from './slices/user';
 import { saveToken, dropToken } from '../services/token';
 import { AuthData, UserData } from '../types/user';
 import { store } from '.';
