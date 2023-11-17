@@ -40,10 +40,10 @@ export const checkAuthAction = createAsyncThunk<void, undefined, Extra>(
 export const loginAction = createAsyncThunk<void, AuthData, Extra>(
   'user/login',
   async ({login: email, password}, {dispatch, extra: api}) => {
-    const {data: {token}} = await api.post<UserData | User>(APIRoute.Login, {email, password});
+    const {data: {token}, data} = await api.post<UserData | User>(APIRoute.Login, {email, password});
     saveToken(token);
     dispatch(userSlice.actions.setAuthorizationStatus(AuthorizationStatus.Auth));
-    dispatch(userSlice.actions.addUserEmail(email));
+    dispatch(userSlice.actions.addUserEmail(data as User));
     // dispatch(redirectToRoute(AppRoute.Root));
   },
 );
