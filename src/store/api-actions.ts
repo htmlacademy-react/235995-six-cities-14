@@ -6,7 +6,7 @@ import { OfferApi } from '../types/offer';
 import { State } from '../types/state';
 import { userSlice } from './slices/user';
 import { saveToken, dropToken } from '../services/token';
-import { AuthData, UserData } from '../types/user';
+import { AuthData, UserData, User } from '../types/user';
 import { store } from '.';
 import { loadErrorSlice } from './slices/load-error';
 
@@ -40,9 +40,10 @@ export const checkAuthAction = createAsyncThunk<void, undefined, Extra>(
 export const loginAction = createAsyncThunk<void, AuthData, Extra>(
   'user/login',
   async ({login: email, password}, {dispatch, extra: api}) => {
-    const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
+    const {data: {token}} = await api.post<UserData | User>(APIRoute.Login, {email, password});
     saveToken(token);
     dispatch(userSlice.actions.setAuthorizationStatus(AuthorizationStatus.Auth));
+    dispatch(userSlice.actions.addUserEmail(email));
     // dispatch(redirectToRoute(AppRoute.Root));
   },
 );

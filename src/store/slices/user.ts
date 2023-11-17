@@ -4,7 +4,7 @@ import { AppRoute, AuthorizationStatus, NameSpace } from '../../const';
 
 export interface UserProps {
   authorizationStatus: AuthorizationStatus;
-  userEmail: string;
+  userEmail: string | null;
   redirectToRoute: AppRoute;
 }
 
@@ -21,7 +21,7 @@ export const userSlice = createSlice({
     setAuthorizationStatus: (state, action: PayloadAction<AuthorizationStatus>) => {
       state.authorizationStatus = action.payload;
     },
-    setUserEmail: (state, action: PayloadAction<string>) => {
+    addUserEmail: (state, action: PayloadAction<string | null>) => {
       state.userEmail = action.payload;
     },
     redirectToRoute: (state, action: PayloadAction<AppRoute>) => {
@@ -30,4 +30,4 @@ export const userSlice = createSlice({
   }
 });
 
-export const { setAuthorizationStatus, setUserEmail, redirectToRoute } = userSlice.actions;
+export const { setAuthorizationStatus, addUserEmail, redirectToRoute } = userSlice.actions;
