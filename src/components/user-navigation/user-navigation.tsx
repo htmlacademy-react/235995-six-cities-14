@@ -8,7 +8,7 @@ function UserNavigation() {
   const offers = useAppSelector((state) => state.loadOffers.offers);
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const favoriteCardCount = offers.filter((offer) => offer.isFavorite).length;
-  const userEmail = useAppSelector((state) => state.user.userEmail);
+  const userData = useAppSelector((state) => state.user.userData);
   const handleLogout = (evt: { preventDefault: () => void }) => {
     evt.preventDefault();
     dispatch(logoutAction());
@@ -20,8 +20,9 @@ function UserNavigation() {
           <li className="header__nav-item user">
             <Link className="header__nav-link header__nav-link--profile" to={'/favorites'} >
               <div className="header__avatar-wrapper user__avatar-wrapper">
+                <img src={userData?.avatarUrl} alt={userData?.name} />
               </div>
-              <span className="header__user-name user__name">{userEmail}</span>
+              <span className="header__user-name user__name">{userData?.email}</span>
               <span className="header__favorite-count">{favoriteCardCount}</span>
             </Link>
           </li>

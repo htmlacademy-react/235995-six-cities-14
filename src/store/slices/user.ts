@@ -1,15 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { AuthorizationStatus, NameSpace } from '../../const';
+import { AppRoute, AuthorizationStatus, NameSpace } from '../../const';
+import { User } from '../../types/user';
 
 export interface UserProps {
   authorizationStatus: AuthorizationStatus;
-  userEmail: string;
+  userData: User | null;
+  redirectToRoute: AppRoute;
 }
 
 const initialState: UserProps = {
   authorizationStatus: AuthorizationStatus.NoAuth,
-  userEmail: '',
+  userData: null,
+  redirectToRoute: AppRoute.Root,
 };
 
 export const userSlice = createSlice({
@@ -19,10 +22,13 @@ export const userSlice = createSlice({
     setAuthorizationStatus: (state, action: PayloadAction<AuthorizationStatus>) => {
       state.authorizationStatus = action.payload;
     },
-    setUserEmail: (state, action: PayloadAction<string>) => {
-      state.userEmail = action.payload;
+    addUserEmail: (state, action: PayloadAction<User | null>) => {
+      state.userData = action.payload;
+    },
+    redirectToRoute: (state, action: PayloadAction<AppRoute>) => {
+      state.redirectToRoute = action.payload;
     }
   }
 });
 
-export const { setAuthorizationStatus, setUserEmail } = userSlice.actions;
+export const { setAuthorizationStatus, addUserEmail, redirectToRoute } = userSlice.actions;

@@ -9,7 +9,7 @@ const initialState: LoadErrorSlice = {
   error: null,
 };
 
-export const loadError = createSlice({
+export const loadErrorSlice = createSlice({
   name: NameSpace.loadError,
   initialState,
   reducers: {

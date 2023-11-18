@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 // pages
 import { MainPage } from '../pages/main/main';
@@ -7,8 +7,6 @@ import { OfferPage } from '../pages/offer/offer';
 import { FavoritesPage } from '../pages/favorites/favorites';
 import { NotFoundPage } from '../pages/error/error-page';
 // components
-import { PrivateRoute } from './private-route/private-route';
-import { RedirectToMainPage } from './redirect-to-main-page/redirect-to-main-page';
 import { Spinner } from './spinner/spinner';
 // Data
 import { AppRoute, AuthorizationStatus, LOCATIONS } from '../const';
@@ -17,6 +15,11 @@ import { REVIEWS } from '../mocks/reviews';
 import { store } from '../store/';
 import { checkAuthAction, fetchOffersAction } from '../store/api-actions';
 import { useAppSelector } from '../hooks/store';
+// Routes
+import { RedirectToMainPage } from './redirect-to-main-page/redirect-to-main-page';
+import { PrivateRoute } from './private-route/private-route';
+import { HistoryRouter } from './history-route/history-route';
+import { browserHistory } from '../browser-history';
 
 store.dispatch(checkAuthAction());
 store.dispatch(fetchOffersAction());
@@ -29,7 +32,7 @@ function App(): JSX.Element {
   }
   return (
     <HelmetProvider>
-      <BrowserRouter>
+      <HistoryRouter history={browserHistory}>
         <Routes>
           <Route
             path={AppRoute.Root}
@@ -76,7 +79,7 @@ function App(): JSX.Element {
           >
           </Route>
         </Routes>
-      </BrowserRouter>
+      </HistoryRouter>
     </HelmetProvider>
   );
 }
