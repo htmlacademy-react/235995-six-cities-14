@@ -10,7 +10,7 @@ import { useAppSelector } from '../../hooks/store.ts';
 
 type MapProps = {
   city: Location;
-  points: OfferApi[] | [];
+  points: OfferApi[] | undefined;
 };
 
 function Map({city, points}: MapProps): JSX.Element {
@@ -31,7 +31,7 @@ function Map({city, points}: MapProps): JSX.Element {
         map.scrollWheelZoom.disable();
       });
       const markerLayer = layerGroup().addTo(map);
-      points.forEach((point) => {
+      points?.forEach((point) => {
         const marker = new Marker({
           lat: point.location.latitude,
           lng: point.location.longitude

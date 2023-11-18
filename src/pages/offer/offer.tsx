@@ -1,41 +1,50 @@
+import { useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+// Components
 import { Review } from '../../components/review/review';
 import { Logo } from '../../components/logo/logo';
 import { OfferForm } from '../../components/offer-form/offer-form';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
 import { Map } from '../../components/map/map.tsx';
+import { Card } from '../../components/card/card.tsx';
+
 import { getOfferType, getRating } from '../../utils';
 import { OfferApi } from '../../types/offer.ts';
 import { IReview } from '../../mocks/reviews';
 import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACES_OFFER_COUNT, AppRoute, OFFER_CLASSES } from '../../const.ts';
 import { State } from '../../types/state.ts';
-import { useAppSelector } from '../../hooks/store.ts';
-import { Card } from '../../components/card/card.tsx';
+import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
+import { fetchOfferAction, fetchOffersNearby } from '../../store/api-actions.ts';
+import { store } from '../../store/index.ts';
+import { offersSlice } from '../../store/slices/offers.ts';
+
 
 interface OfferProps {
   reviews: IReview[];
 }
 
 function OfferPage({reviews}: OfferProps): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
-  const offersFull = useAppSelector((state: State): OfferApi[] => state.loadOffers.offers);
+  const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector((state: { user: { authorizationStatus: AuthorizationStatus } }) => state.user.authorizationStatus);
   const params = useParams();
-  const offerById = offersFull?.find(({id}): boolean => (id).toString() === params.id);
+  // console.log(store.getState());
+  useEffect(() => {
+    store.dispatch(fetchOfferAction(params.id));
+    store.dispatch(fetchOffersNearby(params.id));
 
-  const offersByCity = offersFull.filter((offer) => offer.city.name === offerById?.city.name);
-  const offersNearLocation = offersByCity.slice(0, MAX_NEAR_PLACES_OFFER_COUNT);
+    return () => {
+      dispatch(offersSlice.actions.getLoadOffer(null));
+    };
+
+  }, [params.id, dispatch]);
+  const offerById = useAppSelector((state: State): OfferApi | null => state.offers.loadOffer);
+  // console.log(offerById);
+  const offersNearLocation = useAppSelector((state: State): OfferApi[] | null => state.offers.offersNearby)?.slice(0, MAX_NEAR_PLACES_OFFER_COUNT);
+  // console.log(offersNearLocation);
   // Получаем массив отзывов отсортированных по дате
   const listReviews = reviews?.slice(0, MAX_REVIEW_COUNT).sort((a, b)=> (new Date(b.date)).getTime() - (new Date(a.date)).getTime());
   // Проверяем включен ли офер в список оферов и если включен то добавляем еще один офер
-  const getOffersNearLocation = (offersNearPlaces: OfferApi[], currentOffer: OfferApi): OfferApi[] => {
-    const cloneOffersNearPlaces = offersNearPlaces.slice();
-    if(cloneOffersNearPlaces.includes(currentOffer)) {
-      return offersByCity.slice(0, MAX_NEAR_PLACES_OFFER_COUNT + 1);
-    }
-    cloneOffersNearPlaces.push(currentOffer);
-    return cloneOffersNearPlaces;
-  };
   if(!offerById) {
     return <Navigate to={AppRoute.Error} />;
   }
@@ -146,14 +155,14 @@ function OfferPage({reviews}: OfferProps): JSX.Element {
             </div>
           </div>
           <section className="offer__map map">
-            {<Map city={offerById.city.location} points={getOffersNearLocation(offersNearLocation, offerById)} />}
+            {<Map city={offerById.city.location} points={offersNearLocation} />}
           </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              {offersNearLocation.map((offerCard) => <Card key={offerCard.id} offer={offerCard} cardClassName={OFFER_CLASSES.offerPage} />)}
+              {offersNearLocation?.map((offerCard) => <Card key={offerCard.id} offer={offerCard} cardClassName={OFFER_CLASSES.offerPage} />)}
             </div>
           </section>
         </div>

@@ -9,6 +9,7 @@ import { saveToken, dropToken } from '../services/token';
 import { AuthData, UserData, User } from '../types/user';
 import { store } from '.';
 import { loadErrorSlice } from './slices/load-error';
+import { offersSlice } from './slices/offers';
 
 type Extra = {
   dispatch: AppDispatch;
@@ -21,6 +22,25 @@ export const fetchOffersAction = createAsyncThunk<OfferApi[], undefined, Extra>(
   async (_arg, {extra: api}) => {
     const {data} = await api.get<OfferApi[]>(APIRoute.Offers);
 
+    return data;
+  },
+);
+
+export const fetchOfferAction = createAsyncThunk<OfferApi, string | undefined, Extra>(
+  'data/fetchOffer',
+  async (id, {dispatch, extra: api}) => {
+    const {data} = await api.get<OfferApi>(`${APIRoute.Offers}/${id}`);
+    // console.log(data);
+    dispatch(offersSlice.actions.getLoadOffer(data));
+    return data;
+  },
+);
+
+export const fetchOffersNearby = createAsyncThunk<OfferApi[], string | undefined, Extra>(
+  'data/fetchOffersNearby',
+  async (id, {dispatch, extra: api}) => {
+    const {data} = await api.get<OfferApi[]>(`${APIRoute.Offers}/${id}${APIRoute.Nearby}`);
+    dispatch(offersSlice.actions.getOffersNearby(data));
     return data;
   },
 );
@@ -66,3 +86,5 @@ export const clearError = createAsyncThunk(
     );
   }
 );
+
+
