@@ -26,25 +26,26 @@ interface OfferProps {
 
 function OfferPage({reviews}: OfferProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const authorizationStatus = useAppSelector((state: { user: { authorizationStatus: AuthorizationStatus } }) => state.user.authorizationStatus);
   const params = useParams();
-  // console.log(store.getState());
+  const authorizationStatus = useAppSelector((state: { user: { authorizationStatus: AuthorizationStatus } }) => state.user.authorizationStatus);
+  const offerById = useAppSelector((state: State): OfferApi | null => state.offers.offer);
+  console.log(offerById);
+  dispatch(offersSlice.actions.getLoadOffer(offerById));
+
   useEffect(() => {
     store.dispatch(fetchOfferAction(params.id));
     store.dispatch(fetchOffersNearby(params.id));
-
+    console.log(store.getState());
     return () => {
       dispatch(offersSlice.actions.getLoadOffer(null));
     };
 
-  }, [params.id, dispatch]);
-  const offerById = useAppSelector((state: State): OfferApi | null => state.offers.loadOffer);
-  // console.log(offerById);
+  }, [params.id]);
+
   const offersNearLocation = useAppSelector((state: State): OfferApi[] | null => state.offers.offersNearby)?.slice(0, MAX_NEAR_PLACES_OFFER_COUNT);
-  // console.log(offersNearLocation);
   // Получаем массив отзывов отсортированных по дате
   const listReviews = reviews?.slice(0, MAX_REVIEW_COUNT).sort((a, b)=> (new Date(b.date)).getTime() - (new Date(a.date)).getTime());
-  // Проверяем включен ли офер в список оферов и если включен то добавляем еще один офер
+  // Проверяем получен ли офер по id
   if(!offerById) {
     return <Navigate to={AppRoute.Error} />;
   }

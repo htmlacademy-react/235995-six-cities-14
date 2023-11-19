@@ -26,7 +26,7 @@ store.dispatch(fetchOffersAction());
 
 function App(): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
-  const loadingStatus = useAppSelector((state) => state.loadOffers.isOffersDataLoading);
+  const loadingStatus = useAppSelector((state) => state.offers.isOffersDataLoading);
   if (loadingStatus || authorizationStatus === AuthorizationStatus.Unknown) {
     return <Spinner />;
   }
