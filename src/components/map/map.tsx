@@ -15,12 +15,15 @@ type MapProps = {
 
 function Map({city, points}: MapProps): JSX.Element {
   const selectedPoint = useAppSelector((state) => state.offers.activeOffer);
-  const location = useLocation();
-  const pathNames = location.pathname.split('/');
+
+  const { pathname } = useLocation();
+  const pathNames = pathname.split('/');
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
+
   useEffect(() => {
     if (map) {
+
       map.scrollWheelZoom.disable();
       map.on('click', (): void => {
         if (map.scrollWheelZoom.disable()) {

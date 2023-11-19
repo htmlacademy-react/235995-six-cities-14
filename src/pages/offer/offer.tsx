@@ -21,24 +21,27 @@ import { Comment } from '../../types/user.ts';
 
 function OfferPage(): JSX.Element {
   const dispatch = useAppDispatch();
-  const params = useParams();
+  const {id: offerId} = useParams();
   const authorizationStatus = useAppSelector((state: { user: { authorizationStatus: AuthorizationStatus } }) => state.user.authorizationStatus);
   const offerById = useAppSelector((state: State): OfferApi | null => state.offers.offer);
+  // const postedComent = useAppSelector((state: State): PostComment | null => state.user.postComment);
   dispatch(offersSlice.actions.getLoadOffer(offerById));
 
   useEffect(() => {
-    store.dispatch(fetchOfferAction(params.id));
-    store.dispatch(fetchOffersNearby(params.id));
-    dispatch(fetchComments(params.id));
+    store.dispatch(fetchOfferAction(offerId));
+    store.dispatch(fetchOffersNearby(offerId));
+    dispatch(fetchComments(offerId));
     return () => {
       dispatch(offersSlice.actions.getLoadOffer(null));
     };
 
-  }, [params.id]);
+  }, [offerId, dispatch]);
 
   const offersNearLocation = useAppSelector((state: State): OfferApi[] | null => state.offers.offersNearby)?.slice(0, MAX_NEAR_PLACES_OFFER_COUNT);
+  const NearbyCities = offersNearLocation?.slice();
+  NearbyCities?.push(offerById as OfferApi);
   // Получаем массив отзывов отсортированных по дате
-  const reviews = useAppSelector((state: State): Comment[] | null => state.user.comments);
+  const reviews = useAppSelector((state: State): Comment[] | [] => state.user.comments);
   const listReviews = reviews?.slice(0, MAX_REVIEW_COUNT).sort((a, b)=> (new Date(b.date)).getTime() - (new Date(a.date)).getTime());
   // Проверяем получен ли офер по id
   if(!offerById) {
@@ -141,17 +144,17 @@ function OfferPage(): JSX.Element {
               </div>
               {authorizationStatus === AuthorizationStatus.Auth &&
               <section className="offer__reviews reviews">
-                <h2 className="reviews__title">{reviews?.length > 1 ? 'Reviews' : 'Review'} &middot; <span className="reviews__amount">{reviews?.length}</span></h2>
+                <h2 className="reviews__title">{listReviews.length > 1 ? 'Reviews' : 'Review'} &middot; <span className="reviews__amount">{listReviews.length}</span></h2>
                 <ul className="reviews__list">
                   {listReviews?.map((review: Comment) => <Review key={review.id} review={review} />)}
                 </ul>
-                <OfferForm />
+                <OfferForm id={offerId} />
               </section>}
 
             </div>
           </div>
           <section className="offer__map map">
-            {<Map city={offerById.city.location} points={offersNearLocation} />}
+            {<Map city={offerById.city.location} points={NearbyCities} />}
           </section>
         </section>
         <div className="container">

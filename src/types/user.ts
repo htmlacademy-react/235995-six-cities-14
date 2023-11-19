@@ -29,6 +29,13 @@ export type Comment = {
     name: string;
   };
 }
+
+export type PostComment = {
+  id: string | undefined;
+  comment: string;
+  rating: number;
+}
+
 // review type
 export type UserReview = {
   'avatarUrl': string;

@@ -6,7 +6,7 @@ import { OfferApi } from '../types/offer';
 import { State } from '../types/state';
 import { userSlice } from './slices/user';
 import { saveToken, dropToken } from '../services/token';
-import { AuthData, User, Comment } from '../types/user';
+import { AuthData, User, Comment, PostComment } from '../types/user';
 import { store } from '.';
 import { loadErrorSlice } from './slices/load-error';
 
@@ -46,6 +46,15 @@ export const fetchComments = createAsyncThunk<Comment[], string | undefined, Ext
   'user/fetchComments',
   async (id, { extra: api}) => {
     const {data} = await api.get<Comment[]>(`${APIRoute.Comments}/${id}`);
+
+    return data;
+  },
+);
+
+export const postComment = createAsyncThunk<PostComment, PostComment, Extra>(
+  'user/postComment',
+  async ({id, comment, rating}, {extra: api}) => {
+    const {data} = await api.post<PostComment>(`${APIRoute.Comments}/${id}`, {comment, rating});
 
     return data;
   },

@@ -16,6 +16,7 @@ export interface OffersProps {
   isOffersDataLoading: boolean;
   hasError: boolean;
   isOfferDataLoading: boolean;
+  isOffersNearbyDataLoading: boolean;
 }
 
 const initialState: OffersProps = {
@@ -30,6 +31,7 @@ const initialState: OffersProps = {
   isOffersDataLoading: false,
   hasError: false,
   isOfferDataLoading: false,
+  isOffersNearbyDataLoading: false,
 };
 
 export const offersSlice = createSlice({
@@ -85,15 +87,15 @@ export const offersSlice = createSlice({
       })
       // OffersNearby
       .addCase(fetchOffersNearby.pending, (state) => {
-        state.isOfferDataLoading = true;
+        state.isOffersNearbyDataLoading = true;
         state.hasError = false;
       })
       .addCase(fetchOffersNearby.fulfilled, (state, action: PayloadAction<OfferApi[]>) => {
         state.offersNearby = action.payload;
-        state.isOfferDataLoading = false;
+        state.isOffersNearbyDataLoading = false;
       })
       .addCase(fetchOffersNearby.rejected, (state) => {
-        state.isOfferDataLoading = false;
+        state.isOffersNearbyDataLoading = false;
         state.hasError = true;
       });
   }
