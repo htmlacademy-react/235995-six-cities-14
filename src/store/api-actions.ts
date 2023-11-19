@@ -6,7 +6,7 @@ import { OfferApi } from '../types/offer';
 import { State } from '../types/state';
 import { userSlice } from './slices/user';
 import { saveToken, dropToken } from '../services/token';
-import { AuthData, User } from '../types/user';
+import { AuthData, User, Comment } from '../types/user';
 import { store } from '.';
 import { loadErrorSlice } from './slices/load-error';
 
@@ -37,6 +37,15 @@ export const fetchOffersNearby = createAsyncThunk<OfferApi[], string | undefined
   'data/fetchOffersNearby',
   async (id, { extra: api}) => {
     const {data} = await api.get<OfferApi[]>(`${APIRoute.Offers}/${id}${APIRoute.Nearby}`);
+
+    return data;
+  },
+);
+
+export const fetchComments = createAsyncThunk<Comment[], string | undefined, Extra>(
+  'user/fetchComments',
+  async (id, { extra: api}) => {
+    const {data} = await api.get<Comment[]>(`${APIRoute.Comments}/${id}`);
 
     return data;
   },

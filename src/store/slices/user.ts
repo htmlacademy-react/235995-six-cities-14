@@ -1,14 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { AppRoute, AuthorizationStatus, NameSpace } from '../../const';
-import { User } from '../../types/user';
-import { fetchUserData } from '../api-actions';
+import { User, Comment } from '../../types/user';
+import { fetchComments, fetchUserData } from '../api-actions';
 
 export interface UserProps {
   authorizationStatus: AuthorizationStatus;
   userData: User | null;
   redirectToRoute: AppRoute;
   isUserDataLoading: boolean;
+  isCommentsDataLoading: boolean;
+  comments: Comment[] | null;
+  hasLoadCommentsError: boolean;
 }
 
 const initialState: UserProps = {
@@ -16,6 +19,9 @@ const initialState: UserProps = {
   userData: null,
   redirectToRoute: AppRoute.Root,
   isUserDataLoading: false,
+  isCommentsDataLoading: false,
+  comments: null,
+  hasLoadCommentsError: false,
 };
 
 export const userSlice = createSlice({
@@ -43,6 +49,20 @@ export const userSlice = createSlice({
       })
       .addCase(fetchUserData.rejected, (state) => {
         state.isUserDataLoading = false;
+      })
+      // Comments
+      .addCase(fetchComments.pending, (state) => {
+        state.isCommentsDataLoading = true;
+        state.hasLoadCommentsError = false;
+      })
+      .addCase(fetchComments.fulfilled, (state, action: PayloadAction<Comment[] | null>) => {
+        state.comments = action.payload;
+        state.isCommentsDataLoading = false;
+        state.hasLoadCommentsError = false;
+      })
+      .addCase(fetchComments.rejected, (state) => {
+        state.isCommentsDataLoading = false;
+        state.hasLoadCommentsError = true;
       });
   }
 });

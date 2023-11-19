@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { OfferApi } from '../../types/offer';
 import { DEFAULT_LOCATION, DEFAULT_TYPE_SORTING, NameSpace } from '../../const';
-import { fetchOfferAction, fetchOffersAction } from '../api-actions';
+import { fetchOfferAction, fetchOffersAction, fetchOffersNearby } from '../api-actions';
 
 export interface OffersProps {
   offers: OfferApi[];
@@ -80,6 +80,19 @@ export const offersSlice = createSlice({
         state.isOfferDataLoading = false;
       })
       .addCase(fetchOfferAction.rejected, (state) => {
+        state.isOfferDataLoading = false;
+        state.hasError = true;
+      })
+      // OffersNearby
+      .addCase(fetchOffersNearby.pending, (state) => {
+        state.isOfferDataLoading = true;
+        state.hasError = false;
+      })
+      .addCase(fetchOffersNearby.fulfilled, (state, action: PayloadAction<OfferApi[]>) => {
+        state.offersNearby = action.payload;
+        state.isOfferDataLoading = false;
+      })
+      .addCase(fetchOffersNearby.rejected, (state) => {
         state.isOfferDataLoading = false;
         state.hasError = true;
       });

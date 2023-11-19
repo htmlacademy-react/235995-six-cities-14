@@ -11,31 +11,25 @@ import { Card } from '../../components/card/card.tsx';
 
 import { getOfferType, getRating } from '../../utils';
 import { OfferApi } from '../../types/offer.ts';
-import { IReview } from '../../mocks/reviews';
 import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACES_OFFER_COUNT, AppRoute, OFFER_CLASSES } from '../../const.ts';
 import { State } from '../../types/state.ts';
 import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
-import { fetchOfferAction, fetchOffersNearby } from '../../store/api-actions.ts';
+import { fetchComments, fetchOfferAction, fetchOffersNearby } from '../../store/api-actions.ts';
 import { store } from '../../store/index.ts';
 import { offersSlice } from '../../store/slices/offers.ts';
+import { Comment } from '../../types/user.ts';
 
-
-interface OfferProps {
-  reviews: IReview[];
-}
-
-function OfferPage({reviews}: OfferProps): JSX.Element {
+function OfferPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const params = useParams();
   const authorizationStatus = useAppSelector((state: { user: { authorizationStatus: AuthorizationStatus } }) => state.user.authorizationStatus);
   const offerById = useAppSelector((state: State): OfferApi | null => state.offers.offer);
-  console.log(offerById);
   dispatch(offersSlice.actions.getLoadOffer(offerById));
 
   useEffect(() => {
     store.dispatch(fetchOfferAction(params.id));
     store.dispatch(fetchOffersNearby(params.id));
-    console.log(store.getState());
+    dispatch(fetchComments(params.id));
     return () => {
       dispatch(offersSlice.actions.getLoadOffer(null));
     };
@@ -44,6 +38,7 @@ function OfferPage({reviews}: OfferProps): JSX.Element {
 
   const offersNearLocation = useAppSelector((state: State): OfferApi[] | null => state.offers.offersNearby)?.slice(0, MAX_NEAR_PLACES_OFFER_COUNT);
   // Получаем массив отзывов отсортированных по дате
+  const reviews = useAppSelector((state: State): Comment[] | null => state.user.comments);
   const listReviews = reviews?.slice(0, MAX_REVIEW_COUNT).sort((a, b)=> (new Date(b.date)).getTime() - (new Date(a.date)).getTime());
   // Проверяем получен ли офер по id
   if(!offerById) {
@@ -146,9 +141,9 @@ function OfferPage({reviews}: OfferProps): JSX.Element {
               </div>
               {authorizationStatus === AuthorizationStatus.Auth &&
               <section className="offer__reviews reviews">
-                <h2 className="reviews__title">{reviews.length > 1 ? 'Reviews' : 'Review'} &middot; <span className="reviews__amount">{reviews.length}</span></h2>
+                <h2 className="reviews__title">{reviews?.length > 1 ? 'Reviews' : 'Review'} &middot; <span className="reviews__amount">{reviews?.length}</span></h2>
                 <ul className="reviews__list">
-                  {listReviews.map((review: IReview) => <Review key={review.id} review={review} />)}
+                  {listReviews?.map((review: Comment) => <Review key={review.id} review={review} />)}
                 </ul>
                 <OfferForm />
               </section>}
