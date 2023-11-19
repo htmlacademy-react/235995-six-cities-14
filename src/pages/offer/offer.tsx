@@ -42,7 +42,7 @@ function OfferPage(): JSX.Element {
   NearbyCities?.push(offerById as OfferApi);
   // Получаем массив отзывов отсортированных по дате
   const reviews = useAppSelector((state: State): Comment[] | [] => state.user.comments);
-  const listReviews = reviews?.slice(0, MAX_REVIEW_COUNT).sort((a, b)=> (new Date(b.date)).getTime() - (new Date(a.date)).getTime());
+  const listReviews = reviews.slice().sort((a, b)=> (new Date(b.date)).getTime() - (new Date(a.date)).getTime()).slice(0, MAX_REVIEW_COUNT);
   // Проверяем получен ли офер по id
   if(!offerById) {
     return <Navigate to={AppRoute.Error} />;
@@ -144,7 +144,7 @@ function OfferPage(): JSX.Element {
               </div>
               {authorizationStatus === AuthorizationStatus.Auth &&
               <section className="offer__reviews reviews">
-                <h2 className="reviews__title">{listReviews.length > 1 ? 'Reviews' : 'Review'} &middot; <span className="reviews__amount">{listReviews.length}</span></h2>
+                <h2 className="reviews__title">{reviews.length > 1 ? 'Reviews' : 'Review'} &middot; <span className="reviews__amount">{reviews.length}</span></h2>
                 <ul className="reviews__list">
                   {listReviews?.map((review: Comment) => <Review key={review.id} review={review} />)}
                 </ul>
