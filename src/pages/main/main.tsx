@@ -17,7 +17,7 @@ function MainPage (): JSX.Element {
   const dispatch = useAppDispatch();
   const city = useAppSelector((state) => state.offers.city);
   const location = useLocation().pathname.slice(1);
-  const offers = useAppSelector((state) => state.loadOffers.offers);
+  const offers = useAppSelector((state) => state.offers.offers);
   const currentSortType = useAppSelector((state) => state.offers.sortingType);
   // По умолчанию перенаправляем на город Париж
   const navigate = useNavigate();

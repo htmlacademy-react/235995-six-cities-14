@@ -6,7 +6,7 @@ import { OfferApi } from '../types/offer';
 import { State } from '../types/state';
 import { userSlice } from './slices/user';
 import { saveToken, dropToken } from '../services/token';
-import { AuthData, UserData, User } from '../types/user';
+import { AuthData, User, Comment, PostComment } from '../types/user';
 import { store } from '.';
 import { loadErrorSlice } from './slices/load-error';
 
@@ -20,6 +20,50 @@ export const fetchOffersAction = createAsyncThunk<OfferApi[], undefined, Extra>(
   'data/fetchOffers',
   async (_arg, {extra: api}) => {
     const {data} = await api.get<OfferApi[]>(APIRoute.Offers);
+
+    return data;
+  },
+);
+
+export const fetchOfferAction = createAsyncThunk<OfferApi, string | undefined, Extra>(
+  'data/fetchOffer',
+  async (id, { extra: api}) => {
+    const {data} = await api.get<OfferApi>(`${APIRoute.Offers}/${id}`);
+    return data;
+  },
+);
+
+export const fetchOffersNearby = createAsyncThunk<OfferApi[], string | undefined, Extra>(
+  'data/fetchOffersNearby',
+  async (id, { extra: api}) => {
+    const {data} = await api.get<OfferApi[]>(`${APIRoute.Offers}/${id}${APIRoute.Nearby}`);
+
+    return data;
+  },
+);
+
+export const fetchComments = createAsyncThunk<Comment[], string | undefined, Extra>(
+  'user/fetchComments',
+  async (id, { extra: api}) => {
+    const {data} = await api.get<Comment[]>(`${APIRoute.Comments}/${id}`);
+
+    return data;
+  },
+);
+
+export const postComment = createAsyncThunk<PostComment, PostComment, Extra>(
+  'user/postComment',
+  async ({id, comment, rating}, {extra: api}) => {
+    const {data} = await api.post<PostComment>(`${APIRoute.Comments}/${id}`, {comment, rating});
+
+    return data;
+  },
+);
+
+export const fetchUserData = createAsyncThunk<User, undefined, Extra>(
+  'data/fetchUserData',
+  async (_arg, { extra: api}) => {
+    const {data} = await api.get<User>(APIRoute.Login);
 
     return data;
   },
@@ -40,10 +84,10 @@ export const checkAuthAction = createAsyncThunk<void, undefined, Extra>(
 export const loginAction = createAsyncThunk<void, AuthData, Extra>(
   'user/login',
   async ({login: email, password}, {dispatch, extra: api}) => {
-    const {data: {token}, data} = await api.post<UserData | User>(APIRoute.Login, {email, password});
+    const {data: {token}, data} = await api.post<User>(APIRoute.Login, {email, password});
     saveToken(token);
     dispatch(userSlice.actions.setAuthorizationStatus(AuthorizationStatus.Auth));
-    dispatch(userSlice.actions.addUserEmail(data as User));
+    dispatch(userSlice.actions.addUserData(data));
     // dispatch(redirectToRoute(AppRoute.Root));
   },
 );
@@ -66,3 +110,5 @@ export const clearError = createAsyncThunk(
     );
   }
 );
+
+

@@ -10,17 +10,20 @@ import { useAppSelector } from '../../hooks/store.ts';
 
 type MapProps = {
   city: Location;
-  points: OfferApi[] | [];
+  points: OfferApi[] | undefined;
 };
 
 function Map({city, points}: MapProps): JSX.Element {
   const selectedPoint = useAppSelector((state) => state.offers.activeOffer);
-  const location = useLocation();
-  const pathNames = location.pathname.split('/');
+
+  const { pathname } = useLocation();
+  const pathNames = pathname.split('/');
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
+
   useEffect(() => {
     if (map) {
+
       map.scrollWheelZoom.disable();
       map.on('click', (): void => {
         if (map.scrollWheelZoom.disable()) {
@@ -31,7 +34,7 @@ function Map({city, points}: MapProps): JSX.Element {
         map.scrollWheelZoom.disable();
       });
       const markerLayer = layerGroup().addTo(map);
-      points.forEach((point) => {
+      points?.forEach((point) => {
         const marker = new Marker({
           lat: point.location.latitude,
           lng: point.location.longitude

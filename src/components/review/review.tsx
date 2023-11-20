@@ -1,4 +1,4 @@
-import { IReview } from '../../mocks/reviews';
+import { IReview } from '../../types/user';
 
 interface ReviewProps {
   review: IReview;
@@ -9,7 +9,7 @@ function Review({review}: ReviewProps): JSX.Element {
   const month = date.toLocaleString('en', { month: 'long' });
   const year = date.getFullYear();
   const reviewDate = `${month} ${year}`;
-  const dateTimeReview = `${year}-${(date.getMonth()).toString().padStart(2, '0')}-${(date.getDate()).toString().padStart(2, '0')}`;
+  const dateTimeReview = `${year}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${(date.getDate()).toString().padStart(2, '0')}`;
   return (
     <li className="reviews__item">
       <div className="reviews__user user">

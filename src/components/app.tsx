@@ -10,7 +10,6 @@ import { NotFoundPage } from '../pages/error/error-page';
 import { Spinner } from './spinner/spinner';
 // Data
 import { AppRoute, AuthorizationStatus, LOCATIONS } from '../const';
-import { REVIEWS } from '../mocks/reviews';
 // Store
 import { store } from '../store/';
 import { checkAuthAction, fetchOffersAction } from '../store/api-actions';
@@ -26,7 +25,7 @@ store.dispatch(fetchOffersAction());
 
 function App(): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
-  const loadingStatus = useAppSelector((state) => state.loadOffers.isOffersDataLoading);
+  const loadingStatus = useAppSelector((state) => state.offers.isOffersDataLoading);
   if (loadingStatus || authorizationStatus === AuthorizationStatus.Unknown) {
     return <Spinner />;
   }
@@ -70,7 +69,7 @@ function App(): JSX.Element {
           >
             <Route
               path=':id'
-              element={<OfferPage reviews ={REVIEWS} />}
+              element={<OfferPage />}
             />
           </Route>
           <Route
