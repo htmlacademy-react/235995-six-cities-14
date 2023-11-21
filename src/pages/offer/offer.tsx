@@ -24,7 +24,6 @@ function OfferPage(): JSX.Element {
   const {id: offerId} = useParams();
   const authorizationStatus = useAppSelector((state: { user: { authorizationStatus: AuthorizationStatus } }) => state.user.authorizationStatus);
   const offerById = useAppSelector((state: State): OfferApi | null => state.offers.offer);
-  // const postedComent = useAppSelector((state: State): PostComment | null => state.user.postComment);
   dispatch(offersSlice.actions.getLoadOffer(offerById));
 
   useEffect(() => {
