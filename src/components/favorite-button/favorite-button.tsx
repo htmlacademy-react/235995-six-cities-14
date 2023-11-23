@@ -1,44 +1,62 @@
-import classNames from 'classnames';
-import { useAppSelector } from '../../hooks/store';
-import { AppRoute, AuthorizationStatus } from '../../const';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import classNames from 'classnames';
+import { useAppSelector, useAppDispatch } from '../../hooks/store';
+import { AppRoute, AuthorizationStatus, LoadingStatus } from '../../const';
 import { OfferApi } from '../../types/offer';
+import { Spinner } from '../spinner/spinner';
+import { fetchFavoriteOffers, postFavoriteOffer } from '../../store/api-actions';
+import { favoriteSlice } from '../../store/slices/favorite';
 
 type favoriteButtonProps = {
   offer: OfferApi;
+  widthBtn: string;
+  heightBtn: string;
+  block: string;
 };
 
-function FavoriteButton({offer}: favoriteButtonProps) {
+type TFavoriteOfferState = {
+  favoriteId: string;
+  status: 0 | 1;
+};
+
+function FavoriteButton({offer, widthBtn = '18', heightBtn = '19', block}: favoriteButtonProps) {
   const navigate = useNavigate();
-  const [isFavoriteCard, setIsFavoriteCard] = useState(offer.isFavorite);
+  const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
+  const isFavoriteOffersLoading = useAppSelector((state) => state.favorites.isFavoriteOffersLoading);
+  // const isFavoriteOfferPosting = useAppSelector((state) => state.favorites.isFavoriteOfferPosting);
+  const favoriteOfferState: TFavoriteOfferState = {
+    favoriteId: offer.id ?? '',
+    status: offer.isFavorite ? 0 : 1,
+  };
   const handleOnFavoriteButton = (): void => {
-    if(authorizationStatus === AuthorizationStatus.Unknown || authorizationStatus === AuthorizationStatus.NoAuth) {
+    if(authorizationStatus === AuthorizationStatus.NoAuth) {
       navigate(AppRoute.Login);
       return;
     }
-    setIsFavoriteCard(!isFavoriteCard);
-    offer.isFavorite = isFavoriteCard;
-  };
+    if (offer) {
+      dispatch(favoriteSlice.actions.setFavoriteOffer(offer));
+    }
 
+    dispatch(postFavoriteOffer(favoriteOfferState)).unwrap().then(() => {
+      dispatch(fetchFavoriteOffers());
+    });
+  };
+  // const isFavoriteCurrentOffer = useAppSelector((state) => state.favorites.currentFavoriteOffer);
+  if (authorizationStatus === AuthorizationStatus.Unknown || isFavoriteOffersLoading === LoadingStatus.Loading) {
+    return (<Spinner />);
+  }
+  const classActiveBtn = `${block}__bookmark-button--active`;
   return (
-    <button onClick={handleOnFavoriteButton} className={classNames('place-card__bookmark-button button', {
-      'place-card__bookmark-button--active': offer.isFavorite})} type="button"
+    <button onClick={handleOnFavoriteButton} className={classNames(`${block}__bookmark-button button`, {
+      classActiveBtn : offer.isFavorite})} type="button"
     >
-      <svg className="place-card__bookmark-icon" width="18" height="19">
+      <svg className={`${block}__bookmark-icon`} width={widthBtn} height={heightBtn}>
         <use xlinkHref="#icon-bookmark"></use>
       </svg>
       <span className="visually-hidden">To bookmarks</span>
     </button>
   );
 }
-
-{/* <button className="offer__bookmark-button button" type="button">
-  <svg className="offer__bookmark-icon" width="31" height="33">
-    <use xlinkHref="#icon-bookmark"></use>
-  </svg>
-  <span className="visually-hidden">To bookmarks</span>
-</button> */}
 
 export { FavoriteButton };

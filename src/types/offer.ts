@@ -5,7 +5,7 @@ type LocationCity = {
 }
 
 export type OfferApi = {
-  id: number;
+  id: string;
   title: string;
   type: string;
   price: number;

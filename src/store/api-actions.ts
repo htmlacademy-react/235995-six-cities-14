@@ -7,13 +7,14 @@ import { State } from '../types/state';
 import { userSlice } from './slices/user';
 import { saveToken, dropToken } from '../services/token';
 import { AuthData, User, Comment, PostComment } from '../types/user';
+import { FavoriteData } from '../types/favorite';
 
 type Extra = {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }
-
+// Offers
 export const fetchOffersAction = createAsyncThunk<OfferApi[], undefined, Extra>(
   'data/fetchOffers',
   async (_arg, {extra: api}) => {
@@ -22,7 +23,7 @@ export const fetchOffersAction = createAsyncThunk<OfferApi[], undefined, Extra>(
     return data;
   },
 );
-
+// Offer
 export const fetchOfferAction = createAsyncThunk<OfferApi, string | undefined, Extra>(
   'data/fetchOffer',
   async (id, { extra: api}) => {
@@ -39,7 +40,26 @@ export const fetchOffersNearby = createAsyncThunk<OfferApi[], string | undefined
     return data;
   },
 );
+// isFavorite
+export const fetchFavoriteOffers = createAsyncThunk<OfferApi[], undefined, Extra>(
+  'data/fetchFavoriteOffers',
+  async (_arg, { extra: api}) => {
+    const {data} = await api.get<OfferApi[] | []>(APIRoute.Favorite);
 
+    return data;
+  },
+);
+
+export const postFavoriteOffer = createAsyncThunk<OfferApi , FavoriteData, Extra>(
+  'user/postFavoriteOffer',
+  async ({ favoriteId, status }, {extra: api}) => {
+    const {data} = await api.post<OfferApi>(`${APIRoute.Favorite}/${favoriteId}/${status}`);
+
+    return data;
+  },
+);
+
+// Comments
 export const fetchComments = createAsyncThunk<Comment[], string | undefined, Extra>(
   'user/fetchComments',
   async (id, { extra: api}) => {
@@ -57,7 +77,7 @@ export const postComment = createAsyncThunk<PostComment, PostComment, Extra>(
     return data;
   },
 );
-
+// user Data
 export const fetchUserData = createAsyncThunk<User, undefined, Extra>(
   'data/fetchUserData',
   async (_arg, { extra: api}) => {
@@ -66,7 +86,7 @@ export const fetchUserData = createAsyncThunk<User, undefined, Extra>(
     return data;
   },
 );
-
+// Auth
 export const checkAuthAction = createAsyncThunk<void, undefined, Extra>(
   'user/checkAuth',
   async (_arg, {dispatch, extra: api}) => {
@@ -86,7 +106,6 @@ export const loginAction = createAsyncThunk<void, AuthData, Extra>(
     saveToken(token);
     dispatch(userSlice.actions.setAuthorizationStatus(AuthorizationStatus.Auth));
     dispatch(userSlice.actions.addUserData(data));
-    // dispatch(redirectToRoute(AppRoute.Root));
   },
 );
 

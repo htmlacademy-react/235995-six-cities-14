@@ -54,8 +54,6 @@ export const enum LoadingStatus {
 
 export const enum NameSpace {
   Offers = 'offers',
-  LoadOffers ='loadOffers',
-  loadError = 'loadError',
   User = 'user',
   Favorites = 'favorites',
 }
