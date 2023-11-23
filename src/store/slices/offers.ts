@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { OfferApi } from '../../types/offer';
-import { DEFAULT_LOCATION, DEFAULT_TYPE_SORTING, NameSpace } from '../../const';
+import { DEFAULT_LOCATION, DEFAULT_TYPE_SORTING, NameSpace, LoadingStatus } from '../../const';
 import { fetchOfferAction, fetchOffersAction, fetchOffersNearby } from '../api-actions';
 
 export interface OffersProps {
@@ -13,10 +13,9 @@ export interface OffersProps {
   activeOffer: OfferApi | undefined;
   loadOffer: OfferApi | null;
   offersNearby: OfferApi[] | null;
-  isOffersDataLoading: boolean;
-  hasError: boolean;
-  isOfferDataLoading: boolean;
-  isOffersNearbyDataLoading: boolean;
+  isOffersDataLoading: LoadingStatus;
+  isOfferDataLoading: LoadingStatus;
+  isOffersNearbyDataLoading: LoadingStatus;
 }
 
 const initialState: OffersProps = {
@@ -28,10 +27,9 @@ const initialState: OffersProps = {
   activeOffer: undefined,
   loadOffer: null,
   offersNearby: null,
-  isOffersDataLoading: false,
-  hasError: false,
-  isOfferDataLoading: false,
-  isOffersNearbyDataLoading: false,
+  isOffersDataLoading: LoadingStatus.Idle,
+  isOfferDataLoading: LoadingStatus.Idle,
+  isOffersNearbyDataLoading: LoadingStatus.Idle,
 };
 
 export const offersSlice = createSlice({
@@ -61,42 +59,36 @@ export const offersSlice = createSlice({
     builder
     // offers
       .addCase(fetchOffersAction.pending, (state) => {
-        state.isOffersDataLoading = true;
-        state.hasError = false;
+        state.isOffersDataLoading = LoadingStatus.Loading;
       })
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
         state.offers = action.payload;
-        state.isOffersDataLoading = false;
+        state.isOffersDataLoading = LoadingStatus.Success;
       })
       .addCase(fetchOffersAction.rejected, (state) => {
-        state.isOffersDataLoading = false;
-        state.hasError = true;
+        state.isOffersDataLoading = LoadingStatus.Error;
       })
       // offer
       .addCase(fetchOfferAction.pending, (state) => {
-        state.isOfferDataLoading = true;
-        state.hasError = false;
+        state.isOfferDataLoading = LoadingStatus.Loading;
       })
       .addCase(fetchOfferAction.fulfilled, (state, action: PayloadAction<OfferApi>) => {
         state.offer = action.payload;
-        state.isOfferDataLoading = false;
+        state.isOfferDataLoading = LoadingStatus.Success;
       })
       .addCase(fetchOfferAction.rejected, (state) => {
-        state.isOfferDataLoading = false;
-        state.hasError = true;
+        state.isOfferDataLoading = LoadingStatus.Error;
       })
       // OffersNearby
       .addCase(fetchOffersNearby.pending, (state) => {
-        state.isOffersNearbyDataLoading = true;
-        state.hasError = false;
+        state.isOffersNearbyDataLoading = LoadingStatus.Loading;
       })
       .addCase(fetchOffersNearby.fulfilled, (state, action: PayloadAction<OfferApi[]>) => {
         state.offersNearby = action.payload;
-        state.isOffersNearbyDataLoading = false;
+        state.isOffersNearbyDataLoading = LoadingStatus.Success;
       })
       .addCase(fetchOffersNearby.rejected, (state) => {
-        state.isOffersNearbyDataLoading = false;
-        state.hasError = true;
+        state.isOffersNearbyDataLoading = LoadingStatus.Error;
       });
   }
 });

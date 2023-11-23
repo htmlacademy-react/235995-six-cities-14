@@ -9,7 +9,7 @@ import { NotFoundPage } from '../pages/error/error-page';
 // components
 import { Spinner } from './spinner/spinner';
 // Data
-import { AppRoute, AuthorizationStatus, LOCATIONS } from '../const';
+import { AppRoute, AuthorizationStatus, LOCATIONS, LoadingStatus } from '../const';
 // Store
 import { store } from '../store/';
 import { checkAuthAction, fetchOffersAction } from '../store/api-actions';
@@ -26,7 +26,7 @@ store.dispatch(fetchOffersAction());
 function App(): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const loadingStatus = useAppSelector((state) => state.offers.isOffersDataLoading);
-  if (loadingStatus || authorizationStatus === AuthorizationStatus.Unknown) {
+  if (loadingStatus === LoadingStatus.Idle || loadingStatus === LoadingStatus.Loading || authorizationStatus === AuthorizationStatus.Unknown) {
     return <Spinner />;
   }
   return (

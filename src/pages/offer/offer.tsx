@@ -11,13 +11,14 @@ import { Card } from '../../components/card/card.tsx';
 
 import { getOfferType, getRating } from '../../utils';
 import { OfferApi } from '../../types/offer.ts';
-import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACES_OFFER_COUNT, AppRoute, OFFER_CLASSES } from '../../const.ts';
+import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACES_OFFER_COUNT, AppRoute, OFFER_CLASSES, LoadingStatus } from '../../const.ts';
 import { State } from '../../types/state.ts';
 import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
 import { fetchComments, fetchOfferAction, fetchOffersNearby } from '../../store/api-actions.ts';
 import { store } from '../../store/index.ts';
 import { offersSlice } from '../../store/slices/offers.ts';
 import { Comment } from '../../types/user.ts';
+import { Spinner } from '../../components/spinner/spinner.tsx';
 
 function OfferPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -36,14 +37,22 @@ function OfferPage(): JSX.Element {
 
   }, [offerId, dispatch]);
 
-  const offersNearLocation = useAppSelector((state: State): OfferApi[] | null => state.offers.offersNearby)?.slice(0, MAX_NEAR_PLACES_OFFER_COUNT);
-  const NearbyCities = offersNearLocation?.slice();
-  NearbyCities?.push(offerById as OfferApi);
+  const nearbyCities = useAppSelector((state: State): OfferApi[] | null => state.offers.offersNearby)?.slice(0, MAX_NEAR_PLACES_OFFER_COUNT);
   // Получаем массив отзывов отсортированных по дате
   const reviews = useAppSelector((state: State): Comment[] | [] => state.user.comments);
   const listReviews = reviews.slice().sort((a, b)=> (new Date(b.date)).getTime() - (new Date(a.date)).getTime()).slice(0, MAX_REVIEW_COUNT);
-  // Проверяем получен ли офер по id
-  if(!offerById) {
+
+  const isOfferDataLoading = useAppSelector((state: State): LoadingStatus => state.offers.isOfferDataLoading);
+  const isCommentsDataLoading = useAppSelector((state: State): boolean => state.user.isCommentsDataLoading);
+  const isOffersNearbyDataLoading = useAppSelector((state: State): LoadingStatus => state.offers.isOffersNearbyDataLoading);
+
+  // Если данные загружаются показываем spinner
+  if(authorizationStatus === AuthorizationStatus.Unknown || isOfferDataLoading === LoadingStatus.Idle || isOfferDataLoading === LoadingStatus.Loading || isOffersNearbyDataLoading === LoadingStatus.Idle || isOffersNearbyDataLoading === LoadingStatus.Loading || isCommentsDataLoading) {
+    return <Spinner />;
+  }
+  // если ошибка перенаправляем на страницу 404
+  // const stateError = useAppSelector((state: State): LoadingStatus => state.offers.hasError);
+  if(isOfferDataLoading === LoadingStatus.Error || isOffersNearbyDataLoading === LoadingStatus.Error || !offerById) {
     return <Navigate to={AppRoute.Error} />;
   }
   return (
@@ -66,7 +75,7 @@ function OfferPage(): JSX.Element {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {offerById?.images.slice(0, MAX_IMAGES_COUNT).map((image) => (
+              {offerById.images.slice(0, MAX_IMAGES_COUNT).map((image) => (
                 <div key={image} className="offer__image-wrapper">
                   <img className="offer__image" src={image} alt="Photo studio" />
                 </div>
@@ -153,14 +162,14 @@ function OfferPage(): JSX.Element {
             </div>
           </div>
           <section className="offer__map map">
-            {<Map city={offerById.city.location} points={NearbyCities} />}
+            {<Map city={offerById.city.location} points={[...nearbyCities ?? [], offerById]} />}
           </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              {offersNearLocation?.map((offerCard) => <Card key={offerCard.id} offer={offerCard} cardClassName={OFFER_CLASSES.offerPage} />)}
+              {nearbyCities?.map((offerCard) => <Card key={offerCard.id} offer={offerCard} cardClassName={OFFER_CLASSES.offerPage} />)}
             </div>
           </section>
         </div>
