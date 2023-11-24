@@ -20,7 +20,8 @@ const initialState: FavoriteProps = {
 export const favoriteSlice = createSlice({
   name: NameSpace.Favorites,
   initialState,
-  reducers: {},
+  reducers: {
+  },
   extraReducers(builder) {
     builder
     // fetchFavoriteOffers
@@ -41,11 +42,18 @@ export const favoriteSlice = createSlice({
       .addCase(postFavoriteOffer.fulfilled, (state, action: PayloadAction<OfferApi | null>) => {
         state.favoriteOffer = action.payload;
         state.isFavoriteOfferPosting = LoadingStatus.Success;
+        // const currentOffer = action.payload;
+        // if(currentOffer !== null) {
+        //   if (currentOffer?.isFavorite) {
+        //     state.favoriteOffers.push(currentOffer);
+        //   } else {
+        //     state.favoriteOffers = state.favoriteOffers.filter((offer) => offer.id !== currentOffer.id);
+        //   }
+        // }
+
       })
       .addCase(postFavoriteOffer.rejected, (state) => {
         state.isFavoriteOfferPosting = LoadingStatus.Error;
       });
   }
 });
-
-// export const { setFavoriteOffer } = favoriteSlice.actions;

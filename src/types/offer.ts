@@ -1,3 +1,8 @@
+export type TFavoriteOfferState = {
+  favoriteId: string;
+  status: 0 | 1;
+};
+
 type LocationCity = {
   latitude: number;
   longitude: number;

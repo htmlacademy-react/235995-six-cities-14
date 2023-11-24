@@ -10,8 +10,7 @@ store.dispatch(fetchUserData());
 function UserNavigation() {
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
-  const offers = useAppSelector((state) => state.offers.offers);
-  const favoriteCardCount = offers.filter((offer) => offer.isFavorite).length;
+  const favoriteCardCount = useAppSelector((state) => state.favorites.favoriteOffers).length;
   const userData = useAppSelector((state) => state.user.userData);
   const handleLogout = (evt: { preventDefault: () => void }) => {
     evt.preventDefault();

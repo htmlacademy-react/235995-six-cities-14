@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
 import { AppRoute, AuthorizationStatus, LoadingStatus } from '../../const';
-import { OfferApi } from '../../types/offer';
+import { OfferApi, TFavoriteOfferState } from '../../types/offer';
 import { Spinner } from '../spinner/spinner';
 import { fetchFavoriteOffers, postFavoriteOffer } from '../../store/api-actions';
 import { offersSlice } from '../../store/slices/offers';
@@ -12,11 +12,6 @@ type favoriteButtonProps = {
   widthBtn: string;
   heightBtn: string;
   block: string;
-};
-
-type TFavoriteOfferState = {
-  favoriteId: string;
-  status: 0 | 1;
 };
 
 function FavoriteButton({offer, widthBtn = '18', heightBtn = '19', block}: favoriteButtonProps) {
