@@ -48,4 +48,4 @@ export const favoriteSlice = createSlice({
   }
 });
 
-export const { setFavoriteOffer } = favoriteSlice.actions;
+// export const { setFavoriteOffer } = favoriteSlice.actions;
