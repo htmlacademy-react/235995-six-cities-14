@@ -8,7 +8,6 @@ export type FavoriteProps = {
   isFavoriteOfferPosting: LoadingStatus;
   favoriteOffers: OfferApi[] | [];
   favoriteOffer: OfferApi | null;
-  currentFavoriteOffer: OfferApi | null;
 }
 
 const initialState: FavoriteProps = {
@@ -16,17 +15,12 @@ const initialState: FavoriteProps = {
   isFavoriteOfferPosting: LoadingStatus.Idle,
   favoriteOffers: [],
   favoriteOffer: null,
-  currentFavoriteOffer: null,
 };
 
 export const favoriteSlice = createSlice({
   name: NameSpace.Favorites,
   initialState,
-  reducers: {
-    setFavoriteOffer(state, action: PayloadAction<OfferApi | null>) {
-      state.currentFavoriteOffer = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
     // fetchFavoriteOffers

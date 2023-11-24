@@ -8,7 +8,8 @@ import { FavoritesEmpty } from '../../components/favorites-empty/favorites-empty
 import { useAppSelector } from '../../hooks/store.ts';
 
 function FavoritesPage(): JSX.Element {
-  const favoriteOffers = useAppSelector((state) => state.favorites.favoriteOffers);
+  const offers = useAppSelector((state) => state.offers.offers);
+  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
   return (
     <div className={favoriteOffers.length ? 'page' : 'page page--favorites-empty'}>
       <Helmet>

@@ -16,6 +16,7 @@ export interface OffersProps {
   isOffersDataLoading: LoadingStatus;
   isOfferDataLoading: LoadingStatus;
   isOffersNearbyDataLoading: LoadingStatus;
+  currentFavoriteOffer: OfferApi | null;
 }
 
 const initialState: OffersProps = {
@@ -30,6 +31,7 @@ const initialState: OffersProps = {
   isOffersDataLoading: LoadingStatus.Idle,
   isOfferDataLoading: LoadingStatus.Idle,
   isOffersNearbyDataLoading: LoadingStatus.Idle,
+  currentFavoriteOffer: null,
 };
 
 export const offersSlice = createSlice({
@@ -53,6 +55,18 @@ export const offersSlice = createSlice({
     },
     sortType: (state, action: PayloadAction<string>) => {
       state.sortingType = action.payload;
+    },
+    setFavoriteOffer(state, action: PayloadAction<OfferApi | null>) {
+      state.currentFavoriteOffer = action.payload;
+
+      if (action.payload !== null) {
+        const currentOfferId = action.payload.id;
+        const currentOfferIndex = state.offers.findIndex(
+          (offer) => offer.id === currentOfferId
+        );
+        state.offers[currentOfferIndex].isFavorite = action.payload.isFavorite;
+      }
+
     },
   },
   extraReducers(builder) {
@@ -93,4 +107,4 @@ export const offersSlice = createSlice({
   }
 });
 
-export const { setCity, sortType, getSortedOffers, getActiveOffer, getLoadOffer, getOffersNearby } = offersSlice.actions;
+export const { setCity, sortType, getSortedOffers, getActiveOffer, getLoadOffer, getOffersNearby, setFavoriteOffer } = offersSlice.actions;
