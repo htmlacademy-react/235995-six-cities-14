@@ -12,6 +12,11 @@ import { OfferApi } from '../../types/offer.ts';
 import { LOCATIONS, DEFAULT_LOCATION } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks/store.ts';
 import { offersSlice } from '../../store/slices/offers.ts';
+import { fetchFavoriteOffers, fetchOffersAction } from '../../store/api-actions.ts';
+import { store } from '../../store/index.ts';
+
+store.dispatch(fetchOffersAction());
+store.dispatch(fetchFavoriteOffers());
 
 function MainPage (): JSX.Element {
   const dispatch = useAppDispatch();

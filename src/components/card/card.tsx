@@ -4,6 +4,7 @@ import { OfferApi } from '../../types/offer.ts';
 import { useAppDispatch } from '../../hooks/store.ts';
 import { offersSlice } from '../../store/slices/offers';
 import { FavoriteButton } from '../favorite-button/favorite-button.tsx';
+import { OFFER_IMAGE_PROPERTY } from '../../const.ts';
 
 interface CardProps {
   offer: OfferApi;
@@ -13,17 +14,17 @@ interface CardProps {
 function Card({offer, cardClassName}: CardProps): JSX.Element {
   const dispatch = useAppDispatch();
   const location = useLocation();
-  const pathName = location.pathname.slice(1,6);
+  const pathName = location.pathname.slice(1);
+  const offerPathName = location.pathname.slice(1, 6);
   const offerId: string = `/offer/${offer.id}`;
-
   const handleOnMouseOver = (): void => {
-    if(pathName !== 'offer') {
+    if(offerPathName !== 'offer') {
       dispatch(offersSlice.actions.getActiveOffer(offer));
     }
 
   };
   const handleOnMouseLeave = (): void => {
-    if(pathName !== 'offer') {
+    if(offerPathName !== 'offer') {
       dispatch(offersSlice.actions.getActiveOffer(undefined));
     }
   };
@@ -31,6 +32,12 @@ function Card({offer, cardClassName}: CardProps): JSX.Element {
   const handleClickCard = (): void => {
     dispatch(offersSlice.actions.getActiveOffer(offer));
   };
+
+  const getImageProperty = (path: string) => Object.hasOwn(OFFER_IMAGE_PROPERTY, path) // OFFER_IMAGE_PROPERTY.hasOwnProperty(path)
+    ? OFFER_IMAGE_PROPERTY.favorites
+    : OFFER_IMAGE_PROPERTY.main;
+
+  const imageProperty = getImageProperty(pathName);
 
   return (
     <article onMouseOver={handleOnMouseOver} onMouseOut={handleOnMouseLeave} className={`${cardClassName}__card place-card`} >
@@ -40,7 +47,7 @@ function Card({offer, cardClassName}: CardProps): JSX.Element {
       </div>}
       <div className={`${cardClassName}__image-wrapper place-card__image-wrapper`}>
         <Link to={offerId} onClick={handleClickCard}>
-          <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image" />
+          <img className="place-card__image" src={offer.previewImage} width={imageProperty.width} height={imageProperty.height} alt="Place image" />
         </Link>
       </div>
       <div className="place-card__info">

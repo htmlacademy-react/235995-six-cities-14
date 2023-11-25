@@ -8,18 +8,17 @@ import { OfferForm } from '../../components/offer-form/offer-form';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
 import { Map } from '../../components/map/map.tsx';
 import { Card } from '../../components/card/card.tsx';
+import { Spinner } from '../../components/spinner/spinner.tsx';
+import { FavoriteButton } from '../../components/favorite-button/favorite-button.tsx';
 
 import { getOfferType, getRating } from '../../utils';
 import { OfferApi } from '../../types/offer.ts';
-import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACES_OFFER_COUNT, AppRoute, OFFER_CLASSES, LoadingStatus } from '../../const.ts';
+import { Comment } from '../../types/user.ts';
 import { State } from '../../types/state.ts';
+import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACES_OFFER_COUNT, AppRoute, OFFER_CLASSES, LoadingStatus } from '../../const.ts';
 import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
 import { fetchComments, fetchOfferAction, fetchOffersNearby } from '../../store/api-actions.ts';
-import { store } from '../../store/index.ts';
 import { offersSlice } from '../../store/slices/offers.ts';
-import { Comment } from '../../types/user.ts';
-import { Spinner } from '../../components/spinner/spinner.tsx';
-import { FavoriteButton } from '../../components/favorite-button/favorite-button.tsx';
 
 function OfferPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -29,8 +28,8 @@ function OfferPage(): JSX.Element {
   dispatch(offersSlice.actions.getLoadOffer(offerById));
 
   useEffect(() => {
-    store.dispatch(fetchOfferAction(offerId));
-    store.dispatch(fetchOffersNearby(offerId));
+    dispatch(fetchOfferAction(offerId));
+    dispatch(fetchOffersNearby(offerId));
     dispatch(fetchComments(offerId));
     return () => {
       dispatch(offersSlice.actions.getLoadOffer(null));
@@ -52,7 +51,6 @@ function OfferPage(): JSX.Element {
     return <Spinner />;
   }
   // если ошибка перенаправляем на страницу 404
-  // const stateError = useAppSelector((state: State): LoadingStatus => state.offers.hasError);
   if(isOfferDataLoading === LoadingStatus.Error || isOffersNearbyDataLoading === LoadingStatus.Error || !offerById) {
     return <Navigate to={AppRoute.Error} />;
   }

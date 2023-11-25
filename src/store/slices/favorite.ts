@@ -42,14 +42,15 @@ export const favoriteSlice = createSlice({
       .addCase(postFavoriteOffer.fulfilled, (state, action: PayloadAction<OfferApi | null>) => {
         state.favoriteOffer = action.payload;
         state.isFavoriteOfferPosting = LoadingStatus.Success;
-        // const currentOffer = action.payload;
-        // if(currentOffer !== null) {
-        //   if (currentOffer?.isFavorite) {
-        //     state.favoriteOffers.push(currentOffer);
-        //   } else {
-        //     state.favoriteOffers = state.favoriteOffers.filter((offer) => offer.id !== currentOffer.id);
-        //   }
-        // }
+
+        if(action.payload !== null) {
+          const currentOffer = action.payload;
+          if (currentOffer.isFavorite) {
+            state.favoriteOffers = [...state.favoriteOffers, currentOffer];
+          } else {
+            state.favoriteOffers = state.favoriteOffers.filter((offer) => offer.id !== currentOffer.id);
+          }
+        }
 
       })
       .addCase(postFavoriteOffer.rejected, (state) => {

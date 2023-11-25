@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { OfferApi } from '../../types/offer';
+import { OfferApi, TFavoriteOfferState } from '../../types/offer';
 import { DEFAULT_LOCATION, DEFAULT_TYPE_SORTING, NameSpace, LoadingStatus } from '../../const';
 import { fetchOfferAction, fetchOffersAction, fetchOffersNearby } from '../api-actions';
 
@@ -16,7 +16,7 @@ export interface OffersProps {
   isOffersDataLoading: LoadingStatus;
   isOfferDataLoading: LoadingStatus;
   isOffersNearbyDataLoading: LoadingStatus;
-  currentFavoriteOffer: OfferApi | null;
+  currentFavoriteOffer: TFavoriteOfferState;
 }
 
 const initialState: OffersProps = {
@@ -31,7 +31,10 @@ const initialState: OffersProps = {
   isOffersDataLoading: LoadingStatus.Idle,
   isOfferDataLoading: LoadingStatus.Idle,
   isOffersNearbyDataLoading: LoadingStatus.Idle,
-  currentFavoriteOffer: null,
+  currentFavoriteOffer: {
+    favoriteId: '',
+    status: 0,
+  },
 };
 
 export const offersSlice = createSlice({
@@ -56,17 +59,16 @@ export const offersSlice = createSlice({
     sortType: (state, action: PayloadAction<string>) => {
       state.sortingType = action.payload;
     },
-    setFavoriteOffer(state, action: PayloadAction<OfferApi | null>) {
+    setFavoriteOffer(state, action: PayloadAction<TFavoriteOfferState>) {
       state.currentFavoriteOffer = action.payload;
 
-      if (action.payload !== null) {
-        const currentOfferId = action.payload.id;
-        const currentOfferIndex = state.offers.findIndex(
-          (offer) => offer.id === currentOfferId
-        );
-        state.offers[currentOfferIndex].isFavorite = action.payload.isFavorite;
+      if (action.payload.favoriteId !== '') {
+        const {favoriteId , status} = action.payload;
+        const currentOffer = state.offers.find((offer) => offer.id === favoriteId);
+        if (currentOffer) {
+          currentOffer.isFavorite = Boolean(status);
+        }
       }
-
     },
   },
   extraReducers(builder) {

@@ -11,17 +11,12 @@ import { Spinner } from './spinner/spinner';
 // Data
 import { AppRoute, AuthorizationStatus, LOCATIONS, LoadingStatus } from '../const';
 // Store
-import { store } from '../store/';
-import { checkAuthAction, fetchOffersAction } from '../store/api-actions';
 import { useAppSelector } from '../hooks/store';
 // Routes
 import { RedirectToMainPage } from './redirect-to-main-page/redirect-to-main-page';
 import { PrivateRoute } from './private-route/private-route';
 import { HistoryRouter } from './history-route/history-route';
 import { browserHistory } from '../browser-history';
-
-store.dispatch(checkAuthAction());
-store.dispatch(fetchOffersAction());
 
 function App(): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);

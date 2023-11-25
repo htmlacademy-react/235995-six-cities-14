@@ -11,10 +11,22 @@ export const MAX_NEAR_PLACES_OFFER_COUNT = 3;
 export const URL_MARKER_DEFAULT = './markup/img/pin.svg';
 export const URL_MARKER_CURRENT = './markup/img/pin-active.svg';
 export const RATING_NUMBERS = [5, 4, 3, 2, 1];
+
 export const OFFER_CLASSES = {
   MainPage:  'cities',
   FavoritesPage: 'favorites',
   offerPage:  'near-places',
+};
+
+export const OFFER_IMAGE_PROPERTY = {
+  'favorites': {
+    width: '150',
+    height: '110',
+  },
+  'main': {
+    width: '260',
+    height: '200',
+  },
 };
 
 export const DEFAULT_CUSTOM_ICON = new Icon({

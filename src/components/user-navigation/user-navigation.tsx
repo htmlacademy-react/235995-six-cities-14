@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { AuthorizationStatus } from '../../const.ts';
+import { AuthorizationStatus, AppRoute } from '../../const.ts';
 import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
 import { fetchUserData, logoutAction } from '../../store/api-actions.ts';
 import { store } from '../../store/index.ts';
@@ -25,7 +25,7 @@ function UserNavigation() {
       <nav className="header__nav">
         <ul className="header__nav-list">
           <li className="header__nav-item user">
-            <Link className="header__nav-link header__nav-link--profile" to={'/favorites'} >
+            <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites} >
               <div className="header__avatar-wrapper user__avatar-wrapper">
                 <img src={userData?.avatarUrl} alt={userData?.name} />
               </div>
@@ -43,7 +43,7 @@ function UserNavigation() {
       <nav className="header__nav">
         <ul className="header__nav-list">
           <li className="header__nav-item user">
-            <Link className="header__nav-link header__nav-link--profile" to={'/login'}>
+            <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Login}>
               <div className="header__avatar-wrapper user__avatar-wrapper">
               </div>
               <span className="header__login">Sign in</span>

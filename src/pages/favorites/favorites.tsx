@@ -6,6 +6,10 @@ import { UserNavigation } from '../../components/user-navigation/user-navigation
 // import { OfferApi } from '../../types/offer.ts';
 import { FavoritesEmpty } from '../../components/favorites-empty/favorites-empty.tsx';
 import { useAppSelector } from '../../hooks/store.ts';
+import { store } from '../../store/index.ts';
+import { fetchFavoriteOffers } from '../../store/api-actions.ts';
+
+store.dispatch(fetchFavoriteOffers());
 
 function FavoritesPage(): JSX.Element {
   const favoriteOffers = useAppSelector((state) => state.favorites.favoriteOffers);
