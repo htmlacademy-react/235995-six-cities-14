@@ -21,14 +21,14 @@ function FavoriteButton({offer, widthBtn = '18', heightBtn = '19', block}: favor
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const favoriteOffers = useAppSelector((state) => state.favorites.favoriteOffers);
-  const [isOn] = favoriteOffers.filter((favoriteOffer) => favoriteOffer.id === offer.id);
+  const [isOn] = favoriteOffers.filter((favoriteOffer: OfferApi) => favoriteOffer.id === offer.id);
   const [isFavoriteButton, setIsFavoriteButton] = useState(isOn?.isFavorite);
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
   const favoriteOfferState: TFavoriteOfferState = {
     favoriteId: offer.id,
     status: isFavoriteButton ? 0 : 1,
   };
-
+  // const isFavoriteOfferPosting = useAppSelector((state) => state.favorites.isFavoriteOfferPosting);
   const handleOnFavoriteButton = (): void => {
     if(authorizationStatus === AuthorizationStatus.NoAuth) {
       navigate(AppRoute.Login);
@@ -47,7 +47,7 @@ function FavoriteButton({offer, widthBtn = '18', heightBtn = '19', block}: favor
 
   return (
     <button onClick={handleOnFavoriteButton} className={classNames(`${block}__bookmark-button button`,
-      {[`${block}__bookmark-button--active`] : isFavoriteButton})} type="button"
+      {[`${block}__bookmark-button--active`] : isFavoriteButton})} type="button" // disabled={}
     >
       <svg className={`${block}__bookmark-icon`} width={widthBtn} height={heightBtn}>
         <use xlinkHref="#icon-bookmark"></use>

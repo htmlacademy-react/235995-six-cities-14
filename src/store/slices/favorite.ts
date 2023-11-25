@@ -33,6 +33,7 @@ export const favoriteSlice = createSlice({
         state.isFavoriteOffersLoading = LoadingStatus.Success;
       })
       .addCase(fetchFavoriteOffers.rejected, (state) => {
+        state.favoriteOffers = [];
         state.isFavoriteOffersLoading = LoadingStatus.Error;
       })
       // postFavoriteOffer

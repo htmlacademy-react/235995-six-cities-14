@@ -16,7 +16,7 @@ import { Comment } from '../../types/user.ts';
 import { State } from '../../types/state.ts';
 
 import { getOfferType, getRating } from '../../utils';
-import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACES_OFFER_COUNT, AppRoute, OFFER_CLASSES, LoadingStatus } from '../../const.ts';
+import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACES_OFFER_COUNT, AppRoute, OFFER_CLASSES, LoadingStatus, FAVORITE_BUTTON_DATA } from '../../const.ts';
 import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
 import { fetchComments, fetchOfferAction, fetchOffersNearby } from '../../store/api-actions.ts';
 import { dropOffer, getActiveOffer } from '../../store/slices/offers.ts';
@@ -37,7 +37,9 @@ function OfferPage(): JSX.Element {
   }, [offerId, dispatch]);
 
   useEffect(() => {
-    dispatch(getActiveOffer(offerById));
+    if (offerById !== null) {
+      dispatch(getActiveOffer(offerById));
+    }
   }, [offerById, dispatch]);
 
   const nearbyCities = useAppSelector((state: State): OfferApi[] | null => state.offers.offersNearby)?.slice(0, MAX_NEAR_PLACES_OFFER_COUNT);
@@ -95,7 +97,7 @@ function OfferPage(): JSX.Element {
                 <h1 className="offer__name">
                   {offerById.title}
                 </h1>
-                <FavoriteButton offer={offerById} widthBtn={'31'} heightBtn={'33'} block={'offer'} />
+                <FavoriteButton offer={offerById} widthBtn={FAVORITE_BUTTON_DATA.offer.widthBtn} heightBtn={FAVORITE_BUTTON_DATA.offer.heightBtn} block={FAVORITE_BUTTON_DATA.offer.bemBlock} />
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">

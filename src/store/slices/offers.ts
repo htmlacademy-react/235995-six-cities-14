@@ -25,7 +25,7 @@ const initialState: OffersProps = {
   city: DEFAULT_LOCATION,
   sortingType: DEFAULT_TYPE_SORTING,
   sortedOffers: [],
-  activeOffer: undefined,
+  activeOffer: null,
   loadOffer: null,
   offersNearby: null,
   isOffersDataLoading: LoadingStatus.Idle,

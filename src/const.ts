@@ -11,6 +11,18 @@ export const MAX_NEAR_PLACES_OFFER_COUNT = 3;
 export const URL_MARKER_DEFAULT = './markup/img/pin.svg';
 export const URL_MARKER_CURRENT = './markup/img/pin-active.svg';
 export const RATING_NUMBERS = [5, 4, 3, 2, 1];
+export const FAVORITE_BUTTON_DATA = {
+  offer: {
+    widthBtn: '31',
+    heightBtn: '33',
+    bemBlock: 'offer',
+  },
+  main: {
+    widthBtn: '18',
+    heightBtn: '19',
+    bemBlock: 'place-card',
+  }
+};
 
 export const OFFER_CLASSES = {
   MainPage:  'cities',
