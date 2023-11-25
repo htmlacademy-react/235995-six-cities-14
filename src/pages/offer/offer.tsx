@@ -10,44 +10,48 @@ import { Map } from '../../components/map/map.tsx';
 import { Card } from '../../components/card/card.tsx';
 import { Spinner } from '../../components/spinner/spinner.tsx';
 import { FavoriteButton } from '../../components/favorite-button/favorite-button.tsx';
-
-import { getOfferType, getRating } from '../../utils';
+// Types
 import { OfferApi } from '../../types/offer.ts';
 import { Comment } from '../../types/user.ts';
 import { State } from '../../types/state.ts';
+
+import { getOfferType, getRating } from '../../utils';
 import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACES_OFFER_COUNT, AppRoute, OFFER_CLASSES, LoadingStatus } from '../../const.ts';
 import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
 import { fetchComments, fetchOfferAction, fetchOffersNearby } from '../../store/api-actions.ts';
-import { offersSlice } from '../../store/slices/offers.ts';
+import { dropOffer, getActiveOffer } from '../../store/slices/offers.ts';
 
 function OfferPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const {id: offerId} = useParams();
-  const authorizationStatus = useAppSelector((state: { user: { authorizationStatus: AuthorizationStatus } }) => state.user.authorizationStatus);
-  const offerById = useAppSelector((state: State): OfferApi | null => state.offers.offer);
-  dispatch(offersSlice.actions.getLoadOffer(offerById));
+  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
+  const offerById = useAppSelector((state): OfferApi | null => state.offers.offer);
 
   useEffect(() => {
     dispatch(fetchOfferAction(offerId));
     dispatch(fetchOffersNearby(offerId));
     dispatch(fetchComments(offerId));
     return () => {
-      dispatch(offersSlice.actions.getLoadOffer(null));
+      dispatch(dropOffer());
     };
-
   }, [offerId, dispatch]);
 
+  useEffect(() => {
+    dispatch(getActiveOffer(offerById));
+  }, [offerById, dispatch]);
+
   const nearbyCities = useAppSelector((state: State): OfferApi[] | null => state.offers.offersNearby)?.slice(0, MAX_NEAR_PLACES_OFFER_COUNT);
+  const getCurrentTime = (time: string) => (new Date(time)).getTime();
   // Получаем массив отзывов отсортированных по дате
-  const reviews = useAppSelector((state: State): Comment[] | [] => state.user.comments);
-  const listReviews = reviews.slice().sort((a, b)=> (new Date(b.date)).getTime() - (new Date(a.date)).getTime()).slice(0, MAX_REVIEW_COUNT);
+  const reviews = useAppSelector((state): Comment[] | [] => state.user.comments);
+  const listReviews = reviews.slice().sort((a, b) => (getCurrentTime(b.date) - getCurrentTime(a.date))).slice(0, MAX_REVIEW_COUNT);
 
   const isOfferDataLoading = useAppSelector((state: State): LoadingStatus => state.offers.isOfferDataLoading);
   const isCommentsDataLoading = useAppSelector((state: State): boolean => state.user.isCommentsDataLoading);
   const isOffersNearbyDataLoading = useAppSelector((state: State): LoadingStatus => state.offers.isOffersNearbyDataLoading);
 
   // Если данные загружаются показываем spinner
-  if(authorizationStatus === AuthorizationStatus.Unknown || isOfferDataLoading === LoadingStatus.Idle || isOfferDataLoading === LoadingStatus.Loading || isOffersNearbyDataLoading === LoadingStatus.Idle || isOffersNearbyDataLoading === LoadingStatus.Loading || isCommentsDataLoading) {
+  if(isOfferDataLoading === LoadingStatus.Idle || isOfferDataLoading === LoadingStatus.Loading || isOffersNearbyDataLoading === LoadingStatus.Idle || isOffersNearbyDataLoading === LoadingStatus.Loading || isCommentsDataLoading) {
     return <Spinner />;
   }
   // если ошибка перенаправляем на страницу 404
@@ -129,7 +133,7 @@ function OfferPage(): JSX.Element {
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
                   <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="offer__avatar user__avatar" src={offerById?.host.avatarUrl} width="74" height="74" alt="Host avatar" />
+                    <img className="offer__avatar user__avatar" src={offerById.host.avatarUrl} width="74" height="74" alt="Host avatar" />
                   </div>
                   <span className="offer__user-name">
                     {offerById.host.name}
@@ -156,7 +160,7 @@ function OfferPage(): JSX.Element {
             </div>
           </div>
           <section className="offer__map map">
-            {<Map city={offerById.city.location} points={[...nearbyCities ?? [], offerById]} />}
+            <Map city={offerById.city.location} points={[...nearbyCities ?? [], offerById]} />
           </section>
         </section>
         <div className="container">
