@@ -2,14 +2,19 @@ import { Link } from 'react-router-dom';
 import { AuthorizationStatus, AppRoute } from '../../const.ts';
 import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
 import { fetchUserData, logoutAction } from '../../store/api-actions.ts';
-import { store } from '../../store/index.ts';
 import { Spinner } from '../spinner/spinner.tsx';
-
-store.dispatch(fetchUserData());
+import { useEffect } from 'react';
 
 function UserNavigation() {
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
+
+  useEffect(() => {
+    if(authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(fetchUserData());
+    }
+
+  }, [dispatch]);
   const favoriteCardCount = useAppSelector((state) => state.favorites.favoriteOffers).length;
   const userData = useAppSelector((state) => state.user.userData);
   const handleLogout = (evt: { preventDefault: () => void }) => {

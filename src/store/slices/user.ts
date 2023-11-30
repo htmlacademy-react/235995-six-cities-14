@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { AppRoute, AuthorizationStatus, NameSpace } from '../../const';
+import { AppRoute, AuthorizationStatus, NameSpace, LoadingStatus } from '../../const';
 import { User, Comment, PostComment } from '../../types/user';
-import { fetchComments, fetchUserData, postComment } from '../api-actions';
+import { fetchComments, fetchUserData, loginAction, logoutAction, postComment } from '../api-actions';
 
 export interface UserProps {
   authorizationStatus: AuthorizationStatus;
+  isLoging: LoadingStatus;
+  isLogout: LoadingStatus;
   userData: User | null;
   redirectToRoute: AppRoute;
   isUserDataLoading: boolean;
@@ -19,6 +21,8 @@ export interface UserProps {
 
 const initialState: UserProps = {
   authorizationStatus: AuthorizationStatus.NoAuth,
+  isLoging: LoadingStatus.Idle,
+  isLogout: LoadingStatus.Idle,
   userData: null,
   redirectToRoute: AppRoute.Root,
   isUserDataLoading: false,
@@ -56,6 +60,22 @@ export const userSlice = createSlice({
       })
       .addCase(fetchUserData.rejected, (state) => {
         state.isUserDataLoading = false;
+      })
+      // Login
+      .addCase(loginAction.pending, (state) => {
+        state.isLoging = LoadingStatus.Loading;
+      })
+      .addCase(loginAction.fulfilled, (state) => {
+        state.authorizationStatus = AuthorizationStatus.Auth;
+        state.isLoging = LoadingStatus.Success;
+      })
+      .addCase(loginAction.rejected, (state) => {
+        state.authorizationStatus = AuthorizationStatus.NoAuth;
+        state.isLoging = LoadingStatus.Error;
+      })
+      // logout
+      .addCase(logoutAction.fulfilled, (state) => {
+        state.authorizationStatus = AuthorizationStatus.NoAuth;
       })
       // fetchComments
       .addCase(fetchComments.pending, (state) => {

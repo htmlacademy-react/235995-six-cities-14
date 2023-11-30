@@ -3,15 +3,16 @@ import { Helmet } from 'react-helmet-async';
 import { Logo } from '../../components/logo/logo';
 import { FavoritesLocation } from '../../components/favorites-location/favorites-location';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
-// import { OfferApi } from '../../types/offer.ts';
 import { FavoritesEmpty } from '../../components/favorites-empty/favorites-empty.tsx';
-import { useAppSelector } from '../../hooks/store.ts';
-import { store } from '../../store/index.ts';
+import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
 import { fetchFavoriteOffers } from '../../store/api-actions.ts';
-
-store.dispatch(fetchFavoriteOffers());
+import { useEffect } from 'react';
 
 function FavoritesPage(): JSX.Element {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchFavoriteOffers());
+  }, [dispatch]);
   const favoriteOffers = useAppSelector((state) => state.favorites.favoriteOffers);
   return (
     <div className={favoriteOffers.length ? 'page' : 'page page--favorites-empty'}>

@@ -15,7 +15,7 @@ type favoriteButtonProps = {
   block: string;
 };
 
-store.dispatch(fetchFavoriteOffers());
+// store.dispatch(fetchFavoriteOffers());
 
 function FavoriteButton({offer, widthBtn = '18', heightBtn = '19', block}: favoriteButtonProps) {
   const navigate = useNavigate();
