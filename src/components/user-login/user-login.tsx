@@ -1,13 +1,14 @@
-import { Link } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../hooks/store";
-import { logoutAction } from "../../store/api-actions";
-import { AppRoute } from "../../const";
+import { Link } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import { logoutAction } from '../../store/api-actions';
+import { AppRoute } from '../../const';
+import { getUserData } from '../../store/slices/user/selectors';
 
 
 function UserLogin() {
   const dispatch = useAppDispatch();
   const favoriteCardCount = useAppSelector((state) => state.favorites.favoriteOffers).length;
-  const userData = useAppSelector((state) => state.user.userData);
+  const userData = useAppSelector(getUserData);
   const handleLogout = (evt: { preventDefault: () => void }) => {
     evt.preventDefault();
     dispatch(logoutAction());

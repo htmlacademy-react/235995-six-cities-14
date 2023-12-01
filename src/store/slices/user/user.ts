@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { AppRoute, AuthorizationStatus, NameSpace, LoadingStatus } from '../../const';
-import { User, Comment, PostComment } from '../../types/user';
-import { fetchComments, fetchUserData, loginAction, logoutAction, postComment } from '../api-actions';
+import { AppRoute, AuthorizationStatus, NameSpace, LoadingStatus } from '../../../const';
+import { User, Comment, PostComment } from '../../../types/user';
+import { fetchComments, fetchUserData, loginAction, logoutAction, postComment } from '../../api-actions';
 
 export interface UserProps {
   authorizationStatus: AuthorizationStatus;

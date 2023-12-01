@@ -7,6 +7,7 @@ import { FavoritesEmpty } from '../../components/favorites-empty/favorites-empty
 import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
 import { fetchFavoriteOffers } from '../../store/api-actions.ts';
 import { useEffect } from 'react';
+import classNames from 'classnames';
 
 function FavoritesPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -14,8 +15,9 @@ function FavoritesPage(): JSX.Element {
     dispatch(fetchFavoriteOffers());
   }, [dispatch]);
   const favoriteOffers = useAppSelector((state) => state.favorites.favoriteOffers);
+  const isFavorites = Boolean(favoriteOffers.length);
   return (
-    <div className={favoriteOffers.length ? 'page' : 'page page--favorites-empty'}>
+    <div className={classNames('page', {'page--favorites-empty': isFavorites})}>
       <Helmet>
         <title>6 cities: favorites</title>
       </Helmet>
@@ -29,7 +31,7 @@ function FavoritesPage(): JSX.Element {
           </div>
         </div>
       </header>
-      {favoriteOffers.length ?
+      {isFavorites ?
         <main className="page__main page__main--favorites">
           <div className="page__favorites-container container">
             <section className="favorites">

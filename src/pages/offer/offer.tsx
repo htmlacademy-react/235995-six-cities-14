@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import classNames from 'classnames';
 // Components
 import { Review } from '../../components/review/review';
 import { Logo } from '../../components/logo/logo';
@@ -11,21 +12,25 @@ import { Card } from '../../components/card/card.tsx';
 import { Spinner } from '../../components/spinner/spinner.tsx';
 import { FavoriteButton } from '../../components/favorite-button/favorite-button.tsx';
 // Types
-import { OfferApi } from '../../types/offer.ts';
 import { Comment } from '../../types/user.ts';
-import { State } from '../../types/state.ts';
-
+import { getComments, getUserAuthStatus, isCommentsLoading } from '../../store/slices/user/selectors.ts';
 import { getOfferType, getRating } from '../../utils';
 import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACES_OFFER_COUNT, AppRoute, OFFER_CLASSES, LoadingStatus, FAVORITE_BUTTON_DATA } from '../../const.ts';
 import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
-import { fetchComments, fetchOfferAction, fetchOffersNearby } from '../../store/api-actions.ts';
-import { dropOffer, getActiveOffer } from '../../store/slices/offers.ts';
+import { fetchComments, fetchFavoriteOffers, fetchOfferAction, fetchOffersNearby } from '../../store/api-actions.ts';
+import { dropOffer, getActiveOffer, getOffersNearby } from '../../store/slices/offers/offers.ts';
+import { getOffer, isOfferLoading, isOffersNearbyLoading } from '../../store/slices/offers/selectors.ts';
 
 function OfferPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const {id: offerId} = useParams();
-  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
-  const offerById = useAppSelector((state): OfferApi | null => state.offers.offer);
+  const authorizationStatus = useAppSelector(getUserAuthStatus);
+  const offerById = useAppSelector(getOffer);
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(fetchFavoriteOffers());
+    }
+  },[dispatch, authorizationStatus]);
 
   useEffect(() => {
     dispatch(fetchOfferAction(offerId));
@@ -42,15 +47,16 @@ function OfferPage(): JSX.Element {
     }
   }, [offerById, dispatch]);
 
-  const nearbyCities = useAppSelector((state: State): OfferApi[] | null => state.offers.offersNearby)?.slice(0, MAX_NEAR_PLACES_OFFER_COUNT);
+  let nearbyCities = useAppSelector(getOffersNearby);
+  nearbyCities = nearbyCities !== null ? nearbyCities?.slice(0, MAX_NEAR_PLACES_OFFER_COUNT) : [];
   const getCurrentTime = (time: string) => (new Date(time)).getTime();
   // Получаем массив отзывов отсортированных по дате
-  const reviews = useAppSelector((state): Comment[] | [] => state.user.comments);
+  const reviews = useAppSelector(getComments);
   const listReviews = reviews.slice().sort((a, b) => (getCurrentTime(b.date) - getCurrentTime(a.date))).slice(0, MAX_REVIEW_COUNT);
 
-  const isOfferDataLoading = useAppSelector((state: State): LoadingStatus => state.offers.isOfferDataLoading);
-  const isCommentsDataLoading = useAppSelector((state: State): boolean => state.user.isCommentsDataLoading);
-  const isOffersNearbyDataLoading = useAppSelector((state: State): LoadingStatus => state.offers.isOffersNearbyDataLoading);
+  const isOfferDataLoading = useAppSelector(isOfferLoading);
+  const isCommentsDataLoading = useAppSelector(isCommentsLoading);
+  const isOffersNearbyDataLoading = useAppSelector(isOffersNearbyLoading);
 
   // Если данные загружаются показываем spinner
   if(isOfferDataLoading === LoadingStatus.Idle || isOfferDataLoading === LoadingStatus.Loading || isOffersNearbyDataLoading === LoadingStatus.Idle || isOffersNearbyDataLoading === LoadingStatus.Loading || isCommentsDataLoading) {
@@ -134,15 +140,13 @@ function OfferPage(): JSX.Element {
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
-                  <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
+                  <div className={classNames('offer__avatar-wrapper', 'user__avatar-wrapper', {'offer__avatar-wrapper--pro': offerById.host.isPro})}>
                     <img className="offer__avatar user__avatar" src={offerById.host.avatarUrl} width="74" height="74" alt="Host avatar" />
                   </div>
                   <span className="offer__user-name">
                     {offerById.host.name}
                   </span>
-                  <span className="offer__user-status">
-                    {offerById.host.isPro ? 'Pro' : ''}
-                  </span>
+                  {offerById.host.isPro && <span className="offer__user-status">Pro</span>}
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">

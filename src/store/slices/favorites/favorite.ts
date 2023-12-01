@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { LoadingStatus, NameSpace } from '../../const';
-import { fetchFavoriteOffers, postFavoriteOffer } from '../api-actions';
-import { OfferApi } from '../../types/offer';
+import { LoadingStatus, NameSpace } from '../../../const';
+import { fetchFavoriteOffers, postFavoriteOffer } from '../../api-actions';
+import { OfferApi } from '../../../types/offer';
 
 export type FavoriteProps = {
   isFavoriteOffersLoading: LoadingStatus;

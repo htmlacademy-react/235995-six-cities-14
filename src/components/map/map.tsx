@@ -7,6 +7,7 @@ import { Location } from '../../types/offer';
 import { useMap } from '../../hooks/use-map';
 import { OfferApi } from '../../types/offer.ts';
 import { useAppSelector } from '../../hooks/store.ts';
+import { getActiveOffer } from '../../store/slices/offers/offers.ts';
 
 type MapProps = {
   city: Location;
@@ -14,7 +15,7 @@ type MapProps = {
 };
 
 function Map({city, points}: MapProps): JSX.Element {
-  const selectedPoint = useAppSelector((state) => state.offers.activeOffer);
+  const selectedPoint = useAppSelector(getActiveOffer);
 
   const { pathname } = useLocation();
   const pathNames = pathname.split('/');

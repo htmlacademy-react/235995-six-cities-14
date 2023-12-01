@@ -5,21 +5,24 @@ import classNames from 'classnames';
 import { LocationItem } from '../../components/location-item/location-item';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
 import { MainEmpty } from '../../components/main-empty/main-empty.tsx';
-import { LOCATIONS, DEFAULT_LOCATION, AuthorizationStatus } from '../../const';
+import { LOCATIONS, DEFAULT_LOCATION, AuthorizationStatus, LoadingStatus } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks/store.ts';
-import { offersSlice } from '../../store/slices/offers.ts';
+import { offersSlice } from '../../store/slices/offers/offers.ts';
 import { fetchFavoriteOffers, fetchOffersAction } from '../../store/api-actions.ts';
 import {MainCities} from '../../components/main-cities/main-cities.tsx';
 import { store } from '../../store/index.ts';
+import { getUserAuthStatus } from '../../store/slices/user/selectors.ts';
+import { getCity, getOffers, isOffersLoading } from '../../store/slices/offers/selectors.ts';
+import { Spinner } from '../../components/spinner/spinner.tsx';
 
 store.dispatch(fetchOffersAction());
 
 function MainPage (): JSX.Element {
   const dispatch = useAppDispatch();
-  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
-  const city = useAppSelector((state) => state.offers.city);
+  const authorizationStatus = useAppSelector(getUserAuthStatus);
+  const city = useAppSelector(getCity);
   const location = useLocation().pathname.slice(1);
-  const offers = useAppSelector((state) => state.offers.offers);
+  const offers = useAppSelector(getOffers);
   // По умолчанию перенаправляем на город Париж
   const navigate = useNavigate();
   useEffect(() => {
@@ -43,6 +46,10 @@ function MainPage (): JSX.Element {
   // Получаем кол-во количество оферов по городу
   const amountOffers = offersByCity.length;
   const isEmpty = amountOffers > 0;
+  const loadingStatus = useAppSelector(isOffersLoading);
+  if (loadingStatus === LoadingStatus.Idle || loadingStatus === LoadingStatus.Loading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="page page--gray page--main">
@@ -61,7 +68,7 @@ function MainPage (): JSX.Element {
           </div>
         </div>
       </header>
-      <main className={classNames('page__main', 'page__main--index', { 'page__main page__main--index': !isEmpty }) }>
+      <main className={classNames('page__main', 'page__main--index', { 'page__main--index-empty': !isEmpty })}>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">

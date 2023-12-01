@@ -2,7 +2,7 @@ import { getOfferType, getRating } from '../../utils';
 import { Link, useLocation } from 'react-router-dom';
 import { OfferApi } from '../../types/offer.ts';
 import { useAppDispatch } from '../../hooks/store.ts';
-import { offersSlice } from '../../store/slices/offers';
+import { offersSlice } from '../../store/slices/offers/offers.ts';
 import { FavoriteButton } from '../favorite-button/favorite-button.tsx';
 import { OFFER_IMAGE_PROPERTY, FAVORITE_BUTTON_DATA } from '../../const.ts';
 

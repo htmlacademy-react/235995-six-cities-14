@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { OfferApi, TFavoriteOfferState } from '../../types/offer';
-import { DEFAULT_LOCATION, DEFAULT_TYPE_SORTING, NameSpace, LoadingStatus } from '../../const';
-import { fetchOfferAction, fetchOffersAction, fetchOffersNearby } from '../api-actions';
+import { OfferApi, TFavoriteOfferState } from '../../../types/offer';
+import { DEFAULT_LOCATION, DEFAULT_TYPE_SORTING, NameSpace, LoadingStatus } from '../../../const';
+import { fetchOfferAction, fetchOffersAction, fetchOffersNearby } from '../../api-actions';
 
 export interface OffersProps {
   offers: OfferApi[];

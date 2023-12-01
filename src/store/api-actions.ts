@@ -4,7 +4,7 @@ import { APIRoute, AuthorizationStatus } from '../const';
 import { AppDispatch } from '../types/state';
 import { OfferApi } from '../types/offer';
 import { State } from '../types/state';
-import { userSlice } from './slices/user';
+import { userSlice } from './slices/user/user';
 import { saveToken, dropToken } from '../services/token';
 import { AuthData, User, Comment, PostComment } from '../types/user';
 import { FavoriteData } from '../types/favorite';

@@ -1,61 +1,28 @@
-import { Link } from 'react-router-dom';
-import { AuthorizationStatus, AppRoute } from '../../const.ts';
+import { AuthorizationStatus } from '../../const.ts';
 import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
-import { fetchUserData, logoutAction } from '../../store/api-actions.ts';
+import { fetchUserData } from '../../store/api-actions.ts';
 import { Spinner } from '../spinner/spinner.tsx';
 import { useEffect } from 'react';
+import { UserLogin } from '../user-login/user-login.tsx';
+import { UserLogout } from '../user-logout/user-logout.tsx';
+import { getUserAuthStatus, isUserDataLoading } from '../../store/slices/user/selectors.ts';
 
 function UserNavigation() {
   const dispatch = useAppDispatch();
-  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
+  const authorizationStatus = useAppSelector(getUserAuthStatus);
 
   useEffect(() => {
     if(authorizationStatus === AuthorizationStatus.Auth) {
       dispatch(fetchUserData());
     }
+  }, [dispatch, authorizationStatus]);
 
-  }, [dispatch]);
-  const favoriteCardCount = useAppSelector((state) => state.favorites.favoriteOffers).length;
-  const userData = useAppSelector((state) => state.user.userData);
-  const handleLogout = (evt: { preventDefault: () => void }) => {
-    evt.preventDefault();
-    dispatch(logoutAction());
-  };
-  const loadingStatus = useAppSelector((state) => state.user.isUserDataLoading);
+  const loadingStatus = useAppSelector(isUserDataLoading);
   if (loadingStatus) {
     return <Spinner />;
   }
   return (
-    authorizationStatus === AuthorizationStatus.Auth ?
-      <nav className="header__nav">
-        <ul className="header__nav-list">
-          <li className="header__nav-item user">
-            <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites} >
-              <div className="header__avatar-wrapper user__avatar-wrapper">
-                <img src={userData?.avatarUrl} alt={userData?.name} />
-              </div>
-              <span className="header__user-name user__name">{userData?.email}</span>
-              <span className="header__favorite-count">{favoriteCardCount}</span>
-            </Link>
-          </li>
-          <li className="header__nav-item">
-            <Link onClick={handleLogout} className="header__nav-link" to={'/'}>
-              <span className="header__signout">Sign out</span>
-            </Link>
-          </li>
-        </ul>
-      </nav> :
-      <nav className="header__nav">
-        <ul className="header__nav-list">
-          <li className="header__nav-item user">
-            <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Login}>
-              <div className="header__avatar-wrapper user__avatar-wrapper">
-              </div>
-              <span className="header__login">Sign in</span>
-            </Link>
-          </li>
-        </ul>
-      </nav>
+    authorizationStatus === AuthorizationStatus.Auth ? <UserLogin /> : <UserLogout />
   );
 }
 

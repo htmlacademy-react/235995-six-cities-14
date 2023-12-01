@@ -1,10 +1,10 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { NameSpace } from '../const';
 import { createApi } from '../services/api';
-import { offersSlice } from './slices/offers';
-import { userSlice } from './slices/user';
+import { offersSlice } from './slices/offers/offers';
+import { userSlice } from './slices/user/user';
 import { redirect } from './midleware/redirect';
-import { favoriteSlice } from './slices/favorite';
+import { favoriteSlice } from './slices/favorites/favorite';
 
 const api = createApi();
 

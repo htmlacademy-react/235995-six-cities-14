@@ -3,11 +3,12 @@ import { OffersSorting } from '../offers-sorting/offers-sorting';
 import { Map } from '../../components/map/map.tsx';
 import { useAppSelector } from '../../hooks/store.ts';
 import { OfferApi } from '../../types/offer.ts';
+import { getCity, getOffers, getSortingType } from '../../store/slices/offers/selectors.ts';
 
 function MainCities() {
-  const city = useAppSelector((state) => state.offers.city);
-  const offers = useAppSelector((state) => state.offers.offers);
-  const currentSortType = useAppSelector((state) => state.offers.sortingType);
+  const city = useAppSelector(getCity);
+  const offers = useAppSelector(getOffers);
+  const currentSortType = useAppSelector(getSortingType);
   const offersByCity = offers.filter((item) => item.city.name === city);
   const amountOffers = offersByCity.length;
   const utilsSort: {[key:string]: OfferApi[]} = {

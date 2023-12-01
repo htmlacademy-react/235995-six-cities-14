@@ -9,7 +9,7 @@ import { NotFoundPage } from '../pages/error/error-page';
 // components
 import { Spinner } from './spinner/spinner';
 // Data
-import { AppRoute, AuthorizationStatus, LOCATIONS, LoadingStatus } from '../const';
+import { AppRoute, AuthorizationStatus, LOCATIONS } from '../const';
 // Store
 import { useAppSelector } from '../hooks/store';
 // Routes
@@ -17,11 +17,11 @@ import { RedirectToMainPage } from './redirect-to-main-page/redirect-to-main-pag
 import { PrivateRoute } from './private-route/private-route';
 import { HistoryRouter } from './history-route/history-route';
 import { browserHistory } from '../browser-history';
+import { getUserAuthStatus } from '../store/slices/user/selectors';
 
 function App(): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
-  const loadingStatus = useAppSelector((state) => state.offers.isOffersDataLoading);
-  if (loadingStatus === LoadingStatus.Idle || loadingStatus === LoadingStatus.Loading || authorizationStatus === AuthorizationStatus.Unknown) {
+  const authorizationStatus = useAppSelector(getUserAuthStatus);
+  if (authorizationStatus === AuthorizationStatus.Unknown) {
     return <Spinner />;
   }
   return (

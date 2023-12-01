@@ -4,9 +4,10 @@ import { useAppSelector, useAppDispatch } from '../../hooks/store';
 import { AppRoute, AuthorizationStatus } from '../../const'; // LoadingStatus
 import { OfferApi, TFavoriteOfferState } from '../../types/offer';
 import { fetchFavoriteOffers, postFavoriteOffer } from '../../store/api-actions';
-import { offersSlice } from '../../store/slices/offers';
+import { offersSlice } from '../../store/slices/offers/offers';
 import { useState } from 'react';
-import { store } from '../../store';
+import { getUserAuthStatus } from '../../store/slices/user/selectors';
+// import { store } from '../../store';
 
 type favoriteButtonProps = {
   offer: OfferApi;
@@ -23,7 +24,7 @@ function FavoriteButton({offer, widthBtn = '18', heightBtn = '19', block}: favor
   const favoriteOffers = useAppSelector((state) => state.favorites.favoriteOffers);
   const [isOn] = favoriteOffers.filter((favoriteOffer: OfferApi) => favoriteOffer.id === offer.id);
   const [isFavoriteButton, setIsFavoriteButton] = useState(isOn?.isFavorite);
-  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
+  const authorizationStatus = useAppSelector(getUserAuthStatus);
   const favoriteOfferState: TFavoriteOfferState = {
     favoriteId: offer.id,
     status: isFavoriteButton ? 0 : 1,
