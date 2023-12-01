@@ -11,7 +11,7 @@ function CardList({sortedOffers}: cardListProps): JSX.Element {
   const city = useAppSelector((state) => state?.offers.city);
   return (
     <div className="cities__places-list places__list tabs__content">
-      {sortedOffers.filter((item) => item.city.name === city)?.map((offer) => <Card key={offer.id} offer={offer} cardClassName={OFFER_CLASSES.MainPage} />)}
+      {sortedOffers?.filter((item) => item.city.name === city)?.map((offer) => <Card key={offer.id} offer={offer} cardClassName={OFFER_CLASSES.MainPage} />)}
     </div>
   );
 }

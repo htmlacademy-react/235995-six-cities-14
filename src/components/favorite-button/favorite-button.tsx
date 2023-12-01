@@ -7,7 +7,7 @@ import { fetchFavoriteOffers, postFavoriteOffer } from '../../store/api-actions'
 import { offersSlice } from '../../store/slices/offers/offers';
 import { useState } from 'react';
 import { getUserAuthStatus } from '../../store/slices/user/selectors';
-// import { store } from '../../store';
+import { getFavoriteOffers } from '../../store/slices/favorites/selectors';
 
 type favoriteButtonProps = {
   offer: OfferApi;
@@ -16,12 +16,10 @@ type favoriteButtonProps = {
   block: string;
 };
 
-// store.dispatch(fetchFavoriteOffers());
-
 function FavoriteButton({offer, widthBtn = '18', heightBtn = '19', block}: favoriteButtonProps) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const favoriteOffers = useAppSelector((state) => state.favorites.favoriteOffers);
+  const favoriteOffers = useAppSelector(getFavoriteOffers);
   const [isOn] = favoriteOffers.filter((favoriteOffer: OfferApi) => favoriteOffer.id === offer.id);
   const [isFavoriteButton, setIsFavoriteButton] = useState(isOn?.isFavorite);
   const authorizationStatus = useAppSelector(getUserAuthStatus);
@@ -29,9 +27,9 @@ function FavoriteButton({offer, widthBtn = '18', heightBtn = '19', block}: favor
     favoriteId: offer.id,
     status: isFavoriteButton ? 0 : 1,
   };
-  // const isFavoriteOfferPosting = useAppSelector((state) => state.favorites.isFavoriteOfferPosting);
+  const isNoAuth = authorizationStatus === AuthorizationStatus.NoAuth;
   const handleOnFavoriteButton = (): void => {
-    if(authorizationStatus === AuthorizationStatus.NoAuth) {
+    if(isNoAuth) {
       navigate(AppRoute.Login);
       return;
     }
@@ -48,7 +46,7 @@ function FavoriteButton({offer, widthBtn = '18', heightBtn = '19', block}: favor
 
   return (
     <button onClick={handleOnFavoriteButton} className={classNames(`${block}__bookmark-button button`,
-      {[`${block}__bookmark-button--active`] : isFavoriteButton})} type="button" // disabled={}
+      {[`${block}__bookmark-button--active`] : isFavoriteButton && !isNoAuth})} type="button"
     >
       <svg className={`${block}__bookmark-icon`} width={widthBtn} height={heightBtn}>
         <use xlinkHref="#icon-bookmark"></use>

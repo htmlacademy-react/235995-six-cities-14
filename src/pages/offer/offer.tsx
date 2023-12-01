@@ -47,7 +47,7 @@ function OfferPage(): JSX.Element {
     }
   }, [offerById, dispatch]);
 
-  const nearbyCities = useAppSelector(getOffersNearby).slice(0, MAX_NEAR_PLACES_OFFER_COUNT);
+  const nearbyCities = useAppSelector(getOffersNearby)?.slice(0, MAX_NEAR_PLACES_OFFER_COUNT);
   const getCurrentTime = (time: string) => (new Date(time)).getTime();
   // Получаем массив отзывов отсортированных по дате
   const reviews = useAppSelector(getComments);
@@ -95,7 +95,7 @@ function OfferPage(): JSX.Element {
           </div>
           <div className="offer__container container">
             <div className="offer__wrapper">
-              <div className={offerById.isPremium ? 'offer__mark' : ''}>
+              <div className={offerById?.isPremium ? 'offer__mark' : ''}>
                 <span>{offerById.isPremium ? 'Premium' : ''}</span>
               </div>
               <div className="offer__name-wrapper">

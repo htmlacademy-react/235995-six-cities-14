@@ -3,11 +3,11 @@ import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { logoutAction } from '../../store/api-actions';
 import { AppRoute } from '../../const';
 import { getUserData } from '../../store/slices/user/selectors';
-
+import { getFavoriteOffers } from '../../store/slices/favorites/selectors';
 
 function UserLogin() {
   const dispatch = useAppDispatch();
-  const favoriteCardCount = useAppSelector((state) => state.favorites.favoriteOffers).length;
+  const favoriteCardCount = useAppSelector(getFavoriteOffers).length;
   const userData = useAppSelector(getUserData);
   const handleLogout = (evt: { preventDefault: () => void }) => {
     evt.preventDefault();
