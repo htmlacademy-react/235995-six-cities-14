@@ -47,8 +47,7 @@ function OfferPage(): JSX.Element {
     }
   }, [offerById, dispatch]);
 
-  let nearbyCities = useAppSelector(getOffersNearby);
-  nearbyCities = nearbyCities !== null ? nearbyCities?.slice(0, MAX_NEAR_PLACES_OFFER_COUNT) : [];
+  const nearbyCities = useAppSelector(getOffersNearby).slice(0, MAX_NEAR_PLACES_OFFER_COUNT);
   const getCurrentTime = (time: string) => (new Date(time)).getTime();
   // Получаем массив отзывов отсортированных по дате
   const reviews = useAppSelector(getComments);

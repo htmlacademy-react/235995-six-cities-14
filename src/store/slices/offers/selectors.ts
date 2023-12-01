@@ -10,3 +10,4 @@ export const getOffersNearby = (state: State): OfferApi[] | null => state.offers
 export const isOfferLoading = (state: State): LoadingStatus => state.offers.isOfferDataLoading;
 export const isOffersLoading = (state: State): LoadingStatus => state.offers.isOffersDataLoading;
 export const isOffersNearbyLoading = (state: State): LoadingStatus => state.offers.isOffersNearbyDataLoading;
+export const getActiveOffer = (state: State): OfferApi | null => state.offers.activeOffer;
