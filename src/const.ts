@@ -24,6 +24,14 @@ export const FAVORITE_BUTTON_DATA = {
   }
 };
 
+export   const Rating = {
+  1: 'terribly',
+  2: 'badly',
+  3: 'not bad',
+  4: 'good',
+  5: 'perfect',
+};
+
 export const OFFER_CLASSES = {
   MainPage:  'cities',
   FavoritesPage: 'favorites',

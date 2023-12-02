@@ -4,23 +4,17 @@ import { Logo } from '../../components/logo/logo';
 import { FavoritesLocation } from '../../components/favorites-location/favorites-location';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
 import { FavoritesEmpty } from '../../components/favorites-empty/favorites-empty.tsx';
-import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
-import { fetchFavoriteOffers } from '../../store/api-actions.ts';
-import { useEffect } from 'react';
+import { useAppSelector } from '../../hooks/store.ts';
 import classNames from 'classnames';
 import { getFavoriteOffers } from '../../store/slices/favorites/selectors.ts';
 
 function FavoritesPage(): JSX.Element {
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(fetchFavoriteOffers());
-  }, [dispatch]);
   const favoriteOffers = useAppSelector(getFavoriteOffers);
   const isFavorites = Boolean(favoriteOffers.length);
   return (
-    <div className={classNames('page', {'page--favorites-empty': isFavorites})}>
+    <div className={classNames('page', {'page--favorites-empty': !isFavorites})}>
       <Helmet>
-        <title>6 cities: favorites {isFavorites && 'empty'}</title>
+        <title>{`6 cities: favorites ${isFavorites && 'empty'}`}</title>
       </Helmet>
       <header className="header">
         <div className="container">

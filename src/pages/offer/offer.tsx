@@ -14,23 +14,18 @@ import { FavoriteButton } from '../../components/favorite-button/favorite-button
 // Types
 import { Comment } from '../../types/user.ts';
 import { getComments, getUserAuthStatus, isCommentsLoading } from '../../store/slices/user/selectors.ts';
-import { getOfferType, getRating } from '../../utils';
-import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, MAX_NEAR_PLACES_OFFER_COUNT, AppRoute, OFFER_CLASSES, LoadingStatus, FAVORITE_BUTTON_DATA } from '../../const.ts';
+import { getCurrentTime, getOfferType, getRating } from '../../utils';
+import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, AppRoute, OFFER_CLASSES, LoadingStatus, FAVORITE_BUTTON_DATA } from '../../const.ts';
 import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
-import { fetchComments, fetchFavoriteOffers, fetchOfferAction, fetchOffersNearby } from '../../store/api-actions.ts';
-import { dropOffer, getActiveOffer, getOffersNearby } from '../../store/slices/offers/offers.ts';
-import { getOffer, isOfferLoading, isOffersNearbyLoading } from '../../store/slices/offers/selectors.ts';
+import { fetchComments, fetchOfferAction, fetchOffersNearby } from '../../store/api-actions.ts';
+import { dropOffer, setActiveOffer } from '../../store/slices/offers/offers.ts';
+import { getOffer, isOfferLoading, isOffersNearbyLoading, selectNearby} from '../../store/slices/offers/selectors.ts';
 
 function OfferPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const {id: offerId} = useParams();
   const authorizationStatus = useAppSelector(getUserAuthStatus);
   const offerById = useAppSelector(getOffer);
-  useEffect(() => {
-    if (authorizationStatus === AuthorizationStatus.Auth) {
-      dispatch(fetchFavoriteOffers());
-    }
-  },[dispatch, authorizationStatus]);
 
   useEffect(() => {
     dispatch(fetchOfferAction(offerId));
@@ -43,12 +38,12 @@ function OfferPage(): JSX.Element {
 
   useEffect(() => {
     if (offerById !== null) {
-      dispatch(getActiveOffer(offerById));
+      dispatch(setActiveOffer(offerById));
     }
   }, [offerById, dispatch]);
 
-  const nearbyCities = useAppSelector(getOffersNearby)?.slice(0, MAX_NEAR_PLACES_OFFER_COUNT);
-  const getCurrentTime = (time: string) => (new Date(time)).getTime();
+  const nearbyCities = useAppSelector(selectNearby);
+
   // Получаем массив отзывов отсортированных по дате
   const reviews = useAppSelector(getComments);
   const listReviews = reviews.slice().sort((a, b) => (getCurrentTime(b.date) - getCurrentTime(a.date))).slice(0, MAX_REVIEW_COUNT);

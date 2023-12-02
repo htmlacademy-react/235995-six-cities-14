@@ -1,8 +1,8 @@
 import { getOfferType, getRating } from '../../utils';
 import { Link, useLocation } from 'react-router-dom';
 import { OfferApi } from '../../types/offer.ts';
-import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
-import { getActiveOffer, offersSlice } from '../../store/slices/offers/offers.ts';
+import { useAppDispatch } from '../../hooks/store.ts';
+import { offersSlice } from '../../store/slices/offers/offers.ts';
 import { FavoriteButton } from '../favorite-button/favorite-button.tsx';
 import { OFFER_IMAGE_PROPERTY, FAVORITE_BUTTON_DATA } from '../../const.ts';
 
@@ -19,20 +19,18 @@ function Card({offer, cardClassName}: CardProps): JSX.Element {
   const offerId: string = `/offer/${offer.id}`;
   const handleOnMouseOver = (): void => {
     if(offerPathName !== 'offer') {
-      dispatch(offersSlice.actions.getActiveOffer(offer));
+      dispatch(offersSlice.actions.setActiveOffer(offer));
     }
   };
   const handleOnMouseLeave = (): void => {
     if(offerPathName !== 'offer') {
-      dispatch(offersSlice.actions.getActiveOffer([]));
+      dispatch(offersSlice.actions.setActiveOffer([]));
     }
   };
   // Меняет активный город на странице офера
   const handleClickCard = (): void => {
-    dispatch(offersSlice.actions.getActiveOffer(offer));
+    dispatch(offersSlice.actions.setActiveOffer(offer));
   };
-  const activeOffer = useAppSelector(getActiveOffer);
-  console.log(activeOffer);
   const getImageProperty = (path: string) => Object.hasOwn(OFFER_IMAGE_PROPERTY, path)
     ? OFFER_IMAGE_PROPERTY.favorites
     : OFFER_IMAGE_PROPERTY.main;

@@ -6,12 +6,11 @@ import { fetchOfferAction, fetchOffersAction, fetchOffersNearby } from '../../ap
 
 export interface OffersProps {
   offers: OfferApi[];
-  offer: OfferApi | [];
+  offer: OfferApi | null;
   city: string;
   sortingType: string;
   sortedOffers: OfferApi[] | [];
-  activeOffer: OfferApi | [];
-  loadOffer: OfferApi | [];
+  activeOffer: OfferApi | null;
   offersNearby: OfferApi[] | [];
   isOffersDataLoading: LoadingStatus;
   isOfferDataLoading: LoadingStatus;
@@ -21,12 +20,11 @@ export interface OffersProps {
 
 const initialState: OffersProps = {
   offers: [],
-  offer: [],
+  offer: null,
   city: DEFAULT_LOCATION,
   sortingType: DEFAULT_TYPE_SORTING,
   sortedOffers: [],
-  activeOffer: [],
-  loadOffer: [],
+  activeOffer: null,
   offersNearby: [],
   isOffersDataLoading: LoadingStatus.Idle,
   isOfferDataLoading: LoadingStatus.Idle,
@@ -44,14 +42,14 @@ export const offersSlice = createSlice({
     getSortedOffers: (state, action: PayloadAction<OfferApi[]>) => {
       state.sortedOffers = action.payload;
     },
-    getOffersNearby: (state, action: PayloadAction<OfferApi[] | []>) => {
+    setOffersNearby: (state, action: PayloadAction<OfferApi[] | []>) => {
       state.offersNearby = action.payload;
     },
-    getActiveOffer: (state, action: PayloadAction<OfferApi | []>) => {
+    setActiveOffer: (state, action: PayloadAction<OfferApi | null>) => {
       state.activeOffer = action.payload;
     },
     dropOffer: (state) => {
-      state.offer = [];
+      state.offer = null;
       state.isOfferDataLoading = LoadingStatus.Idle;
       state.isOffersNearbyDataLoading = LoadingStatus.Idle;
     },
@@ -111,4 +109,4 @@ export const offersSlice = createSlice({
   }
 });
 
-export const { setCity, sortType, getSortedOffers, getActiveOffer, getOffersNearby, setFavoriteOffer, dropOffer } = offersSlice.actions;
+export const { setCity, sortType, getSortedOffers, setActiveOffer, setOffersNearby, setFavoriteOffer, dropOffer } = offersSlice.actions;

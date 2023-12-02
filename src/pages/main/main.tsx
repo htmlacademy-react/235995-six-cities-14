@@ -5,31 +5,27 @@ import classNames from 'classnames';
 import { LocationItem } from '../../components/location-item/location-item';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
 import { MainEmpty } from '../../components/main-empty/main-empty.tsx';
-import { LOCATIONS, DEFAULT_LOCATION, AuthorizationStatus, LoadingStatus } from '../../const';
+import { LOCATIONS, DEFAULT_LOCATION, LoadingStatus } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks/store.ts';
 import { offersSlice } from '../../store/slices/offers/offers.ts';
-import { fetchFavoriteOffers, fetchOffersAction } from '../../store/api-actions.ts';
+import { fetchOffersAction } from '../../store/api-actions.ts';
 import {MainCities} from '../../components/main-cities/main-cities.tsx';
-import { store } from '../../store/index.ts';
-import { getUserAuthStatus } from '../../store/slices/user/selectors.ts';
 import { getCity, getOffers, isOffersLoading } from '../../store/slices/offers/selectors.ts';
 import { Spinner } from '../../components/spinner/spinner.tsx';
 
-store.dispatch(fetchOffersAction());
-
 function MainPage (): JSX.Element {
   const dispatch = useAppDispatch();
-  const authorizationStatus = useAppSelector(getUserAuthStatus);
+  const statusOffersLoading = useAppSelector(isOffersLoading);
+  useEffect(() => {
+    if (statusOffersLoading === LoadingStatus.Idle) {
+      dispatch(fetchOffersAction());
+    }
+  }, [statusOffersLoading]);
   const city = useAppSelector(getCity);
   const location = useLocation().pathname.slice(1);
   const offers = useAppSelector(getOffers);
   // По умолчанию перенаправляем на город Париж
   const navigate = useNavigate();
-  useEffect(() => {
-    if (authorizationStatus === AuthorizationStatus.Auth) {
-      dispatch(fetchFavoriteOffers());
-    }
-  },[dispatch, authorizationStatus]);
 
   useEffect(() => {
     // При переходе со страницы логин на случайный город
@@ -44,8 +40,7 @@ function MainPage (): JSX.Element {
   // Получаем массив оферов по заданному городу
   const offersByCity = offers.filter((item) => item.city.name === city);
   // Получаем кол-во количество оферов по городу
-  const amountOffers = offersByCity.length;
-  const isEmpty = amountOffers > 0;
+  const isEmpty = offersByCity.length > 0;
   const loadingStatus = useAppSelector(isOffersLoading);
   if (loadingStatus === LoadingStatus.Idle || loadingStatus === LoadingStatus.Loading) {
     return <Spinner />;

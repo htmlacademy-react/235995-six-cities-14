@@ -44,7 +44,7 @@ export const fetchOffersNearby = createAsyncThunk<OfferApi[], string | undefined
 export const fetchFavoriteOffers = createAsyncThunk<OfferApi[], undefined, Extra>(
   'data/fetchFavoriteOffers',
   async (_arg, { extra: api}) => {
-    const {data} = await api.get<OfferApi[] | []>(APIRoute.Favorite);
+    const {data} = await api.get<OfferApi[]>(APIRoute.Favorite);
 
     return data;
   },
@@ -78,24 +78,13 @@ export const postComment = createAsyncThunk<PostComment, PostComment, Extra>(
   },
 );
 // user Data
-export const fetchUserData = createAsyncThunk<User, undefined, Extra>(
-  'data/fetchUserData',
-  async (_arg, { extra: api}) => {
-    const {data} = await api.get<User>(APIRoute.Login);
-
-    return data;
-  },
-);
 // Auth
-export const checkAuthAction = createAsyncThunk<void, undefined, Extra>(
+export const checkAuthAction = createAsyncThunk<User, undefined, Extra>(
   'user/checkAuth',
-  async (_arg, {dispatch, extra: api}) => {
-    try {
-      await api.get(APIRoute.Login);
-      dispatch(userSlice.actions.setAuthorizationStatus(AuthorizationStatus.Auth));
-    } catch {
-      dispatch(userSlice.actions.setAuthorizationStatus(AuthorizationStatus.NoAuth));
-    }
+  async (_arg, { extra: api}) => {
+    const {data: user} = await api.get<User>(APIRoute.Login);
+
+    return user;
   },
 );
 

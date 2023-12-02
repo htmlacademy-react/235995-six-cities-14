@@ -7,7 +7,7 @@ import { fetchFavoriteOffers, postFavoriteOffer } from '../../store/api-actions'
 import { offersSlice } from '../../store/slices/offers/offers';
 import { useState } from 'react';
 import { getUserAuthStatus } from '../../store/slices/user/selectors';
-import { getFavoriteOffers } from '../../store/slices/favorites/selectors';
+import { getFavoriteOffers, isFavoritePosting } from '../../store/slices/favorites/selectors';
 
 type favoriteButtonProps = {
   offer: OfferApi;
@@ -33,13 +33,10 @@ function FavoriteButton({offer, widthBtn = '18', heightBtn = '19', block}: favor
       navigate(AppRoute.Login);
       return;
     }
-
-    dispatch(postFavoriteOffer(favoriteOfferState)).unwrap().then(() => {
-      dispatch(fetchFavoriteOffers());
-    });
+    dispatch(postFavoriteOffer(favoriteOfferState));
     setIsFavoriteButton(!isFavoriteButton);
+
     if (offer) {
-      dispatch(fetchFavoriteOffers());
       dispatch(offersSlice.actions.setFavoriteOffer(favoriteOfferState));
     }
   };

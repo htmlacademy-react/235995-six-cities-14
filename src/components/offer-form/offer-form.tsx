@@ -1,5 +1,5 @@
 import { Fragment, FormEvent, useState } from 'react';
-import { RATING_NUMBERS } from '../../const';
+import { Rating } from '../../const';
 import { useAppDispatch } from '../../hooks/store';
 import { fetchComments, postComment } from '../../store/api-actions';
 
@@ -45,29 +45,28 @@ function OfferForm({id}: OfferFormProps): JSX.Element {
     <form className="reviews__form form" action="#" method="post" onSubmit={handleSubmitButton}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
-        {
-          RATING_NUMBERS.map((number) => (
-            <Fragment key={number}>
+        {Object.entries(Rating).reverse().map(([key, value] : string[]) =>
+            <Fragment key={key}>
               <input
                 onChange={handleRadioButtonValueChange}
                 className="form__rating-input visually-hidden"
                 name="rating"
-                value={number}
-                id={`${number}-stars`}
+                value={key}
+                id={`${key}-stars`}
                 type="radio"
-                checked={radioButtonValue === number}
+                checked={radioButtonValue === +key}
               />
               <label
-                htmlFor={`${number}-stars`}
+                htmlFor={`${key}-stars`}
                 className="reviews__rating-label form__rating-label"
-                title="perfect"
+                title={value}
               >
                 <svg className="form__star-image" width="37" height="33">
                   <use xlinkHref="#icon-star"></use>
                 </svg>
               </label>
             </Fragment>
-          ))
+          )
         }
       </div>
       <textarea

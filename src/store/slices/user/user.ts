@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { AppRoute, AuthorizationStatus, NameSpace, LoadingStatus } from '../../../const';
 import { User, Comment, PostComment } from '../../../types/user';
-import { fetchComments, fetchUserData, loginAction, logoutAction, postComment } from '../../api-actions';
+import { checkAuthAction, fetchComments, loginAction, logoutAction, postComment } from '../../api-actions';
 
 export interface UserProps {
   authorizationStatus: AuthorizationStatus;
@@ -20,7 +20,7 @@ export interface UserProps {
 }
 
 const initialState: UserProps = {
-  authorizationStatus: AuthorizationStatus.NoAuth,
+  authorizationStatus: AuthorizationStatus.Unknown,
   isLoging: LoadingStatus.Idle,
   isLogout: LoadingStatus.Idle,
   userData: null,
@@ -51,15 +51,17 @@ export const userSlice = createSlice({
   extraReducers(builder) {
     builder
       // fetch User Data
-      .addCase(fetchUserData.pending, (state) => {
+      .addCase(checkAuthAction.pending, (state) => {
         state.isUserDataLoading = true;
       })
-      .addCase(fetchUserData.fulfilled, (state, action) => {
+      .addCase(checkAuthAction.fulfilled, (state, action) => {
         state.userData = action.payload;
         state.isUserDataLoading = false;
+        state.authorizationStatus = AuthorizationStatus.Auth;
       })
-      .addCase(fetchUserData.rejected, (state) => {
+      .addCase(checkAuthAction.rejected, (state) => {
         state.isUserDataLoading = false;
+        state.authorizationStatus = AuthorizationStatus.NoAuth;
       })
       // Login
       .addCase(loginAction.pending, (state) => {

@@ -6,24 +6,16 @@ import { LoginPage } from '../pages/login/login';
 import { OfferPage } from '../pages/offer/offer';
 import { FavoritesPage } from '../pages/favorites/favorites';
 import { NotFoundPage } from '../pages/error/error-page';
-// components
-import { Spinner } from './spinner/spinner';
 // Data
-import { AppRoute, AuthorizationStatus, LOCATIONS } from '../const';
-// Store
-import { useAppSelector } from '../hooks/store';
+import { AppRoute, LOCATIONS } from '../const';
 // Routes
 import { RedirectToMainPage } from './redirect-to-main-page/redirect-to-main-page';
 import { PrivateRoute } from './private-route/private-route';
 import { HistoryRouter } from './history-route/history-route';
 import { browserHistory } from '../browser-history';
-import { getUserAuthStatus } from '../store/slices/user/selectors';
 
 function App(): JSX.Element {
-  const authorizationStatus = useAppSelector(getUserAuthStatus);
-  if (authorizationStatus === AuthorizationStatus.Unknown) {
-    return <Spinner />;
-  }
+
   return (
     <HelmetProvider>
       <HistoryRouter history={browserHistory}>
@@ -37,8 +29,7 @@ function App(): JSX.Element {
                 key={city}
                 path= {city}
                 element={<MainPage />}
-              >
-              </Route>
+              />
             ))}
           </Route>
           <Route
