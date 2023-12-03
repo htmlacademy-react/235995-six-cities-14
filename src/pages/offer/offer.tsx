@@ -9,9 +9,10 @@ import { Map } from '../../components/map/map.tsx';
 import { Card } from '../../components/card/card.tsx';
 import { Spinner } from '../../components/spinner/spinner.tsx';
 import { FavoriteButton } from '../../components/favorite-button/favorite-button.tsx';
+import { RatingOffer } from '../../components/rating-offer/rating-offer.tsx';
 // Types
 import { getUserAuthStatus, isCommentsLoading } from '../../store/slices/user/selectors.ts';
-import { getOfferType, getRating } from '../../utils';
+import { getOfferType } from '../../utils';
 import { AuthorizationStatus, MAX_IMAGES_COUNT, AppRoute, OFFER_CLASSES, LoadingStatus, FAVORITE_BUTTON } from '../../const.ts';
 import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
 import { fetchComments, fetchOfferAction, fetchOffersNearby } from '../../store/api-actions.ts';
@@ -93,13 +94,7 @@ function OfferPage(): JSX.Element {
                 </h1>
                 <FavoriteButton offer={offerById} widthBtn={FAVORITE_BUTTON.offer.width} heightBtn={FAVORITE_BUTTON.offer.height} block={FAVORITE_BUTTON.offer.bemBlock} />
               </div>
-              <div className="offer__rating rating">
-                <div className="offer__stars rating__stars">
-                  <span style={{width: `${getRating(offerById.rating)}%`}}></span>
-                  <span className="visually-hidden">Rating</span>
-                </div>
-                <span className="offer__rating-value rating__value">{offerById?.rating}</span>
-              </div>
+              <RatingOffer />
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
                   {getOfferType(offerById.type)}
