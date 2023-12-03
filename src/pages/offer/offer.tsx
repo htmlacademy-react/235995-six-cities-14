@@ -11,9 +11,9 @@ import { Spinner } from '../../components/spinner/spinner.tsx';
 import { FavoriteButton } from '../../components/favorite-button/favorite-button.tsx';
 import { RatingOffer } from '../../components/rating-offer/rating-offer.tsx';
 // Types
-import { getUserAuthStatus, isCommentsLoading } from '../../store/slices/user/selectors.ts';
+import { isCommentsLoading } from '../../store/slices/user/selectors.ts';
 import { getOfferType } from '../../utils';
-import { AuthorizationStatus, MAX_IMAGES_COUNT, AppRoute, OFFER_CLASSES, LoadingStatus, FAVORITE_BUTTON } from '../../const.ts';
+import { MAX_IMAGES_COUNT, AppRoute, OFFER_CLASSES, LoadingStatus, FAVORITE_BUTTON } from '../../const.ts';
 import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
 import { fetchComments, fetchOfferAction, fetchOffersNearby } from '../../store/api-actions.ts';
 import { dropOffer, setActiveOffer } from '../../store/slices/offers/offers.ts';
@@ -23,7 +23,6 @@ import { Reviews } from '../../components/reviews/reviews.tsx';
 function OfferPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const {id: offerId} = useParams();
-  const authorizationStatus = useAppSelector(getUserAuthStatus);
   const offerById = useAppSelector(getOffer);
 
   useEffect(() => {
@@ -137,7 +136,7 @@ function OfferPage(): JSX.Element {
                   </p>
                 </div>
               </div>
-              {authorizationStatus === AuthorizationStatus.Auth && <Reviews />}
+              <Reviews />
             </div>
           </div>
           <section className="offer__map map">

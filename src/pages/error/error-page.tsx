@@ -41,7 +41,7 @@ function NotFoundPage(): JSX.Element {
               </div>
             </section>
             <div className="cities__right-section" style={{backgroundImage: 'none'}}>
-              <img src="../../../public/img/city-404.jpg" alt="Error city"
+              <img src="./img/city-404.jpg" alt="Error city"
                 style={{display: 'block'}}
               />
             </div>

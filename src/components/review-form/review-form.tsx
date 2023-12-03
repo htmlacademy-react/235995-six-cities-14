@@ -34,14 +34,14 @@ function ReviewForm({id}: OfferFormProps): JSX.Element {
       rating,
     };
     dispatch(postComment(readyComment)).unwrap().then(() => {
+      dispatch(fetchComments(id));
       setTextareaFormData('');
       setRadioButtonValue(0);
     }).catch(() => {
+      // setTextareaFormData(comment);
+      // setRadioButtonValue(rating);
       toast.error('Failed to send last review. You can try again');
     });
-    dispatch(fetchComments(id));
-    setTextareaFormData(comment);
-    setRadioButtonValue(rating);
   };
 
   return (
