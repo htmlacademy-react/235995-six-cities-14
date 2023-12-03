@@ -11,20 +11,24 @@ export const MAX_NEAR_PLACES_OFFER_COUNT = 3;
 export const URL_MARKER_DEFAULT = './markup/img/pin.svg';
 export const URL_MARKER_CURRENT = './markup/img/pin-active.svg';
 export const RATING_NUMBERS = [5, 4, 3, 2, 1];
-export const FAVORITE_BUTTON_DATA = {
+export const COMMENT_LENGTH = {
+  MIN: 50,
+  MAX: 300,
+};
+export const FAVORITE_BUTTON = {
   offer: {
-    widthBtn: '31',
-    heightBtn: '33',
+    width: '31',
+    height: '33',
     bemBlock: 'offer',
   },
   main: {
-    widthBtn: '18',
-    heightBtn: '19',
+    width: '18',
+    height: '19',
     bemBlock: 'place-card',
   }
 };
 
-export   const Rating = {
+export const Rating = {
   1: 'terribly',
   2: 'badly',
   3: 'not bad',

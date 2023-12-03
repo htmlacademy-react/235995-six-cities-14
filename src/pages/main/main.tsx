@@ -20,7 +20,7 @@ function MainPage (): JSX.Element {
     if (statusOffersLoading === LoadingStatus.Idle) {
       dispatch(fetchOffersAction());
     }
-  }, [statusOffersLoading]);
+  }, [statusOffersLoading, dispatch]);
   const city = useAppSelector(getCity);
   const location = useLocation().pathname.slice(1);
   const offers = useAppSelector(getOffers);

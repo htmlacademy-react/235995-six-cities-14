@@ -8,11 +8,11 @@ export interface UserProps {
   authorizationStatus: AuthorizationStatus;
   isLoging: LoadingStatus;
   isLogout: LoadingStatus;
+  isPosting: LoadingStatus;
   userData: User | null;
   redirectToRoute: AppRoute;
   isUserDataLoading: boolean;
   isCommentsDataLoading: boolean;
-  isCommentDataPosting: boolean;
   comments: Comment[] | [];
   hasLoadCommentsError: boolean;
   hasSendCommentsError: boolean;
@@ -23,11 +23,11 @@ const initialState: UserProps = {
   authorizationStatus: AuthorizationStatus.Unknown,
   isLoging: LoadingStatus.Idle,
   isLogout: LoadingStatus.Idle,
+  isPosting: LoadingStatus.Idle,
   userData: null,
   redirectToRoute: AppRoute.Root,
   isUserDataLoading: false,
   isCommentsDataLoading: false,
-  isCommentDataPosting: false,
   comments: [],
   hasLoadCommentsError: false,
   hasSendCommentsError: false,
@@ -95,17 +95,17 @@ export const userSlice = createSlice({
       })
       // postComment
       .addCase(postComment.pending, (state) => {
-        state.isCommentDataPosting = true;
+        state.isPosting = LoadingStatus.Loading;
         state.hasSendCommentsError = false;
       })
       .addCase(postComment.fulfilled, (state, action: PayloadAction<PostComment | null>) => {
         state.postComment = action.payload;
-        state.isCommentDataPosting = false;
         state.hasSendCommentsError = false;
+        state.isPosting = LoadingStatus.Success;
       })
       .addCase(postComment.rejected, (state) => {
-        state.isCommentDataPosting = false;
         state.hasSendCommentsError = true;
+        state.isPosting = LoadingStatus.Error;
       });
   }
 });

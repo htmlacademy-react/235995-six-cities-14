@@ -4,7 +4,7 @@ import { OfferApi } from '../../types/offer.ts';
 import { useAppDispatch } from '../../hooks/store.ts';
 import { offersSlice } from '../../store/slices/offers/offers.ts';
 import { FavoriteButton } from '../favorite-button/favorite-button.tsx';
-import { OFFER_IMAGE_PROPERTY, FAVORITE_BUTTON_DATA } from '../../const.ts';
+import { OFFER_IMAGE_PROPERTY, FAVORITE_BUTTON } from '../../const.ts';
 
 interface CardProps {
   offer: OfferApi;
@@ -54,7 +54,7 @@ function Card({offer, cardClassName}: CardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <FavoriteButton offer={offer} widthBtn={FAVORITE_BUTTON_DATA.main.widthBtn} heightBtn={FAVORITE_BUTTON_DATA.main.heightBtn} block={FAVORITE_BUTTON_DATA.main.bemBlock} />
+          <FavoriteButton offer={offer} widthBtn={FAVORITE_BUTTON.main.width} heightBtn={FAVORITE_BUTTON.main.height} block={FAVORITE_BUTTON.main.bemBlock} />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">

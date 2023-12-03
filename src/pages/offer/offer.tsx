@@ -3,23 +3,21 @@ import { Navigate, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import classNames from 'classnames';
 // Components
-import { Review } from '../../components/review/review';
 import { Logo } from '../../components/logo/logo';
-import { OfferForm } from '../../components/offer-form/offer-form';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
 import { Map } from '../../components/map/map.tsx';
 import { Card } from '../../components/card/card.tsx';
 import { Spinner } from '../../components/spinner/spinner.tsx';
 import { FavoriteButton } from '../../components/favorite-button/favorite-button.tsx';
 // Types
-import { Comment } from '../../types/user.ts';
-import { getComments, getUserAuthStatus, isCommentsLoading } from '../../store/slices/user/selectors.ts';
-import { getCurrentTime, getOfferType, getRating } from '../../utils';
-import { AuthorizationStatus, MAX_IMAGES_COUNT, MAX_REVIEW_COUNT, AppRoute, OFFER_CLASSES, LoadingStatus, FAVORITE_BUTTON_DATA } from '../../const.ts';
+import { getUserAuthStatus, isCommentsLoading } from '../../store/slices/user/selectors.ts';
+import { getOfferType, getRating } from '../../utils';
+import { AuthorizationStatus, MAX_IMAGES_COUNT, AppRoute, OFFER_CLASSES, LoadingStatus, FAVORITE_BUTTON } from '../../const.ts';
 import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
 import { fetchComments, fetchOfferAction, fetchOffersNearby } from '../../store/api-actions.ts';
 import { dropOffer, setActiveOffer } from '../../store/slices/offers/offers.ts';
 import { getOffer, isOfferLoading, isOffersNearbyLoading, selectNearby} from '../../store/slices/offers/selectors.ts';
+import { Reviews } from '../../components/reviews/reviews.tsx';
 
 function OfferPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -43,10 +41,6 @@ function OfferPage(): JSX.Element {
   }, [offerById, dispatch]);
 
   const nearbyCities = useAppSelector(selectNearby);
-
-  // Получаем массив отзывов отсортированных по дате
-  const reviews = useAppSelector(getComments);
-  const listReviews = reviews.slice().sort((a, b) => (getCurrentTime(b.date) - getCurrentTime(a.date))).slice(0, MAX_REVIEW_COUNT);
 
   const isOfferDataLoading = useAppSelector(isOfferLoading);
   const isCommentsDataLoading = useAppSelector(isCommentsLoading);
@@ -80,7 +74,7 @@ function OfferPage(): JSX.Element {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {offerById.images.slice(0, MAX_IMAGES_COUNT).map((image) => (
+              {offerById?.images.slice(0, MAX_IMAGES_COUNT).map((image) => (
                 <div key={image} className="offer__image-wrapper">
                   <img className="offer__image" src={image} alt="Photo studio" />
                 </div>
@@ -97,7 +91,7 @@ function OfferPage(): JSX.Element {
                 <h1 className="offer__name">
                   {offerById.title}
                 </h1>
-                <FavoriteButton offer={offerById} widthBtn={FAVORITE_BUTTON_DATA.offer.widthBtn} heightBtn={FAVORITE_BUTTON_DATA.offer.heightBtn} block={FAVORITE_BUTTON_DATA.offer.bemBlock} />
+                <FavoriteButton offer={offerById} widthBtn={FAVORITE_BUTTON.offer.width} heightBtn={FAVORITE_BUTTON.offer.height} block={FAVORITE_BUTTON.offer.bemBlock} />
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
@@ -124,7 +118,7 @@ function OfferPage(): JSX.Element {
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What&apos;s inside</h2>
                 <ul className="offer__inside-list">
-                  {offerById.goods.map((item) => (
+                  {offerById?.goods.map((item) => (
                     <li key={item} className="offer__inside-item">
                       {item}
                     </li>)
@@ -148,15 +142,7 @@ function OfferPage(): JSX.Element {
                   </p>
                 </div>
               </div>
-              {authorizationStatus === AuthorizationStatus.Auth &&
-              <section className="offer__reviews reviews">
-                <h2 className="reviews__title">{reviews.length > 1 ? 'Reviews' : 'Review'} &middot; <span className="reviews__amount">{reviews.length}</span></h2>
-                <ul className="reviews__list">
-                  {listReviews?.map((review: Comment) => <Review key={review.id} review={review} />)}
-                </ul>
-                <OfferForm id={offerId} />
-              </section>}
-
+              {authorizationStatus === AuthorizationStatus.Auth && <Reviews />}
             </div>
           </div>
           <section className="offer__map map">

@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import { useAppSelector, useAppDispatch } from '../../hooks/store';
-import { AppRoute, AuthorizationStatus } from '../../const'; // LoadingStatus
+import { AppRoute, AuthorizationStatus, FAVORITE_BUTTON } from '../../const';
 import { OfferApi, TFavoriteOfferState } from '../../types/offer';
-import { fetchFavoriteOffers, postFavoriteOffer } from '../../store/api-actions';
+import { postFavoriteOffer } from '../../store/api-actions';
 import { offersSlice } from '../../store/slices/offers/offers';
 import { useState } from 'react';
 import { getUserAuthStatus } from '../../store/slices/user/selectors';
-import { getFavoriteOffers, isFavoritePosting } from '../../store/slices/favorites/selectors';
+import { getFavoriteOffers} from '../../store/slices/favorites/selectors';
 
 type favoriteButtonProps = {
   offer: OfferApi;
@@ -16,7 +16,7 @@ type favoriteButtonProps = {
   block: string;
 };
 
-function FavoriteButton({offer, widthBtn = '18', heightBtn = '19', block}: favoriteButtonProps) {
+function FavoriteButton({offer, widthBtn = FAVORITE_BUTTON.main.width, heightBtn = FAVORITE_BUTTON.main.height, block = FAVORITE_BUTTON.main.bemBlock}: favoriteButtonProps) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const favoriteOffers = useAppSelector(getFavoriteOffers);
