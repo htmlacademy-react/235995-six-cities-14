@@ -38,8 +38,6 @@ function ReviewForm({id}: OfferFormProps): JSX.Element {
       setTextareaFormData('');
       setRadioButtonValue(0);
     }).catch(() => {
-      // setTextareaFormData(comment);
-      // setRadioButtonValue(rating);
       toast.error('Failed to send last review. You can try again');
     });
   };

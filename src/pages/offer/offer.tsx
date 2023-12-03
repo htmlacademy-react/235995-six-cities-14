@@ -74,7 +74,7 @@ function OfferPage(): JSX.Element {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {offerById?.images.slice(0, MAX_IMAGES_COUNT).map((image) => (
+              {offerById?.images.slice(0, MAX_IMAGES_COUNT)?.map((image) => (
                 <div key={image} className="offer__image-wrapper">
                   <img className="offer__image" src={image} alt="Photo studio" />
                 </div>

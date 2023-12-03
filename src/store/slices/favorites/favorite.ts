@@ -21,6 +21,9 @@ export const favoriteSlice = createSlice({
   name: NameSpace.Favorites,
   initialState,
   reducers: {
+    setFavoriteOffersStatus: (state, action: PayloadAction<LoadingStatus>) => {
+      state.isFavoriteOffersLoading = action.payload;
+    },
   },
   extraReducers(builder) {
     builder
@@ -59,3 +62,5 @@ export const favoriteSlice = createSlice({
       });
   }
 });
+
+export const { setFavoriteOffersStatus } = favoriteSlice.actions;

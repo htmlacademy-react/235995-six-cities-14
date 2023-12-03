@@ -1,23 +1,28 @@
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { fetchFavoriteOffers, logoutAction } from '../../store/api-actions';
-import { AppRoute } from '../../const';
+import { AppRoute, LoadingStatus } from '../../const';
 import { getUserData } from '../../store/slices/user/selectors';
-import { getFavoriteOffers } from '../../store/slices/favorites/selectors';
+import { getFavoritesCount, isFavoriteStatus } from '../../store/slices/favorites/selectors';
 import { useEffect } from 'react';
+import { setFavoriteOffersStatus } from '../../store/slices/favorites/favorite';
 
 function UserLogin() {
   const dispatch = useAppDispatch();
+  const favoriteOffersStatus = useAppSelector(isFavoriteStatus);
 
   useEffect(() => {
-    dispatch(fetchFavoriteOffers());
-  }, [dispatch]);
+    if (LoadingStatus.Idle === favoriteOffersStatus) {
+      dispatch(fetchFavoriteOffers());
+    }
+  }, [favoriteOffersStatus, dispatch]);
 
-  const favoriteCardCount = useAppSelector(getFavoriteOffers).length;
+  const favoriteCardCount = useAppSelector(getFavoritesCount);
   const userData = useAppSelector(getUserData);
   const handleLogout = (evt: { preventDefault: () => void }) => {
     evt.preventDefault();
     dispatch(logoutAction());
+    dispatch(setFavoriteOffersStatus(LoadingStatus.Idle));
   };
   return (
     <nav className="header__nav">

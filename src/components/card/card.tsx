@@ -24,7 +24,7 @@ function Card({offer, cardClassName}: CardProps): JSX.Element {
   };
   const handleOnMouseLeave = (): void => {
     if(offerPathName !== 'offer') {
-      dispatch(offersSlice.actions.setActiveOffer([]));
+      dispatch(offersSlice.actions.setActiveOffer(null));
     }
   };
   // Меняет активный город на странице офера
