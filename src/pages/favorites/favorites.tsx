@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import { getFavoriteOffers } from '../../store/slices/favorites/selectors.ts';
 import { FavoritesNotEmpty } from '../../components/favorites-not-empty/favorites-not-empty.tsx';
 
+
 function FavoritesPage(): JSX.Element {
   const favoriteOffers = useAppSelector(getFavoriteOffers);
   const isFavorites = Boolean(favoriteOffers.length);

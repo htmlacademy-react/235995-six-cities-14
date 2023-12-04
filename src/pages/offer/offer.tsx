@@ -11,7 +11,6 @@ import { Spinner } from '../../components/spinner/spinner.tsx';
 import { FavoriteButton } from '../../components/favorite-button/favorite-button.tsx';
 import { RatingOffer } from '../../components/rating-offer/rating-offer.tsx';
 import { Reviews } from '../../components/reviews/reviews.tsx';
-
 import { isCommentsLoading } from '../../store/slices/user/selectors.ts';
 import { getOfferType } from '../../utils';
 import { MAX_IMAGES_COUNT, AppRoute, OFFER_CLASSES, LoadingStatus, FAVORITE_BUTTON } from '../../const.ts';

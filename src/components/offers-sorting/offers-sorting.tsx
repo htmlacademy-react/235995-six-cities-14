@@ -9,6 +9,7 @@ function OffersSorting() {
   const [isOpened, setIsOpened] = useState(false);
   const dispatch = useAppDispatch();
   const activeSortType = useAppSelector(getSortingType);
+
   const handleSortTypeClick = (event: MouseEvent<HTMLElement>): void => {
     const currentTypeSort = event.currentTarget.dataset.sortType ?? SORT_TYPES[0];
     dispatch(offersSlice.actions.sortType(currentTypeSort));

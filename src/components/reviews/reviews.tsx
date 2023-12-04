@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { ReviewForm } from '../../components/review-form/review-form.tsx';
 import { AuthorizationStatus, MAX_REVIEW_COUNT } from '../../const';
 import { useAppSelector } from '../../hooks/store.ts';
-import { getComments, getUserAuthStatus } from '../../store/slices/user/selectors.ts'; // getComments,
+import { getComments, getUserAuthStatus } from '../../store/slices/user/selectors.ts';
 import { Comment } from '../../types/user.ts';
 import { getCurrentTime } from '../../utils.ts';
 import { Review } from '../review/review';
