@@ -24,7 +24,6 @@ function MainPage (): JSX.Element {
   const city = useAppSelector(getCity);
   const location = useLocation().pathname.slice(1);
   const offers = useAppSelector(getOffers);
-  // По умолчанию перенаправляем на город Париж
   const navigate = useNavigate();
 
   useEffect(() => {

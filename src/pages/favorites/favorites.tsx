@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Logo } from '../../components/logo/logo';
-import { FavoritesLocation } from '../../components/favorites-location/favorites-location';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
 import { FavoritesEmpty } from '../../components/favorites-empty/favorites-empty.tsx';
 import { useAppSelector } from '../../hooks/store.ts';
 import classNames from 'classnames';
 import { getFavoriteOffers } from '../../store/slices/favorites/selectors.ts';
+import { FavoritesNotEmpty } from '../../components/favorites-not-empty/favorites-not-empty.tsx';
 
 function FavoritesPage(): JSX.Element {
   const favoriteOffers = useAppSelector(getFavoriteOffers);
@@ -26,19 +26,7 @@ function FavoritesPage(): JSX.Element {
           </div>
         </div>
       </header>
-      {isFavorites ?
-        <main className="page__main page__main--favorites">
-          <div className="page__favorites-container container">
-            <section className="favorites">
-              <h1 className="favorites__title">Saved listing</h1>
-              <ul className="favorites__list">
-                <FavoritesLocation favoriteOffers={favoriteOffers} />
-              </ul>
-            </section>
-          </div>
-        </main>
-        :
-        <FavoritesEmpty/>}
+      {isFavorites ? <FavoritesNotEmpty favoriteOffers={favoriteOffers} /> : <FavoritesEmpty/>}
       <footer className="footer container">
         <Link className="footer__logo-link" to={'../'}>
           <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33" />

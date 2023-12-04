@@ -1,14 +1,14 @@
 import { MouseEvent, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { SORT_TYPES } from '../../const';
 import { offersSlice } from '../../store/slices/offers/offers';
 import { getSortingType } from '../../store/slices/offers/selectors';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
 
 function OffersSorting() {
   const [isOpened, setIsOpened] = useState(false);
-  const dispatch = useDispatch();
-  const activeSortType = useSelector(getSortingType);
+  const dispatch = useAppDispatch();
+  const activeSortType = useAppSelector(getSortingType);
   const handleSortTypeClick = (event: MouseEvent<HTMLElement>): void => {
     const currentTypeSort = event.currentTarget.dataset.sortType ?? SORT_TYPES[0];
     dispatch(offersSlice.actions.sortType(currentTypeSort));
