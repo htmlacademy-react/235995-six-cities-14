@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { offersSlice } from '../../store/slices/offers';
+import { offersSlice } from '../../store/slices/offers/offers';
 
 type cityName = {
   city: string;

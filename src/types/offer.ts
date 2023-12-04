@@ -1,3 +1,8 @@
+export type TFavoriteOfferState = {
+  favoriteId: string;
+  status: 0 | 1;
+};
+
 type LocationCity = {
   latitude: number;
   longitude: number;
@@ -5,7 +10,7 @@ type LocationCity = {
 }
 
 export type OfferApi = {
-  id: number;
+  id: string;
   title: string;
   type: string;
   price: number;

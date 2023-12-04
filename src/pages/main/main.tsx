@@ -2,25 +2,31 @@ import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import classNames from 'classnames';
-import { CardList } from '../../components/card-list/card-list';
 import { LocationItem } from '../../components/location-item/location-item';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
 import { MainEmpty } from '../../components/main-empty/main-empty.tsx';
-import { Map } from '../../components/map/map.tsx';
-import { OffersSorting } from '../../components/offers-sorting/offers-sorting.tsx';
-import { OfferApi } from '../../types/offer.ts';
-import { LOCATIONS, DEFAULT_LOCATION } from '../../const';
+import { LOCATIONS, DEFAULT_LOCATION, LoadingStatus } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks/store.ts';
-import { offersSlice } from '../../store/slices/offers.ts';
+import { offersSlice } from '../../store/slices/offers/offers.ts';
+import { fetchOffersAction } from '../../store/api-actions.ts';
+import {MainCities} from '../../components/main-cities/main-cities.tsx';
+import { getCity, getOffers, isOffersLoading } from '../../store/slices/offers/selectors.ts';
+import { Spinner } from '../../components/spinner/spinner.tsx';
 
 function MainPage (): JSX.Element {
   const dispatch = useAppDispatch();
-  const city = useAppSelector((state) => state.offers.city);
+  const statusOffersLoading = useAppSelector(isOffersLoading);
+  useEffect(() => {
+    if (statusOffersLoading === LoadingStatus.Idle) {
+      dispatch(fetchOffersAction());
+    }
+  }, [statusOffersLoading, dispatch]);
+  const city = useAppSelector(getCity);
   const location = useLocation().pathname.slice(1);
-  const offers = useAppSelector((state) => state.offers.offers);
-  const currentSortType = useAppSelector((state) => state.offers.sortingType);
+  const offers = useAppSelector(getOffers);
   // По умолчанию перенаправляем на город Париж
   const navigate = useNavigate();
+
   useEffect(() => {
     // При переходе со страницы логин на случайный город
     if (city !== location && LOCATIONS.includes(location)) {
@@ -33,17 +39,12 @@ function MainPage (): JSX.Element {
   }, [city, navigate, location, dispatch]);
   // Получаем массив оферов по заданному городу
   const offersByCity = offers.filter((item) => item.city.name === city);
-  // Функции сортировки предложений
-  const utilsSort: {[key:string]: OfferApi[]} = {
-    'Popular': offersByCity,
-    'Price: low to high': offersByCity.slice().sort((a, b) => a.price - b.price),
-    'Price: high to low': offersByCity.slice().sort((a, b) => b.price - a.price),
-    'Top rated first': offersByCity.slice().sort((a, b) => b.rating - a.rating),
-  };
-  const sortedOffers = utilsSort[currentSortType];
   // Получаем кол-во количество оферов по городу
-  const amountOffers = offersByCity.length;
-  const isEmpty = amountOffers > 0;
+  const isEmpty = offersByCity.length > 0;
+  const loadingStatus = useAppSelector(isOffersLoading);
+  if (loadingStatus === LoadingStatus.Idle || loadingStatus === LoadingStatus.Loading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="page page--gray page--main">
@@ -62,7 +63,7 @@ function MainPage (): JSX.Element {
           </div>
         </div>
       </header>
-      <main className={classNames('page__main', 'page__main--index', { 'page__main page__main--index': !isEmpty }) }>
+      <main className={classNames('page__main', 'page__main--index', { 'page__main--index-empty': !isEmpty })}>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
@@ -71,21 +72,7 @@ function MainPage (): JSX.Element {
             </ul>
           </section>
         </div>
-        { isEmpty ?
-          <div className="cities">
-            <div className="cities__places-container container">
-              <section className="cities__places places">
-                <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">{amountOffers} {amountOffers > 1 ? 'places' : 'place'} to stay in {city}</b>
-                <OffersSorting />
-                <CardList sortedOffers={sortedOffers} />
-              </section>
-              <div className="cities__right-section">
-                {<Map city={offersByCity[0].city.location} points={offersByCity} />}
-              </div>
-            </div>
-          </div>
-          : <MainEmpty />}
+        {isEmpty ? <MainCities /> : <MainEmpty />}
       </main>
     </div>
   );

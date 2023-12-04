@@ -1,44 +1,56 @@
-import classNames from 'classnames';
-import { useAppSelector } from '../../hooks/store';
-import { AppRoute, AuthorizationStatus } from '../../const';
 import { useNavigate } from 'react-router-dom';
+import classNames from 'classnames';
+import { useAppSelector, useAppDispatch } from '../../hooks/store';
+import { AppRoute, AuthorizationStatus, FAVORITE_BUTTON } from '../../const';
+import { OfferApi, TFavoriteOfferState } from '../../types/offer';
+import { postFavoriteOffer } from '../../store/api-actions';
+import { offersSlice } from '../../store/slices/offers/offers';
 import { useState } from 'react';
-import { OfferApi } from '../../types/offer';
+import { getUserAuthStatus } from '../../store/slices/user/selectors';
+import { getFavoriteOffers} from '../../store/slices/favorites/selectors';
 
 type favoriteButtonProps = {
   offer: OfferApi;
+  widthBtn: string;
+  heightBtn: string;
+  block: string;
 };
 
-function FavoriteButton({offer}: favoriteButtonProps) {
+function FavoriteButton({offer, widthBtn = FAVORITE_BUTTON.main.width, heightBtn = FAVORITE_BUTTON.main.height, block = FAVORITE_BUTTON.main.bemBlock}: favoriteButtonProps) {
   const navigate = useNavigate();
-  const [isFavoriteCard, setIsFavoriteCard] = useState(offer.isFavorite);
-  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
+  const dispatch = useAppDispatch();
+  const favoriteOffers = useAppSelector(getFavoriteOffers);
+  const [isOn] = favoriteOffers.filter((favoriteOffer: OfferApi) => favoriteOffer.id === offer.id);
+  const [isFavoriteButton, setIsFavoriteButton] = useState(isOn?.isFavorite);
+  const authorizationStatus = useAppSelector(getUserAuthStatus);
+  const favoriteOfferState: TFavoriteOfferState = {
+    favoriteId: offer.id,
+    status: isFavoriteButton ? 0 : 1,
+  };
+  const isNoAuth = authorizationStatus === AuthorizationStatus.NoAuth;
   const handleOnFavoriteButton = (): void => {
-    if(authorizationStatus === AuthorizationStatus.Unknown || authorizationStatus === AuthorizationStatus.NoAuth) {
+    if(isNoAuth) {
       navigate(AppRoute.Login);
       return;
     }
-    setIsFavoriteCard(!isFavoriteCard);
-    offer.isFavorite = isFavoriteCard;
+    dispatch(postFavoriteOffer(favoriteOfferState));
+    setIsFavoriteButton(!isFavoriteButton);
+
+    if (offer) {
+      dispatch(offersSlice.actions.setFavoriteOffer(favoriteOfferState));
+    }
   };
 
   return (
-    <button onClick={handleOnFavoriteButton} className={classNames('place-card__bookmark-button button', {
-      'place-card__bookmark-button--active': offer.isFavorite})} type="button"
+    <button onClick={handleOnFavoriteButton} className={classNames(`${block}__bookmark-button button`,
+      {[`${block}__bookmark-button--active`] : isFavoriteButton && !isNoAuth})} type="button"
     >
-      <svg className="place-card__bookmark-icon" width="18" height="19">
+      <svg className={`${block}__bookmark-icon`} width={widthBtn} height={heightBtn}>
         <use xlinkHref="#icon-bookmark"></use>
       </svg>
       <span className="visually-hidden">To bookmarks</span>
     </button>
   );
 }
-
-{/* <button className="offer__bookmark-button button" type="button">
-  <svg className="offer__bookmark-icon" width="31" height="33">
-    <use xlinkHref="#icon-bookmark"></use>
-  </svg>
-  <span className="visually-hidden">To bookmarks</span>
-</button> */}
 
 export { FavoriteButton };

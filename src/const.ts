@@ -1,6 +1,5 @@
 import { Icon } from 'leaflet';
 
-export const TIMEOUT_SHOW_ERROR = 3000;
 export const AUTH_TOKEN_KEY_NAME = 'six-cities-token';
 export const REQUEST_TIMEOUT = 5000;
 export const BASE_URL = 'https://14.design.pages.academy/six-cities';
@@ -12,10 +11,46 @@ export const MAX_NEAR_PLACES_OFFER_COUNT = 3;
 export const URL_MARKER_DEFAULT = './markup/img/pin.svg';
 export const URL_MARKER_CURRENT = './markup/img/pin-active.svg';
 export const RATING_NUMBERS = [5, 4, 3, 2, 1];
+export const COMMENT_LENGTH = {
+  MIN: 50,
+  MAX: 300,
+};
+export const FAVORITE_BUTTON = {
+  offer: {
+    width: '31',
+    height: '33',
+    bemBlock: 'offer',
+  },
+  main: {
+    width: '18',
+    height: '19',
+    bemBlock: 'place-card',
+  }
+};
+
+export const Rating = {
+  1: 'terribly',
+  2: 'badly',
+  3: 'not bad',
+  4: 'good',
+  5: 'perfect',
+};
+
 export const OFFER_CLASSES = {
   MainPage:  'cities',
   FavoritesPage: 'favorites',
   offerPage:  'near-places',
+};
+
+export const OFFER_IMAGE_PROPERTY = {
+  'favorites': {
+    width: '150',
+    height: '110',
+  },
+  'main': {
+    width: '260',
+    height: '200',
+  },
 };
 
 export const DEFAULT_CUSTOM_ICON = new Icon({
@@ -46,10 +81,15 @@ export const CURRENT_CUSTOM_ICON = new Icon({
   iconAnchor: [27, 39],
 });
 
+export const enum LoadingStatus {
+  Idle = 'idle',
+  Loading = 'loading',
+  Success = 'success',
+  Error = 'error',
+}
+
 export const enum NameSpace {
   Offers = 'offers',
-  LoadOffers ='loadOffers',
-  loadError = 'loadError',
   User = 'user',
   Favorites = 'favorites',
 }

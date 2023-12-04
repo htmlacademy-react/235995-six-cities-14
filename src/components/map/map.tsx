@@ -7,6 +7,7 @@ import { Location } from '../../types/offer';
 import { useMap } from '../../hooks/use-map';
 import { OfferApi } from '../../types/offer.ts';
 import { useAppSelector } from '../../hooks/store.ts';
+import { selectActiveOffer } from '../../store/slices/offers/selectors.ts';
 
 type MapProps = {
   city: Location;
@@ -14,7 +15,7 @@ type MapProps = {
 };
 
 function Map({city, points}: MapProps): JSX.Element {
-  const selectedPoint = useAppSelector((state) => state.offers.activeOffer);
+  const selectedPoint = useAppSelector(selectActiveOffer);
 
   const { pathname } = useLocation();
   const pathNames = pathname.split('/');
@@ -42,7 +43,7 @@ function Map({city, points}: MapProps): JSX.Element {
 
         marker
           .setIcon(
-            selectedPoint !== undefined && point.id === selectedPoint.id
+            selectedPoint !== undefined && point.id === selectedPoint?.id
               ? CURRENT_CUSTOM_ICON
               : DEFAULT_CUSTOM_ICON
           )

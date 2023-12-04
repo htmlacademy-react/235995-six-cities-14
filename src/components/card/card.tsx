@@ -2,8 +2,9 @@ import { getOfferType, getRating } from '../../utils';
 import { Link, useLocation } from 'react-router-dom';
 import { OfferApi } from '../../types/offer.ts';
 import { useAppDispatch } from '../../hooks/store.ts';
-import { offersSlice } from '../../store/slices/offers';
+import { offersSlice } from '../../store/slices/offers/offers.ts';
 import { FavoriteButton } from '../favorite-button/favorite-button.tsx';
+import { OFFER_IMAGE_PROPERTY, FAVORITE_BUTTON } from '../../const.ts';
 
 interface CardProps {
   offer: OfferApi;
@@ -13,24 +14,28 @@ interface CardProps {
 function Card({offer, cardClassName}: CardProps): JSX.Element {
   const dispatch = useAppDispatch();
   const location = useLocation();
-  const pathName = location.pathname.slice(1,6);
+  const pathName = location.pathname.slice(1);
+  const offerPathName = location.pathname.slice(1, 6);
   const offerId: string = `/offer/${offer.id}`;
-
   const handleOnMouseOver = (): void => {
-    if(pathName !== 'offer') {
-      dispatch(offersSlice.actions.getActiveOffer(offer));
+    if(offerPathName !== 'offer') {
+      dispatch(offersSlice.actions.setActiveOffer(offer));
     }
-
   };
   const handleOnMouseLeave = (): void => {
-    if(pathName !== 'offer') {
-      dispatch(offersSlice.actions.getActiveOffer(undefined));
+    if(offerPathName !== 'offer') {
+      dispatch(offersSlice.actions.setActiveOffer(null));
     }
   };
   // Меняет активный город на странице офера
   const handleClickCard = (): void => {
-    dispatch(offersSlice.actions.getActiveOffer(offer));
+    dispatch(offersSlice.actions.setActiveOffer(offer));
   };
+  const getImageProperty = (path: string) => Object.hasOwn(OFFER_IMAGE_PROPERTY, path)
+    ? OFFER_IMAGE_PROPERTY.favorites
+    : OFFER_IMAGE_PROPERTY.main;
+
+  const imageProperty = getImageProperty(pathName);
 
   return (
     <article onMouseOver={handleOnMouseOver} onMouseOut={handleOnMouseLeave} className={`${cardClassName}__card place-card`} >
@@ -40,7 +45,7 @@ function Card({offer, cardClassName}: CardProps): JSX.Element {
       </div>}
       <div className={`${cardClassName}__image-wrapper place-card__image-wrapper`}>
         <Link to={offerId} onClick={handleClickCard}>
-          <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image" />
+          <img className="place-card__image" src={offer.previewImage} width={imageProperty.width} height={imageProperty.height} alt="Place image" />
         </Link>
       </div>
       <div className="place-card__info">
@@ -49,7 +54,7 @@ function Card({offer, cardClassName}: CardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{offer.price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <FavoriteButton offer={offer}/>
+          <FavoriteButton offer={offer} widthBtn={FAVORITE_BUTTON.main.width} heightBtn={FAVORITE_BUTTON.main.height} block={FAVORITE_BUTTON.main.bemBlock} />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">

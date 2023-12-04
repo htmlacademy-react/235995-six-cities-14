@@ -3,17 +3,18 @@ import { Helmet } from 'react-helmet-async';
 import { Logo } from '../../components/logo/logo';
 import { FavoritesLocation } from '../../components/favorites-location/favorites-location';
 import { UserNavigation } from '../../components/user-navigation/user-navigation';
-import { OfferApi } from '../../types/offer.ts';
 import { FavoritesEmpty } from '../../components/favorites-empty/favorites-empty.tsx';
 import { useAppSelector } from '../../hooks/store.ts';
+import classNames from 'classnames';
+import { getFavoriteOffers } from '../../store/slices/favorites/selectors.ts';
 
 function FavoritesPage(): JSX.Element {
-  const offers = useAppSelector((state) => state.offers.offers);
-  const favoriteOffers: OfferApi[] = offers.filter((offer: OfferApi): boolean => offer.isFavorite);
+  const favoriteOffers = useAppSelector(getFavoriteOffers);
+  const isFavorites = Boolean(favoriteOffers.length);
   return (
-    <div className={favoriteOffers.length ? 'page' : 'page page--favorites-empty'}>
+    <div className={classNames('page', {'page--favorites-empty': !isFavorites})}>
       <Helmet>
-        <title>6 cities: favorites</title>
+        <title>{`6 cities: favorites ${isFavorites && 'empty'}`}</title>
       </Helmet>
       <header className="header">
         <div className="container">
@@ -25,7 +26,7 @@ function FavoritesPage(): JSX.Element {
           </div>
         </div>
       </header>
-      {favoriteOffers.length ?
+      {isFavorites ?
         <main className="page__main page__main--favorites">
           <div className="page__favorites-container container">
             <section className="favorites">

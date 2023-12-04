@@ -6,29 +6,16 @@ import { LoginPage } from '../pages/login/login';
 import { OfferPage } from '../pages/offer/offer';
 import { FavoritesPage } from '../pages/favorites/favorites';
 import { NotFoundPage } from '../pages/error/error-page';
-// components
-import { Spinner } from './spinner/spinner';
 // Data
-import { AppRoute, AuthorizationStatus, LOCATIONS } from '../const';
-// Store
-import { store } from '../store/';
-import { checkAuthAction, fetchOffersAction } from '../store/api-actions';
-import { useAppSelector } from '../hooks/store';
+import { AppRoute, LOCATIONS } from '../const';
 // Routes
 import { RedirectToMainPage } from './redirect-to-main-page/redirect-to-main-page';
 import { PrivateRoute } from './private-route/private-route';
 import { HistoryRouter } from './history-route/history-route';
 import { browserHistory } from '../browser-history';
 
-store.dispatch(checkAuthAction());
-store.dispatch(fetchOffersAction());
-
 function App(): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.user.authorizationStatus);
-  const loadingStatus = useAppSelector((state) => state.offers.isOffersDataLoading);
-  if (loadingStatus || authorizationStatus === AuthorizationStatus.Unknown) {
-    return <Spinner />;
-  }
+
   return (
     <HelmetProvider>
       <HistoryRouter history={browserHistory}>
@@ -42,8 +29,7 @@ function App(): JSX.Element {
                 key={city}
                 path= {city}
                 element={<MainPage />}
-              >
-              </Route>
+              />
             ))}
           </Route>
           <Route
