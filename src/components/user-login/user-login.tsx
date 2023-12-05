@@ -24,6 +24,7 @@ function UserLogin() {
     dispatch(logoutAction());
     dispatch(setFavoriteOffersStatus(LoadingStatus.Idle));
   };
+
   return (
     <nav className="header__nav">
       <ul className="header__nav-list">

@@ -23,7 +23,7 @@ function ReviewForm({id}: OfferFormProps): JSX.Element {
     setRadioButtonValue(+event.target.value);
   };
   const postingStatus = useAppSelector(isPostingStatus);
-  const isDisabled = textareaFormData.length <= COMMENT_LENGTH.MIN || radioButtonValue === 0 || textareaFormData.length >= COMMENT_LENGTH.MAX;
+  const isDisabled = textareaFormData.length <= COMMENT_LENGTH.min || radioButtonValue === 0 || textareaFormData.length >= COMMENT_LENGTH.max;
   const handleSubmitButton = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const comment = textareaFormData;
@@ -76,8 +76,8 @@ function ReviewForm({id}: OfferFormProps): JSX.Element {
         id="review"
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
-        minLength={COMMENT_LENGTH.MIN}
-        maxLength={COMMENT_LENGTH.MAX}
+        minLength={COMMENT_LENGTH.min}
+        maxLength={COMMENT_LENGTH.max}
 
         value={textareaFormData}
         disabled={postingStatus === LoadingStatus.Loading}
