@@ -76,8 +76,9 @@ function ReviewForm({id}: OfferFormProps): JSX.Element {
         id="review"
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
-        minLength={50}
-        maxLength={300}
+        minLength={COMMENT_LENGTH.MIN}
+        maxLength={COMMENT_LENGTH.MAX}
+
         value={textareaFormData}
         disabled={postingStatus === LoadingStatus.Loading}
       />

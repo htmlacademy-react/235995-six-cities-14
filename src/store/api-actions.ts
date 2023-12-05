@@ -77,8 +77,7 @@ export const postComment = createAsyncThunk<PostComment, PostComment, Extra>(
     return data;
   },
 );
-// user Data
-// Auth
+// user Data Auth
 export const checkAuthAction = createAsyncThunk<User, undefined, Extra>(
   'user/checkAuth',
   async (_arg, { extra: api}) => {

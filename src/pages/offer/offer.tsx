@@ -10,7 +10,7 @@ import { Card } from '../../components/card/card.tsx';
 import { Spinner } from '../../components/spinner/spinner.tsx';
 import { FavoriteButton } from '../../components/favorite-button/favorite-button.tsx';
 import { RatingOffer } from '../../components/rating-offer/rating-offer.tsx';
-// Types
+import { Reviews } from '../../components/reviews/reviews.tsx';
 import { isCommentsLoading } from '../../store/slices/user/selectors.ts';
 import { getOfferType } from '../../utils';
 import { MAX_IMAGES_COUNT, AppRoute, OFFER_CLASSES, LoadingStatus, FAVORITE_BUTTON } from '../../const.ts';
@@ -18,7 +18,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/store.ts';
 import { fetchComments, fetchOfferAction, fetchOffersNearby } from '../../store/api-actions.ts';
 import { dropOffer, setActiveOffer } from '../../store/slices/offers/offers.ts';
 import { getOffer, isOfferLoading, isOffersNearbyLoading, selectNearby} from '../../store/slices/offers/selectors.ts';
-import { Reviews } from '../../components/reviews/reviews.tsx';
+
 
 function OfferPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -41,7 +41,6 @@ function OfferPage(): JSX.Element {
   }, [offerById, dispatch]);
 
   const nearbyCities = useAppSelector(selectNearby);
-
   const isOfferDataLoading = useAppSelector(isOfferLoading);
   const isCommentsDataLoading = useAppSelector(isCommentsLoading);
   const isOffersNearbyDataLoading = useAppSelector(isOffersNearbyLoading);
