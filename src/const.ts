@@ -27,7 +27,7 @@ export const FAVORITE_BUTTON = {
   }
 };
 
-export const Rating = {
+export const RATING = {
   1: 'terribly',
   2: 'badly',
   3: 'not bad',

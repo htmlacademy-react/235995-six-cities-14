@@ -10,7 +10,7 @@ export interface OffersProps {
   city: string;
   sortingType: string;
   activeOffer: OfferApi | null;
-  offersNearby: OfferApi[] | [];
+  offersNearby: OfferApi[];
   isOffersDataLoading: LoadingStatus;
   isOfferDataLoading: LoadingStatus;
   isOffersNearbyDataLoading: LoadingStatus;
@@ -32,9 +32,6 @@ export const offersSlice = createSlice({
   name: NameSpace.Offers,
   initialState,
   reducers: {
-    setOffersNearby: (state, action: PayloadAction<OfferApi[] | []>) => {
-      state.offersNearby = action.payload;
-    },
     setActiveOffer: (state, action: PayloadAction<OfferApi | null>) => {
       state.activeOffer = action.payload;
     },
@@ -97,4 +94,4 @@ export const offersSlice = createSlice({
   }
 });
 
-export const { setCity, sortType, getSortedOffers, setActiveOffer, setOffersNearby, setFavoriteOffer, dropOffer } = offersSlice.actions;
+export const { setCity, sortType, setActiveOffer, setFavoriteOffer, dropOffer } = offersSlice.actions;

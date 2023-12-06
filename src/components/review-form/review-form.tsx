@@ -1,5 +1,5 @@
 import { Fragment, FormEvent, useState } from 'react';
-import { COMMENT_LENGTH, LoadingStatus, Rating } from '../../const';
+import { COMMENT_LENGTH, LoadingStatus, RATING } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { fetchComments, postComment } from '../../store/api-actions';
 import { isPostingStatus } from '../../store/slices/user/selectors';
@@ -34,10 +34,12 @@ function ReviewForm({id}: OfferFormProps): JSX.Element {
       rating,
     };
     dispatch(postComment(readyComment)).unwrap().then(() => {
-      dispatch(fetchComments(id));
       setTextareaFormData('');
       setRadioButtonValue(0);
+      dispatch(fetchComments(id));
     }).catch(() => {
+      setTextareaFormData(comment);
+      setRadioButtonValue(rating);
       toast.error('Failed to send last review. You can try again');
     });
   };
@@ -46,7 +48,7 @@ function ReviewForm({id}: OfferFormProps): JSX.Element {
     <form className="reviews__form form" action="#" method="post" onSubmit={handleSubmitButton}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
-        {Object.entries(Rating).reverse().map(([key, value] : string[]) =>
+        {Object.entries(RATING).reverse().map(([key, value] : string[]) =>
           (
             <Fragment key={key}>
               <input

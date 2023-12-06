@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { AppRoute, AuthorizationStatus, NameSpace, LoadingStatus } from '../../../const';
+import { AuthorizationStatus, NameSpace, LoadingStatus } from '../../../const';
 import { User, Comment, PostComment } from '../../../types/user';
 import { fetchComments, logoutAction, postComment, checkAuthAction } from '../../api-actions';
 
@@ -8,7 +8,6 @@ export interface UserProps {
   authorizationStatus: AuthorizationStatus;
   isPosting: LoadingStatus;
   userData: User | null;
-  redirectToRoute: AppRoute;
   isCommentsDataLoading: boolean;
   comments: Comment[] | [];
   postComment: null | PostComment;
@@ -18,7 +17,6 @@ const initialState: UserProps = {
   authorizationStatus: AuthorizationStatus.Unknown,
   isPosting: LoadingStatus.Idle,
   userData: null,
-  redirectToRoute: AppRoute.Root,
   isCommentsDataLoading: false,
   comments: [],
   postComment: null,
@@ -34,9 +32,6 @@ export const userSlice = createSlice({
     addUserData: (state, action: PayloadAction<User | null>) => {
       state.userData = action.payload;
     },
-    redirectToRoute: (state, action: PayloadAction<AppRoute>) => {
-      state.redirectToRoute = action.payload;
-    }
   },
   extraReducers(builder) {
     builder
@@ -77,4 +72,4 @@ export const userSlice = createSlice({
   }
 });
 
-export const { setAuthorizationStatus, addUserData, redirectToRoute } = userSlice.actions;
+export const { setAuthorizationStatus, addUserData } = userSlice.actions;

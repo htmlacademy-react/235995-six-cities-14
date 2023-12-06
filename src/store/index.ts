@@ -3,7 +3,6 @@ import { NameSpace } from '../const';
 import { createApi } from '../services/api';
 import { offersSlice } from './slices/offers/offers';
 import { userSlice } from './slices/user/user';
-import { redirect } from './midleware/redirect';
 import { favoriteSlice } from './slices/favorites/favorite';
 
 const api = createApi();
@@ -21,5 +20,5 @@ export const store = configureStore({
       thunk: {
         extraArgument: api,
       }
-    }).concat(redirect),
+    }),
 });
