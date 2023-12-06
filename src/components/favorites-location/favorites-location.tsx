@@ -19,7 +19,7 @@ function FavoritesLocation({favoriteOffers}: FavoritesLocationProps) {
           </div>
         </div>
         <div className="favorites__places">
-          {favoriteOffers?.filter((it) => it.city.name === cityName)?.map((offer)=> <Card key={offer.id} offer={offer} cardClassName={OFFER_CLASSES.FavoritesPage} />)}
+          {favoriteOffers?.filter((it) => it.city.name === cityName)?.map((offer)=> <Card key={offer.id} offer={offer} cardClassName={OFFER_CLASSES.favoritesPage} />)}
         </div>
       </li>)
     )

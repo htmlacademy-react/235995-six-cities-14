@@ -9,13 +9,11 @@ export interface OffersProps {
   offer: OfferApi | null;
   city: string;
   sortingType: string;
-  sortedOffers: OfferApi[] | [];
   activeOffer: OfferApi | null;
-  offersNearby: OfferApi[] | [];
+  offersNearby: OfferApi[];
   isOffersDataLoading: LoadingStatus;
   isOfferDataLoading: LoadingStatus;
   isOffersNearbyDataLoading: LoadingStatus;
-  currentFavoriteOffer: TFavoriteOfferState;
 }
 
 const initialState: OffersProps = {
@@ -23,28 +21,17 @@ const initialState: OffersProps = {
   offer: null,
   city: DEFAULT_LOCATION,
   sortingType: DEFAULT_TYPE_SORTING,
-  sortedOffers: [],
   activeOffer: null,
   offersNearby: [],
   isOffersDataLoading: LoadingStatus.Idle,
   isOfferDataLoading: LoadingStatus.Idle,
   isOffersNearbyDataLoading: LoadingStatus.Idle,
-  currentFavoriteOffer: {
-    favoriteId: '',
-    status: 0,
-  },
 };
 
 export const offersSlice = createSlice({
   name: NameSpace.Offers,
   initialState,
   reducers: {
-    getSortedOffers: (state, action: PayloadAction<OfferApi[]>) => {
-      state.sortedOffers = action.payload;
-    },
-    setOffersNearby: (state, action: PayloadAction<OfferApi[] | []>) => {
-      state.offersNearby = action.payload;
-    },
     setActiveOffer: (state, action: PayloadAction<OfferApi | null>) => {
       state.activeOffer = action.payload;
     },
@@ -60,8 +47,6 @@ export const offersSlice = createSlice({
       state.sortingType = action.payload;
     },
     setFavoriteOffer(state, action: PayloadAction<TFavoriteOfferState>) {
-      state.currentFavoriteOffer = action.payload;
-
       if (action.payload.favoriteId !== '') {
         const {favoriteId , status} = action.payload;
         const currentOffer = state.offers.find((offer) => offer.id === favoriteId);
@@ -109,4 +94,4 @@ export const offersSlice = createSlice({
   }
 });
 
-export const { setCity, sortType, getSortedOffers, setActiveOffer, setOffersNearby, setFavoriteOffer, dropOffer } = offersSlice.actions;
+export const { setCity, sortType, setActiveOffer, setFavoriteOffer, dropOffer } = offersSlice.actions;

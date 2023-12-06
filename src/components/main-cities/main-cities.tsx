@@ -24,7 +24,7 @@ function MainCities() {
         <section className="cities__places places">
           <h2 className="visually-hidden">Places</h2>
           <b className="places__found">{amountOffers} {amountOffers > 1 ? 'places' : 'place'} to stay in {city}</b>
-          <OffersSorting />
+          <OffersSorting currentSortType={currentSortType} />
           <CardList sortedOffers={sortedOffers} />
         </section>
         <div className="cities__right-section">

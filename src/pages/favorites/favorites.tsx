@@ -5,13 +5,18 @@ import { UserNavigation } from '../../components/user-navigation/user-navigation
 import { FavoritesEmpty } from '../../components/favorites-empty/favorites-empty.tsx';
 import { useAppSelector } from '../../hooks/store.ts';
 import classNames from 'classnames';
-import { getFavoriteOffers } from '../../store/slices/favorites/selectors.ts';
+import { getFavoriteOffers, isFavoriteStatus } from '../../store/slices/favorites/selectors.ts';
 import { FavoritesNotEmpty } from '../../components/favorites-not-empty/favorites-not-empty.tsx';
-
+import { LoadingStatus } from '../../const.ts';
+import { Spinner } from '../../components/spinner/spinner.tsx';
 
 function FavoritesPage(): JSX.Element {
   const favoriteOffers = useAppSelector(getFavoriteOffers);
   const isFavorites = Boolean(favoriteOffers.length);
+  const favoriteOffersStatus = useAppSelector(isFavoriteStatus);
+  if (LoadingStatus.Loading === favoriteOffersStatus) {
+    return <Spinner />;
+  }
   return (
     <div className={classNames('page', {'page--favorites-empty': !isFavorites})}>
       <Helmet>

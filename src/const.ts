@@ -10,10 +10,9 @@ export const MAX_REVIEW_COUNT = 10;
 export const MAX_NEAR_PLACES_OFFER_COUNT = 3;
 export const URL_MARKER_DEFAULT = './markup/img/pin.svg';
 export const URL_MARKER_CURRENT = './markup/img/pin-active.svg';
-export const RATING_NUMBERS = [5, 4, 3, 2, 1];
 export const COMMENT_LENGTH = {
-  MIN: 50,
-  MAX: 300,
+  min: 50,
+  max: 300,
 };
 export const FAVORITE_BUTTON = {
   offer: {
@@ -28,7 +27,7 @@ export const FAVORITE_BUTTON = {
   }
 };
 
-export const Rating = {
+export const RATING = {
   1: 'terribly',
   2: 'badly',
   3: 'not bad',
@@ -37,8 +36,8 @@ export const Rating = {
 };
 
 export const OFFER_CLASSES = {
-  MainPage:  'cities',
-  FavoritesPage: 'favorites',
+  mainPage:  'cities',
+  favoritesPage: 'favorites',
   offerPage:  'near-places',
 };
 
@@ -115,13 +114,4 @@ export const enum AppRoute {
   Offer = '/offer/',
   Favorites = '/favorites',
   Error= '*',
-}
-
-export const enum CityName {
-  Paris = 'Paris',
-  Cologne = 'Cologne',
-  Brussels = 'Brussels',
-  Amsterdam = 'Amsterdam',
-  Hamburg = 'Hamburg',
-  Dusseldorf = 'Dusseldorf'
 }
